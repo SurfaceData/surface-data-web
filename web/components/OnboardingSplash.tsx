@@ -1,14 +1,47 @@
 import styled from 'styled-components';
 
+const Container = styled.div`
+  padding: 24px 12ps;
+`;
+
 const Title = styled.div`
+  font-size: 24px;
+  margin: 16px 0px;
+`;
+
+const Input = styled.input`
+  padding: 5px 12px;
+  font-size: 14px;
+  line-height: 20px;
+  vertical-align: middle;
+  border-radius: 6px;
+  outline: none;
+`;
+
+const Button = styled.button`;
+  color: #fff;
+  background-color: #2ea44f;
+  display: inline-block;
+  font-weight: 600;
+  margin: 0px 4px;
+  padding: 8px 12px;
+  text-align: center;
+  border: 0px;
+  border-radius: 6px;
+`;
+
+const RegisterContainer = styled.div`
+  margin: 24px 0px;
 `;
 
 const Text = styled.div`
+  font-size: 18px;
+  margin: 8px 24px;
 `;
 
 const OnboardingSplash = () => {
   return (
-    <div>
+    <Container>
       <Title>
         Together we make the data for language technology.
       </Title>
@@ -19,7 +52,19 @@ const OnboardingSplash = () => {
         That means you help decide what we build and how profits are shared.
       </Text>
 
-    </div>
+      <RegisterContainer>
+        <Input
+            name="username"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="GitHub Username">
+        </Input>
+        <Button>
+          Register
+        </Button>
+      </RegisterContainer>
+    </Container>
   );
 };
 

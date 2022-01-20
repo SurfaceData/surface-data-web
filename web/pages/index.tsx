@@ -2,10 +2,17 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import styled from 'styled-components';
 
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
 import OnboardingSplash from '../components/OnboardingSplash';
+import StatsSplash from '../components/StatsSplash';
+
+const Container = styled.div`
+  margin: 48px 24px;
+  text-align: center;
+`;
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
@@ -44,7 +51,11 @@ const Home: NextPage = () => {
       <main>
         <Header />
 
-        <OnboardingSplash />
+        <Container>
+          <OnboardingSplash />
+          <StatsSplash />
+        </Container>
+
       </main>
     </div>
   );
