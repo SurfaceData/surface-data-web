@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import styled from 'styled-components';
 
 import styles from '../styles/Home.module.css';
@@ -17,7 +17,6 @@ const Container = styled.div`
 const Home: NextPage = () => {
   const { data: session } = useSession();
   if (session) {
-    console.log(session);
     return (
       <div>
         <Head>
@@ -33,6 +32,10 @@ const Home: NextPage = () => {
 
           <div>
             Signed In View
+
+            <button onClick={() => signOut()}>
+              Sign Out
+            </button>
           </div>
         </main>
       </div>
