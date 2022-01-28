@@ -16,5 +16,12 @@ export default NextAuth({
   ],
   pages: {
     newUser: "/new_user",
-  }
+  },
+  callbacks: {
+    async session({ session, user, token }) {
+      let { id, ...sessionUser } = user;
+      session.user = sessionUser;
+      return session;
+    },
+  },
 });
