@@ -57,3 +57,53 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Content {
+  // Key Fields
+  fprint       String
+  language     String
+
+  // Content Fields
+  text         String
+
+  // Provenance Fields
+  source       Int @default(0)
+  license      String?
+  origin       String?
+  originId     String?
+
+  @@id([fprint, language])
+}
+
+model Annotations {
+  // Key Fields
+  id           BigInt @id @default(autoincrement())
+
+  // Association Fields
+  sourceFprint String
+  sourceLang   String
+
+  // Content Fields
+  targetLang   String
+  text         String
+  isComplete   Boolean @default(false)
+  annotType    Int @default(0)
+
+  // Provenance Fields
+  createdAt    DateTime @default(now())
+}
+
+model Ratings {
+  // Key Fields
+  id           BigInt @id @default(autoincrement())
+
+  // Association Fields
+  annotId      BigInt
+  user         String
+
+  // Content Fields
+  rating       Int
+
+  // Provenance Fields
+  createdAt    DateTime @default(now())
+}
