@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
+import MainLayout from '../components/MainLayout';
 import OnboardingSplash from '../components/OnboardingSplash';
 import StatsSplash from '../components/StatsSplash';
 
@@ -17,53 +18,37 @@ const Container = styled.div`
 const Home: NextPage = () => {
   const { data: session } = useSession();
   if (session) {
-    console.log(session);
     return (
-      <div>
-        <Head>
-          <title>Surface Data</title>
-          <meta
-            name="description"
-            content="Cooperatively producing language data" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+      <MainLayout>
+        <div>
+          Signed In View
 
-        <main>
-          <Header />
-
-          <div>
-            Signed In View
-
-            <button onClick={() => signOut()}>
-              Sign Out
-            </button>
-          </div>
-        </main>
-      </div>
+          <button onClick={() => signOut()}>
+            Sign Out
+          </button>
+        </div>
+      </MainLayout>
     );
   }
 
   return (
-    <div>
-      <Head>
-        <title>Surface Data</title>
-        <meta
-          name="description"
-          content="Cooperatively producing language data" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <Header />
-
+    <MainLayout>
+      <div>
         <Container>
           <OnboardingSplash />
           <StatsSplash />
         </Container>
-
-      </main>
-    </div>
+      </div>
+    </MainLayout>
   );
 }
+
+/*Home.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <MainLayout>
+    </MainLayout>
+  );
+}
+ */
 
 export default Home;

@@ -1,15 +1,25 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 
+import MainLayout from '../components/MainLayout';
+
 const NewUser: NextPage = () => {
   return (
-    <div>
+    <>
       Hi New User
 
       <Link href="/">
         Done
       </Link>
-    </div>
+    </>
+  );
+}
+
+NewUser.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <MainLayout>
+      {page}
+    </MainLayout>
   );
 }
 
