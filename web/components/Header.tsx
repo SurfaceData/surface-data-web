@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import styled from 'styled-components';
 
@@ -36,12 +37,14 @@ const Header = () => {
           height="32"
           width="32" />
 
-        <StyledProfile
-            alt="Your Profile"
-            src={session.user.image}
-            height="32"
-            width="32"
-        />
+        <Link href="/profile">
+          <StyledProfile
+              alt="Your Profile"
+              src={session.user.image}
+              height="32"
+              width="32"
+          />
+        </Link>
 
       </StyledNav>
     )
