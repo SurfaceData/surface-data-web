@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import MainLayout from '../components/MainLayout';
+import MainLayout from '@components/MainLayout';
 
 const Container = styled.div`
   margin: 48px 24px;

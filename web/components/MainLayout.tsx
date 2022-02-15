@@ -4,10 +4,7 @@ import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import styled from 'styled-components';
 
-import styles from '../styles/Home.module.css';
-import Header from '../components/Header';
-import OnboardingSplash from '../components/OnboardingSplash';
-import StatsSplash from '../components/StatsSplash';
+import Header from '@components/Header';
 
 const Container = styled.div`
   margin: 48px 24px;

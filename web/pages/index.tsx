@@ -4,11 +4,10 @@ import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import styled from 'styled-components';
 
-import styles from '../styles/Home.module.css';
-import Header from '../components/Header';
-import MainLayout from '../components/MainLayout';
-import OnboardingSplash from '../components/OnboardingSplash';
-import StatsSplash from '../components/StatsSplash';
+import Header from '@components/Header';
+import MainLayout from '@components/MainLayout';
+import OnboardingSplash from '@components/OnboardingSplash';
+import StatsSplash from '@components/StatsSplash';
 
 const Container = styled.div`
   margin: 48px 24px;
@@ -42,13 +41,5 @@ const Home: NextPage = () => {
     </MainLayout>
   );
 }
-
-/*Home.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <MainLayout>
-    </MainLayout>
-  );
-}
- */
 
 export default Home;

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 
-import MainLayout from '../components/MainLayout';
+import MainLayout from '@components/MainLayout';
 
 const NewUser: NextPage = () => {
   return (
