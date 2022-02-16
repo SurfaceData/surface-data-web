@@ -1,4 +1,58 @@
 import React from 'react';
+import styled from 'styled-components';
+
+import VisuallyHidden from '@components/ui/VisuallyHidden';
+
+const LabelContainer = styled.label`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  & input,
+  & select,
+  & textarea {
+    box-sizing: border-box;
+    border: 1.6px solid #e6e4e1;
+    border-radius: 2px;
+    padding: 13px;
+    font-size: 16px;
+    color: #000;
+    background-color: #fff;
+  }
+`;
+
+const Label = styled.span`
+  margin-inline-start: 9px;
+  padding: 0 5px;
+  position: absolute;
+  top: -8px;
+  background: #fff;
+  font-size: 12px;
+  color: #959595;
+  z-index: 1;
+`;
+
+const Wrapper = styled.div`
+  position: relative;
+  & select {
+    cursor: pointer;
+    padding-inline-end: 33px;
+    width: 100%;
+    appearance: none;
+  }
+
+  &::after {
+    content: '▼';
+    position: absolute;
+    inset-inline-end: 15px;
+    width: 13px;
+    height: 100%;
+    pointer-events: none;
+    right: 20px;
+    top: 15px;
+  }
+`;
 
 export const LabeledFormControl = React.forwardRef(
   (
@@ -9,27 +63,28 @@ export const LabeledFormControl = React.forwardRef(
       required,
       isLabelVisuallyHidden,
       ...props
-    }: any,
-    ref
+    }: any, ref 
   ) => {
     const child = <Component {...{ref, required, ...props }} />;
 
     return (
-      <label {...props}>
+      <LabelContainer
+        {...props}>
         {isLabelVisuallyHidden ? (
-          <div>{label}</div>
+          <VisuallyHidden>{label}</VisuallyHidden>
         ) : (
-          <span>
+          <Label>
             <span aria-hidden="true">{required && '*'}</span>
             {label}
-          </span>
+          </Label>
         )}
         {Component == 'select' ? (
-          <div>{child}</div>
+          <Wrapper>{child}</Wrapper>
         ) : (
           child
         )}
-      </label>
+      </LabelContainer>
     );
   }
 );
+LabeledFormControl.displayName = 'LabeledFormControl';
