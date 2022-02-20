@@ -16,7 +16,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "@app/*": ["app/*"],
+      "@common/*": ["common/*"],
       "@components/*": ["components/*"],
+      "@features/*": ["features/*"],
       "@pages/*": ["pages/*"]
     }
   },
