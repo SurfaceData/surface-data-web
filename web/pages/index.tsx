@@ -15,8 +15,19 @@ const Container = styled.div`
 `;
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-  if (session) {
+  const { data: session, status } = useSession({ required: true });
+  console.log(session);
+  console.log(status);
+
+  if (status === "loading") {
+    <MainLayout>
+      <div>
+        Loading
+      </div>
+    </MainLayout>
+  }
+
+  if (status === "authenticated") {
     return (
       <MainLayout>
         <div>

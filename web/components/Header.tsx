@@ -31,11 +31,15 @@ const Header = () => {
   if (session) {
     return (
       <StyledNav>
-        <Image
-          alt="Surface Data"
-          src="/surface.svg"
-          height="32"
-          width="32" />
+        <Link href="/">
+          <a>
+            <Image
+              alt="Surface Data"
+              src="/surface.svg"
+              height="32"
+              width="32" />
+          </a>
+        </Link>
 
         <Link href="/profile">
           <StyledProfile
