@@ -9,3 +9,7 @@ export default {
 } as ComponentMeta<typeof Button>;
 
 export const Primary = () => <Button>Label</Button>;
+
+export const Rounded = () => <Button rounded>Label</Button>;
+
+export const Outline = () => <Button outline>Label</Button>;

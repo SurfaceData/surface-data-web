@@ -34,6 +34,9 @@ const Profile: NextPage = () => {
     userData.languages = userLanguages;
     dispatch(updateUser(userData));
   });
+  const addLanguage = () => {
+    setUserLanguages(userLanguages.concat(""));
+  };
 
   if (status == "loading") {
     return (
@@ -64,6 +67,12 @@ const Profile: NextPage = () => {
             />
           ))
         }
+
+        <Button
+            outline
+            onClick={addLanguage}>
+          Add Language
+        </Button>
 
         <Button onClick={submit}>Save</Button>
       </Container>

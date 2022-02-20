@@ -1,13 +1,36 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Button = styled.button`;
-  color: #fff;
-  background-color: #2ea44f;
-  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  padding: .5rem 1rem;
+  min-width: 14rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
   font-weight: 600;
-  margin: 0px 4px;
-  padding: 8px 12px;
   text-align: center;
-  border: 0px;
-  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #4a4a4a;
+  outline: none;
+  background: #4a4a4a;
+  color: #fff;
+
+  ${props => props.rounded && css`
+    border-radius: 50px;
+  `}
+
+  ${props => props.outline && css`
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    background-color: #fff;
+    color: #000;
+  `}
+
+  :hover {
+    background-color: #fff;
+    border-color: #000;
+    color: #000;
+  }
 `;
