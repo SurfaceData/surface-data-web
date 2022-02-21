@@ -10,6 +10,7 @@ import MainLayout from '@components/MainLayout';
 import InputLanguageSelect from '@components/InputLanguageSelect';
 import { Button } from '@components/ui/Button';
 import { LabeledInput } from '@components/ui/LabeledInput';
+import { Language } from '@features/language';
 import { updateUser } from '@features/userSlice';
 
 const Container = styled.div`
@@ -35,7 +36,10 @@ const Profile: NextPage = () => {
     dispatch(updateUser(userData));
   });
   const addLanguage = () => {
-    setUserLanguages(userLanguages.concat(""));
+    setUserLanguages(userLanguages.concat({
+      language: "",
+      tasks: [],
+    } as Language));
   };
 
   if (status == "loading") {
@@ -59,7 +63,7 @@ const Profile: NextPage = () => {
         {
           userLanguages.map( (locale, index) => (
             <InputLanguageSelect
-              key={locale}
+              key={locale.language}
               languageIndex={index}
               allLanguages={userLanguages}
               locale={locale}

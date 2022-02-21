@@ -47,7 +47,27 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  languages     String[]
+}
+
+/// Maps User Ids to BCP-47 Language Codes.
+model UserLanguages {
+  // Key Fields
+  id            String    @id
+
+  // Content Fields
+  language      String[]
+}
+
+/// Maps User Ids and BCP-47 Language Codes to  Annotation Task Type IDs.
+model UserLanguageTasks {
+  // Key Fields
+  id            String
+  language      String
+
+  // Content Fields
+  annotType     Int[]
+
+  @@id([id, language])
 }
 
 model VerificationToken {

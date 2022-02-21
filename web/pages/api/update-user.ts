@@ -6,13 +6,37 @@ const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
-  await prisma.user.update({
+  const languages = req.body.languages;
+
+  await prisma.userLanguages.upsert({
     where: {
-      email: session.user.email
+      id: session.userId,
     },
-    data: {
-      languages: req.body.languages
+    update: {
+      language: languages.map( (item) => item.language),
+    },
+    create: {
+      id: session.userId,
+      language: languages.map( (item) => item.language),
     }
+  });
+  languages.forEach( async (language) => {
+    await prisma.userLanguageTasks.upsert({
+      where: {
+        id_language: {
+          id: session.userId,
+          language: language.language,
+        }
+      },
+      update: {
+        annotType: language.tasks,
+      },
+      create: {
+        id: session.userId,
+        language: language.language,
+        annotType: language.tasks,
+      }
+    });
   });
   res.status(200);
 }

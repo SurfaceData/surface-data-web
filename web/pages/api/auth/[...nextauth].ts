@@ -3,6 +3,8 @@ import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
+import { Language } from '@features/language';
+
 const prisma = new PrismaClient();
 
 export default NextAuth({
@@ -15,12 +17,35 @@ export default NextAuth({
     }),
   ],
   pages: {
-    newUser: "/new_user",
+    newUser: "/profile",
   },
   callbacks: {
     async session({ session, user, token }) {
-      let { id, ...sessionUser } = user;
-      session.user = sessionUser;
+      const userLanguages = await prisma.userLanguages.findUnique({
+        where: {
+          id: user.id,
+        }
+      });
+      const userLanguageTasks = await prisma.userLanguageTasks.findMany({
+        where: {
+          id: user.id,
+          language: { in: userLanguages.language },
+        }
+      });
+      const langToTasks = userLanguageTasks.reduce( (res, item) => {
+        return {
+          ...res,
+          [item.language]: item.annotType,
+        };
+      }, {});
+      const languages = userLanguages.language.map( (lang) => {
+        return {
+          language: lang,
+          tasks: langToTasks[lang],
+        } as Language;
+      });
+      session.userId = user.id;
+      session.user.languages = languages;
       return session;
     },
   },

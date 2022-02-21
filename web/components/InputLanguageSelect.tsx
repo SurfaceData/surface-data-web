@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { LabeledSelect } from '@components/ui/LabeledSelect';
+import { Language } from '@features/language';
 
 const LANGUAGE_NAMES = require('@common/language-names.json') as {
   [key: string]: string;
@@ -22,10 +23,10 @@ const Input = styled.input`
 
 
 interface InputLanguageSelectProps {
-  locale: string,
+  locale: Language,
   languageIndex: number,
-  allLanguages: string[],
-  setUserLanguages: (locale: string[]) => void;
+  allLanguages: Language[],
+  setUserLanguages: (locale: Language[]) => void;
 }
 
 const InputLanguageSelect = ({
@@ -38,14 +39,17 @@ const InputLanguageSelect = ({
     e.preventDefault();
     e.stopPropagation();
     const newLanguages = allLanguages.slice();
-    newLanguages[languageIndex] = e.target.value;
+    newLanguages[languageIndex] = {
+      language: e.target.value,
+      tasks: [],
+    } as Language;
     setUserLanguages(newLanguages);
   };
 
   return (
     <LabeledSelect
         label="Language"
-        value={locale}
+        value={locale.language}
         onChange={handleSelection}>
       <option value="" />
         {Object.entries(LANGUAGE_NAMES).map(([localeOption, name]) => (
