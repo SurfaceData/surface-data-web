@@ -1,5 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import { renderToStaticMarkup as rtsm } from 'react-dom/server';
+import { FiChevronDown } from 'react-icons/fi';
+import styled, { css } from 'styled-components';
 
 import VisuallyHidden from '@components/ui/VisuallyHidden';
 
@@ -34,6 +36,10 @@ const Label = styled.span`
   z-index: 1;
 `;
 
+const downIcon = css`
+  ${rtsm(<FiChevronDown size={20} color="black" />).replace(/"/g, "'")}
+`;
+
 const Wrapper = styled.div`
   position: relative;
   & select {
@@ -44,7 +50,7 @@ const Wrapper = styled.div`
   }
 
   &::after {
-    content: '▼';
+    content: url("data:image/svg+xml; utf8, ${downIcon}");
     position: absolute;
     inset-inline-end: 15px;
     width: 13px;
