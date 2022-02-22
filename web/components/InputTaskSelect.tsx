@@ -5,6 +5,7 @@ import InputTaskChip from '@components/InputTaskChip';
 import { Chip } from '@components/ui/Chip';
 import { LabeledSelect } from '@components/ui/LabeledSelect';
 import { Language } from '@features/language';
+import { TaskType, TaskLabels, stringToTaskType } from '@features/tasks';
 
 const Container = styled.div`
   margin: 48px 24px;
@@ -29,18 +30,21 @@ const InputTaskSelect = ({
     e.preventDefault();
     e.stopPropagation();
 
-    const task = parseInt(e.target.value, 10);
-    if (task === 0) {
+    const taskType = stringToTaskType(e.target.value);
+    if (taskType === TaskType.UNKNOWN) {
       return;
     }
 
     const newLanguages = allLanguages.slice();
     const langTasks = newLanguages[languageIndex].tasks;
     const taskIndex = langTasks.findIndex( t=> {
-      return t === task;
+      return t.id === taskType;
     });
     if (taskIndex == -1) {
-      newLanguages[languageIndex].tasks = langTasks.concat(task);
+      newLanguages[languageIndex].tasks = langTasks.concat({
+        id: taskType,
+        label: TaskLabels[taskType],
+      });
     }
     setUserLanguages(newLanguages);
     setInputValue('');
@@ -59,9 +63,11 @@ const InputTaskSelect = ({
         label="Task"
         value={inputValue}
         onChange={handleSelection}>
-      <option value="0" />
-      <option value="1">Content Labeling</option>
-      <option value="2">Translation</option>
+      {
+        Object.keys(TaskLabels).map( (taskType, index) => (
+          <option key={taskType} value={taskType}>{TaskLabels[taskType]}</option>
+        ))
+      }
     </LabeledSelect>
 
     {

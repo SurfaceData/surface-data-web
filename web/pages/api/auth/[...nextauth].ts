@@ -4,6 +4,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
 import { Language } from '@features/language';
+import type { Task } from '@features/tasks';
+import { TaskType, TaskLabels, stringToTaskType } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
@@ -35,7 +37,13 @@ export default NextAuth({
       const langToTasks = userLanguageTasks.reduce( (res, item) => {
         return {
           ...res,
-          [item.language]: item.annotType,
+          [item.language]: item.annotType.map( (annotType) => {
+            const taskType = stringToTaskType(annotType);
+            return {
+              id: taskType,
+              label: TaskLabels[taskType]
+            }
+          }),
         };
       }, {});
       const languages = userLanguages.language.map( (lang) => {

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FiX } from "react-icons/fi";
 
 import { Chip } from '@components/ui/Chip';
+import { IconButton } from '@components/ui/IconButton';
 
 interface InputTaskChipProps {
   task: number,
@@ -14,8 +15,8 @@ const InputTaskChip = ({
 }: InputTaskChipProps) => {
   return (
     <Chip>
-      <button onClick={removeTask}><FiX /></button>
-      {task}
+      <IconButton onClick={removeTask}><FiX /></IconButton>
+      {task.label}
     </Chip>
   );
 }

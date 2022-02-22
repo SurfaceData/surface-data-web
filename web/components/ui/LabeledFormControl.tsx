@@ -8,6 +8,7 @@ const LabelContainer = styled.label`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  margin-bottom: 1.5rem;
 
   & input,
   & select,
