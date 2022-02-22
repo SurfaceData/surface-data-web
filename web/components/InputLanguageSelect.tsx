@@ -12,16 +12,6 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const Input = styled.input`
-  padding: 5px 12px;
-  font-size: 14px;
-  line-height: 20px;
-  vertical-align: middle;
-  border-radius: 6px;
-  outline: none;
-`;
-
-
 interface InputLanguageSelectProps {
   locale: Language,
   languageIndex: number,

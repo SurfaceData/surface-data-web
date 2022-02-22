@@ -8,14 +8,23 @@ import styled from 'styled-components';
 
 import MainLayout from '@components/MainLayout';
 import InputLanguageSelect from '@components/InputLanguageSelect';
+import InputTaskSelect from '@components/InputTaskSelect';
 import { Button } from '@components/ui/Button';
+import { Divider } from '@components/ui/Divider';
 import { LabeledInput } from '@components/ui/LabeledInput';
+import { SectionHeader } from '@components/ui/SectionHeader';
 import { Language } from '@features/language';
 import { updateUser } from '@features/userSlice';
 
 const Container = styled.div`
   margin: 48px 24px;
-  text-align: center;
+`;
+
+const InfoContainer = styled.div`
+  padding: 24px 12px;
+  margin: 12px 0px;
+  border: 2px solid rgba(230, 229, 227, .6);
+  border-radius: 6px;
 `;
 
 const Profile: NextPage = () => {
@@ -53,6 +62,11 @@ const Profile: NextPage = () => {
   return (
     <MainLayout>
       <Container>
+
+        <SectionHeader>
+          About You
+        </SectionHeader>
+
         <LabeledInput 
             label="email"
             autoComplete="off"
@@ -60,15 +74,29 @@ const Profile: NextPage = () => {
             defaultValue={session.user.email}>
         </LabeledInput>
 
+        <Divider />
+
+        <SectionHeader>
+          Languages
+        </SectionHeader>
+
         {
           userLanguages.map( (locale, index) => (
-            <InputLanguageSelect
-              key={locale.language}
-              languageIndex={index}
-              allLanguages={userLanguages}
-              locale={locale}
-              setUserLanguages={setUserLanguages}
-            />
+            <InfoContainer key={locale.language}>
+              <InputLanguageSelect
+                languageIndex={index}
+                allLanguages={userLanguages}
+                locale={locale}
+                setUserLanguages={setUserLanguages}
+              />
+
+              <InputTaskSelect
+                languageIndex={index}
+                locale={locale}
+                allLanguages={userLanguages}
+                setUserLanguages={setUserLanguages}
+              />
+            </InfoContainer>
           ))
         }
 
@@ -78,7 +106,10 @@ const Profile: NextPage = () => {
           Add Language
         </Button>
 
-        <Button onClick={submit}>Save</Button>
+        <Divider />
+
+        <Button rounded onClick={submit}>Save</Button>
+
       </Container>
     </MainLayout>
   );
