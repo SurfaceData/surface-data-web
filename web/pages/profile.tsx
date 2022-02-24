@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 import MainLayout from '@components/MainLayout';
 import InputLanguageSelect from '@components/InputLanguageSelect';
-import InputTaskSelect from '@components/InputTaskSelect';
+import LanguageTaskOptions from '@components/LanguageTaskOptions';
 import { Button } from '@components/ui/Button';
 import { Divider } from '@components/ui/Divider';
 import { LabeledInput } from '@components/ui/LabeledInput';
@@ -90,7 +90,7 @@ const Profile: NextPage = () => {
                 setUserLanguages={setUserLanguages}
               />
 
-              <InputTaskSelect
+              <LanguageTaskOptions
                 languageIndex={index}
                 locale={locale}
                 allLanguages={userLanguages}

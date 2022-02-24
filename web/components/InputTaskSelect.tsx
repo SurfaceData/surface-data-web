@@ -2,10 +2,11 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import InputTaskChip from '@components/InputTaskChip';
+import { CheckboxCard } from '@components/ui/CheckboxCard';
 import { Chip } from '@components/ui/Chip';
 import { LabeledSelect } from '@components/ui/LabeledSelect';
 import { Language } from '@features/language';
-import { TaskType, TaskLabels, stringToTaskType } from '@features/tasks';
+import { TaskType, TaskDescriptions, TaskLabels, stringToTaskType } from '@features/tasks';
 
 const Container = styled.div`
   margin: 48px 24px;
@@ -59,6 +60,16 @@ const InputTaskSelect = ({
 
   return (
     <>
+    {
+      Object.keys(TaskLabels).map( (taskType, index) => (
+        <CheckboxCard
+          key={taskType}
+          title={TaskLabels[taskType]}
+          checked={allLanguages[languageIndex].tasks.includes(taskType)}
+          description={TaskDescriptions[taskType]}
+        />
+      ))
+    }
     <LabeledSelect
         label="Task"
         value={inputValue}
