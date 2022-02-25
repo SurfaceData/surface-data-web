@@ -18,22 +18,24 @@ const Container = styled.div`
   font-size: 16px;
   color: #000;
   background-color: #fff;
+  position: relative;
+  margin-bottom: 30px;
 `;
 
 const Label = styled.span`
   margin-inline-start: 9px;
   padding: 0 5px;
   position: absolute;
-  font-size: 14px;
-  top: 8px;
+  font-size: 1.5rem;
+  top: -12px;
   background: #fff;
-  font-size: 12px;
   color: #959595;
   z-index: 1;
 `;
 
 const TaskStatsContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 12px 0;
 `;

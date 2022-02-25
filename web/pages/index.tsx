@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import styled from 'styled-components';
 
+import AuthenticatedHome from '@components/AuthenticatedHome';
 import Header from '@components/Header';
 import MainLayout from '@components/MainLayout';
 import OnboardingSplash from '@components/OnboardingSplash';
@@ -15,38 +16,27 @@ const Container = styled.div`
 `;
 
 const Home: NextPage = () => {
-  const { data: session, status } = useSession({ required: true });
+  const { data: session, status } = useSession();
 
-  if (status === "loading") {
-    <MainLayout>
-      <div>
-        Loading
-      </div>
-    </MainLayout>
-  }
+  const content = (
+    <div>Loading</div>
+  );
 
   if (status === "authenticated") {
-    return (
-      <MainLayout>
-        <div>
-          Signed In View
-
-          <button onClick={() => signOut()}>
-            Sign Out
-          </button>
-        </div>
-      </MainLayout>
+    content = (
+      <AuthenticatedHome />
+    );
+  } else if (status === "unauthenticated") {
+    content = (
+      <Container>
+        <OnboardingSplash />
+        <StatsSplash />
+      </Container>
     );
   }
-
   return (
     <MainLayout>
-      <div>
-        <Container>
-          <OnboardingSplash />
-          <StatsSplash />
-        </Container>
-      </div>
+      {content}
     </MainLayout>
   );
 }
