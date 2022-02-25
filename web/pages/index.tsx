@@ -16,8 +16,6 @@ const Container = styled.div`
 
 const Home: NextPage = () => {
   const { data: session, status } = useSession({ required: true });
-  console.log(session);
-  console.log(status);
 
   if (status === "loading") {
     <MainLayout>

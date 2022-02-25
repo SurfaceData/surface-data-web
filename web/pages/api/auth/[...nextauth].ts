@@ -42,7 +42,7 @@ export default NextAuth({
             return {
               id: taskType,
               label: TaskLabels[taskType]
-            }
+            } as Task
           }),
         };
       }, {});

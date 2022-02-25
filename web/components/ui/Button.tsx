@@ -17,15 +17,15 @@ export const Button = styled.button`;
   background: #4a4a4a;
   color: #fff;
 
-  ${props => props.rounded && css`
-    border-radius: 50px;
-  `}
-
   ${props => props.outline && css`
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, .1);
     background-color: #fff;
     color: #000;
+  `}
+
+  ${props => props.rounded && css`
+    border-radius: 50px;
   `}
 
   :hover {
