@@ -138,3 +138,14 @@ model TaskMilestones {
 
   @@id([language, taskId, milestoneType])
 }
+
+model LanguageDetails {
+  language       String @id
+  description    String
+}
+
+model LanguageFunFacts {
+  id             String    @id @default(cuid())
+  language       String
+  fact           String
+}
