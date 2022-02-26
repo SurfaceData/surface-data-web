@@ -127,3 +127,14 @@ model Ratings {
   // Provenance Fields
   createdAt    DateTime @default(now())
 }
+
+model TaskMilestones {
+  language       String
+  taskId         Int
+  milestoneType  String
+  milestone      Int
+  progress       Int
+  dateUpdated    DateTime @default(now())
+
+  @@id([language, taskId, milestoneType])
+}

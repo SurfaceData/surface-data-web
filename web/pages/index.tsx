@@ -24,7 +24,7 @@ const Home: NextPage = () => {
 
   if (status === "authenticated") {
     content = (
-      <AuthenticatedHome />
+      <AuthenticatedHome session={session} />
     );
   } else if (status === "unauthenticated") {
     content = (

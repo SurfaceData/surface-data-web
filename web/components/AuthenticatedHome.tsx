@@ -1,4 +1,3 @@
-import type { NextPage } from 'next';
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -12,13 +11,19 @@ const Container = styled.div`
   margin: 48px 24px;
 `;
 
-const AuthenticatedHome: NextPage = () => {
+const AuthenticatedHome = ({session}) => {
   const [languageStats, setLanguageStats] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
   useEffect( () => {
     setLoading(true);
-    fetch('/api/language_stats')
+    fetch('/api/language_stats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(session.user.languages)
+    })
       .then((res) => res.json())
       .then((data) => {
         setLanguageStats(data);
