@@ -67,6 +67,8 @@ model UserLanguageTasks {
 
   // Content Fields
   annotType     Int[]
+  targetLang    String[]
+  forwardDir    Boolean[]
 
   @@id([id, language])
 }
@@ -139,13 +141,14 @@ model Ratings {
 
 model TaskMilestones {
   language       String
+  targetLang     String
   taskId         Int
   milestoneType  String
   milestone      Int
   progress       Int
   dateUpdated    DateTime @default(now())
 
-  @@id([language, taskId, milestoneType])
+  @@id([language, targetLang, taskId, milestoneType])
 }
 
 model LanguageDetails {

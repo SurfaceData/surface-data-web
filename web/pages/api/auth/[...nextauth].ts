@@ -23,38 +23,46 @@ export default NextAuth({
   },
   callbacks: {
     async session({ session, user, token }) {
-      const userLanguages = await prisma.userLanguages.findUnique({
-        where: {
-          id: user.id,
-        }
-      });
-      const userLanguageTasks = await prisma.userLanguageTasks.findMany({
-        where: {
-          id: user.id,
-          language: { in: userLanguages.language },
-        }
-      });
-      const langToTasks = userLanguageTasks.reduce( (res, item) => {
-        return {
-          ...res,
-          [item.language]: item.annotType.map( (annotType) => {
-            const taskType = stringToTaskType(annotType);
-            return {
-              id: taskType,
-              label: TaskLabels[taskType]
-            } as Task
-          }),
-        };
-      }, {});
-      const languages = userLanguages.language.map( (lang) => {
-        return {
-          language: lang,
-          tasks: langToTasks[lang],
-        } as Language;
-      });
       session.userId = user.id;
-      session.user.languages = languages;
+      session.user.languages = await fetchLanguages(user);
       return session;
     },
   },
 });
+
+const fetchLanguages = async (user) => {
+  const userLanguages = await prisma.userLanguages.findUnique({
+    where: {
+      id: user.id,
+    }
+  });
+  if (!userLanguages) {
+    return [];
+  }
+  const userLanguageTasks = await prisma.userLanguageTasks.findMany({
+    where: {
+      id: user.id,
+      language: { in: userLanguages.language },
+    }
+  });
+  const langToTasks = userLanguageTasks.reduce( (res, item) => {
+    return {
+      ...res,
+      [item.language]: item.annotType.map( (annotType, i) => {
+        const taskType = stringToTaskType(annotType);
+        const targetLang = item.targetLang[i];
+        return {
+          id: taskType,
+          label: TaskLabels[taskType],
+          targetLang: targetLang,
+        } as Task
+      }),
+    };
+  }, {});
+  return userLanguages.language.map( (lang) => {
+    return {
+      language: lang,
+      tasks: langToTasks[lang],
+    } as Language;
+  });
+}
