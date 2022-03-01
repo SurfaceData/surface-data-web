@@ -47,6 +47,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  ratings       Ratings[]
 }
 
 /// Maps User Ids to BCP-47 Language Codes.
@@ -80,7 +81,7 @@ model VerificationToken {
 
 model Content {
   // Key Fields
-  fprint       String
+  fprint       String @unique
   language     String
 
   // Content Fields
@@ -92,6 +93,8 @@ model Content {
   origin       String?
   originId     String?
 
+  annotations  Annotations[]
+
   @@id([fprint, language])
 }
 
@@ -100,6 +103,7 @@ model Annotations {
   id           BigInt @id @default(autoincrement())
 
   // Association Fields
+  source       Content @relation(fields: [sourceFprint], references: [fprint])
   sourceFprint String
   sourceLang   String
 
@@ -111,6 +115,8 @@ model Annotations {
 
   // Provenance Fields
   createdAt    DateTime @default(now())
+
+  ratings      Ratings[]
 }
 
 model Ratings {
@@ -118,8 +124,11 @@ model Ratings {
   id           BigInt @id @default(autoincrement())
 
   // Association Fields
-  annotId      BigInt
-  user         String
+  annotation   Annotations @relation(fields: [annotationId], references: [id])
+  annotationId BigInt
+
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
 
   // Content Fields
   rating       Int
