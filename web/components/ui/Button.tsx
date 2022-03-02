@@ -33,4 +33,9 @@ export const Button = styled.button`;
     border-color: #000;
     color: #000;
   }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 `;

@@ -50,9 +50,10 @@ const LanguageStatsSection = ({
       </Label>
       <TaskStatsContainer>
         {
-          stats.taskStats.map( (taskStat) => (
+          stats.taskStats.map( (taskStat, i) => (
             <LanguageTaskStatsSection
-                key={taskStat.id}
+                key={i}
+                language={stats.language}
                 stats={taskStat}
             />
           ))

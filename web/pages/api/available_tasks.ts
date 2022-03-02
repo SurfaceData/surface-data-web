@@ -24,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Fetch annotations where the user hasn't given a rating.
     where: {
       sourceLang: sl,
-      targetLang: tl || '',
+      targetLang: tl,
       annotType: parseInt(annotType, 10),
       ratings: {
         none: {

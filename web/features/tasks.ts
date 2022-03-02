@@ -1,6 +1,6 @@
 export interface Task {
   id: TaskType,
-  label: string,
+  label?: string,
   targetLang: string,
 }
 

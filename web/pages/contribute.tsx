@@ -38,7 +38,12 @@ const Contribute: NextPage = () => {
       {
         tasks.map( (task) => (
           <div key={task.id}>
-            {task.source.text}
+            <div>
+              {task.source.text}
+            </div>
+            <div>
+              {task.text}
+            </div>
           </div>
         ))
       }

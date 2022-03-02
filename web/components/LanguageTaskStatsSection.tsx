@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Button } from '@components/ui/Button';
@@ -5,7 +6,12 @@ import { ProgressBar } from '@components/ui/ProgressBar';
 import { TaskDescriptions, TaskLabels } from '@features/tasks';
 import type { TaskStats } from '@features/LanguageStats';
 
+const LANGUAGE_NAMES = require('@common/language-names.json') as {
+  [key: string]: string;
+};
+
 interface LanguageTaskStatsSectionProps {
+  language: string,
   stats: TaskStats,
 }
 
@@ -78,14 +84,20 @@ const ActionContainer = styled.div`
 `;
 
 const LanguageTaskStatsSection = ({
+  language,
   stats,
 }: LanguageTaskStatsSectionProps) => {
+  const url =
+    `/contribute?sl=${language}&tl=${stats.targetLang}&annotType=${stats.id}`;
   return (
     <Container>
       <ContentContainer>
         <TaskContainer>
           <TaskLabel>
             {TaskLabels[stats.id]}
+            {
+              stats.id === 2 ? ' to ' + LANGUAGE_NAMES[stats.targetLang] : ''
+            }
           </TaskLabel>
           <TaskDescription>
             {TaskDescriptions[stats.id]}
@@ -103,7 +115,13 @@ const LanguageTaskStatsSection = ({
       </ContentContainer>
 
       <ActionContainer>
-        <Button rounded outline>Contribute</Button>
+        <Button rounded outline>
+          <Link href={url}>
+            <a>
+              Contribute
+            </a>
+          </Link>
+        </Button>
       </ActionContainer>
     </Container>
   );

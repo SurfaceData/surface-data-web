@@ -24,7 +24,9 @@ export default async (
   const languagesAndTasks = req.body as Language[];
   const languages = languagesAndTasks.map(({language}) => language);
   const requestedTasks = languagesAndTasks.reduce( (results, entry) => {
-    results.set(entry.language, new Set(entry.tasks.map( ({id}) => id)));
+    results.set(
+      entry.language,
+      new Set(entry.tasks.map( ({id, targetLang}) => JSON.stringify({id, targetLang}))));
     return results;
   }, new Map);
 
@@ -78,9 +80,14 @@ export default async (
       // Only add the TaskStats if the user requested the task for the
       // language.
       const taskSet = requestedTasks.get(stats.language);
-      if (taskSet.has(stats.taskId)) {
+      const shouldAdd = taskSet.has(JSON.stringify({
+        id: stats.taskId,
+        targetLang: stats.targetLang
+      }));
+      if (shouldAdd) {
         taskStats.push({
           id: stats.taskId,
+          targetLang: stats.targetLang,
           nextMilestone: stats.milestone,
           progress: stats.progress,
           milestoneType: stats.milestoneType
