@@ -1,8 +1,7 @@
-import {parse, stringify} from 'bcp-47';
-import {iso6393} from 'iso-639-3';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import TrieSearch from 'trie-search';
 
+import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
 import type { LanguageDisplay } from '@features/language';
 
 interface RequestParams {
@@ -26,8 +25,6 @@ const codeTrie = new TrieSearch([], {splitOnRegEx: false});
 // 2) A prefix trie mapping language names (either CLDR or ISO based) to
 // LanguagDisplays.
 const nameTrie = new TrieSearch([], {splitOnRegEx: false});
-// 3) An array of CLDR only LanguageDisplays.
-const cldrLanguages = [];
 
 // To create our LanguageDisplay values we read all possible ISO 639-3
 // languages and match them with their CLDR name when one exists. CLDR does not
@@ -35,30 +32,17 @@ const cldrLanguages = [];
 // name.
 //
 // In all cases we use the ISO 639-3 three letter language code.
-iso6393.forEach ( (code) => {
-  // Intl gives us the CLDR based language name if it exists.
-  const displayName = new Intl.DisplayNames(code.iso6393, {type: 'language'});
-  const bcpSchema = parse(code.iso6393);
-  const isoCode = code.iso6393;
-  const intlName = displayName.of(code.iso6393);
-  const isoName = code.name;
-  const langDisplay = {
-    isoCode: isoCode,
-    isoName: isoName,
-    cldrName: intlName,
-    cldrSupported: intlName !== isoCode
-  };
+allLanguages.forEach ( (language) => {
   // Store the object in the appropriate mappings.
-  codeTrie.map(isoCode, langDisplay);
-  if (langDisplay.cldrSupported) {
-    cldrLanguages.push(langDisplay);
-    if (intlName !== isoName) {
-      nameTrie.map(intlName, langDisplay);
+  codeTrie.map(language.isoCode, language);
+  if (language.cldrSupported) {
+    if (language.cldrName !== language.isoName) {
+      nameTrie.map(language.cldrName, language);
     } else {
-      nameTrie.map(isoName, langDisplay);
+      nameTrie.map(language.isoName, language);
     }
   } else {
-    nameTrie.map(isoName, langDisplay);
+    nameTrie.map(language.isoName, language);
   }
 });
 

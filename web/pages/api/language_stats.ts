@@ -22,10 +22,17 @@ export default async (
   // Get the languages and factor that into a set of langauge strings and a
   // mapping from languages to task IDs.
   const languagesAndTasks = req.body as Language[];
-  const languages = languagesAndTasks.map(({language}) => language);
+  const languages = languagesAndTasks.map(({languageDisplay}) => languageDisplay.isoCode);
+  const languageMap = languagesAndTasks.reduce( (results, entry) => {
+    results.set(
+      entry.languageDisplay.isoCode,
+      entry.languageDisplay);
+    return results;
+  }, new Map);
+
   const requestedTasks = languagesAndTasks.reduce( (results, entry) => {
     results.set(
-      entry.language,
+      entry.languageDisplay.isoCode,
       new Set(entry.tasks.map( ({id, targetLang}) => JSON.stringify({id, targetLang}))));
     return results;
   }, new Map);
@@ -87,7 +94,7 @@ export default async (
       if (shouldAdd) {
         taskStats.push({
           id: stats.taskId,
-          targetLang: stats.targetLang,
+          targetLang: languageMap.get(stats.targetLang),
           nextMilestone: stats.milestone,
           progress: stats.progress,
           milestoneType: stats.milestoneType
@@ -101,7 +108,7 @@ export default async (
     .map( ([key, value]) => {
       // Map to a LanguageStat object.
       return {
-        language: key,
+        language: languageMap.get(key),
         taskStats: value,
         info: {
           description: languageDetails.get(key),

@@ -8,25 +8,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
   const languages = req.body.languages;
 
+  const languageCodes = languages.map( (item) => item.languageDisplay.isoCode);
+
   await prisma.userLanguages.upsert({
     where: {
       id: session.userId,
     },
     update: {
-      language: languages.map( (item) => item.language),
+      language: languageCodes,
     },
     create: {
       id: session.userId,
-      language: languages.map( (item) => item.language),
+      language: languageCodes,
     }
   });
-  await languages.forEach( async (language) => {
-    const taskIds = language.tasks.map( (task) => task.id);
+  await prisma.userLanguageTasks.deleteMany({
+    where: {
+      id: session.userId,
+    }
+  });
+  await languages.forEach( async (item) => {
+    const langCode = item.languageDisplay.isoCode;
+    const taskIds = item.tasks.map( (task) => task.id);
     await prisma.userLanguageTasks.upsert({
       where: {
         id_language: {
           id: session.userId,
-          language: language.language,
+          language: langCode,
         }
       },
       update: {
@@ -34,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
       create: {
         id: session.userId,
-        language: language.language,
+        language: langCode,
         annotType: taskIds,
       }
     });

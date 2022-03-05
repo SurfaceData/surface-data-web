@@ -29,7 +29,6 @@ const LanguageTaskOptions = ({
   setUserLanguages,
 }: LanguageTaskOptionsProps) => {
   const handleChange = (e, taskType) => {
-
     const newLanguages = allLanguages.slice();
     const langTasks = newLanguages[languageIndex].tasks;
 

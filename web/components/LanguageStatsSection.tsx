@@ -46,7 +46,7 @@ const LanguageStatsSection = ({
   return (
     <Container>
       <Label>
-        {LANGUAGE_NAMES[stats.language]}
+        {stats.language.cldrSupported ? stats.language.cldrName : stats.language.isoName}
       </Label>
       <TaskStatsContainer>
         {

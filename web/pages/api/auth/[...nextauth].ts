@@ -3,11 +3,17 @@ import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
-import { Language } from '@features/language';
+import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
+import { Language, LanguageDisplay  } from '@features/language';
 import type { Task } from '@features/tasks';
 import { TaskType, TaskLabels, stringToTaskType } from '@features/tasks';
 
 const prisma = new PrismaClient();
+
+const languageMap = allLanguages.reduce( (result, language) => {
+  result.set(language.isoCode, language);
+  return result;
+}, new Map());
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -59,10 +65,12 @@ const fetchLanguages = async (user) => {
       }),
     };
   }, {});
-  return userLanguages.language.map( (lang) => {
+  const r = userLanguages.language.map( (lang) => {
     return {
       language: lang,
+      languageDisplay: languageMap.get(lang),
       tasks: langToTasks[lang],
     } as Language;
   });
+  return r;
 }
