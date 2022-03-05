@@ -50,12 +50,15 @@ iso6393.forEach ( (code) => {
   };
   // Store the object in the appropriate mappings.
   codeTrie.map(isoCode, langDisplay);
-  nameTrie.map(isoName, langDisplay);
   if (langDisplay.cldrSupported) {
     cldrLanguages.push(langDisplay);
     if (intlName !== isoName) {
       nameTrie.map(intlName, langDisplay);
+    } else {
+      nameTrie.map(isoName, langDisplay);
     }
+  } else {
+    nameTrie.map(isoName, langDisplay);
   }
 });
 
@@ -99,7 +102,7 @@ const findAllLanguages = (
     return cldrLanguages;
   }
   if (useCodes) {
-    languageQueries.flatMap( (code) => codeTrie.search(code));
+    return languageQueries.flatMap( (code) => codeTrie.search(code));
   }
   return languageQueries.flatMap( (query) => nameTrie.search(query));
 }

@@ -31,6 +31,7 @@ const Input = styled.input`
   font-size: 16px;
   color: #000;
   background-color: #fff;
+  width: 100%;
 
   :focus {
     border-color: #000;
@@ -63,19 +64,23 @@ const ListItem = styled.li`
 interface FilteredComboboxProps {
   label: string,
   placeholder: string,
+  selectedItem: any,
   items: any[],
   itemToKey: (any) => string,
   itemToName: (any) => string,
   filterItems: (string) => Promise<any[]>,
+  onSelectedItemChange: (string) => void,
 }
 
 export const FilteredCombobox = ({
   label,
   placeholder,
   items,
+  selectedItem,
   filterItems,
   itemToName,
   itemToKey,
+  onSelectedItemChange,
 }: FilteredComboboxProps) => {
 	const [inputItems, setInputItems] = useState(items);
 	const {
@@ -90,6 +95,12 @@ export const FilteredCombobox = ({
 	} = useCombobox({
 		items: inputItems,
     itemToString: itemToName,
+    selectedItem: selectedItem,
+    onSelectedItemChange: ({selectedItem}) => {
+      if (onSelectedItemChange) {
+        onSelectedItemChange(selectedItem);
+      }
+    },
 		onInputValueChange: ({ inputValue }) => {
       filterItems(inputValue).then(setInputItems);
 		},

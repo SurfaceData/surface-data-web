@@ -20,6 +20,7 @@
       "@common/*": ["common/*"],
       "@components/*": ["components/*"],
       "@features/*": ["features/*"],
+      "@hooks/*": ["hooks/*"],
       "@pages/*": ["pages/*"]
     }
   },

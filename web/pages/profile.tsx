@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import MainLayout from '@components/MainLayout';
 import InputLanguageSelect from '@components/InputLanguageSelect';
+import { LanguageCombobox } from '@components/LanguageCombobox';
 import LanguageTaskOptions from '@components/LanguageTaskOptions';
 import { Button } from '@components/ui/Button';
 import { Divider } from '@components/ui/Divider';
@@ -31,11 +32,17 @@ const Profile: NextPage = () => {
   const dispatch = useDispatch();
   const { data: session, status } = useSession({ required: true });
   const [ userLanguages, setUserLanguages ] = useState<string[]>([]);
+  const [ cldrLanguages, setCldrLanguages ] = useState([]);
   useEffect(() => {
     if (status == "loading") {
+
+    fetch('/api/languages?cldr=true')
+      .then((res) => res.json())
+      .then((data) => {
+        setCldrLanguages(data);
+      });
       return;
     }
-
     setUserLanguages(session.user.languages);
   }, [status]);
 
@@ -68,6 +75,7 @@ const Profile: NextPage = () => {
         </SectionHeader>
 
         <LabeledInput 
+            cldrlanguages={cldrLanguages}
             label="email"
             autoComplete="off"
             spellCheck="false"
@@ -83,7 +91,9 @@ const Profile: NextPage = () => {
         {
           userLanguages.map( (locale, index) => (
             <InfoContainer key={locale.language}>
-              <InputLanguageSelect
+
+              <LanguageCombobox
+                cldrlanguages={cldrLanguages}
                 languageIndex={index}
                 allLanguages={userLanguages}
                 locale={locale}
