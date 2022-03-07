@@ -35,7 +35,7 @@ const AuthenticatedHome = ({session}) => {
     <Container>
       {
         languageStats.map( (langStat) => (
-          <LanguageStatsSection key={langStat.language} stats={langStat} />
+          <LanguageStatsSection key={langStat.language.isoCode} stats={langStat} />
         ))
       }
     </Container>

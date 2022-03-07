@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import { Provider } from 'react-redux';
+import 'reflect-metadata';
 
 import store from '@app/store';
 

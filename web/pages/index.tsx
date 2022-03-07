@@ -18,7 +18,7 @@ const Container = styled.div`
 const Home: NextPage = () => {
   const { data: session, status } = useSession();
 
-  const content = (
+  let content = (
     <div>Loading</div>
   );
 
