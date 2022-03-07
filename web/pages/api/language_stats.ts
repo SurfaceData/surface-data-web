@@ -33,7 +33,7 @@ export default async (
   const requestedTasks = languagesAndTasks.reduce( (results, entry) => {
     results.set(
       entry.languageDisplay.isoCode,
-      new Set(entry.tasks.map( ({id, targetLang}) => JSON.stringify({id, targetLang}))));
+      new Set(entry.tasks.map( ({id, secondaryLang}) => JSON.stringify({id, secondaryLang}))));
     return results;
   }, new Map);
 
@@ -63,11 +63,10 @@ export default async (
         return result;
       }, new Map);
 
-
   // Get all task stats for the requested languages.
   const taskStats = await prisma.taskMilestones.findMany({
         where: {
-          language: { in: languages },
+          primaryLang: { in: languages },
           milestoneType: "weekly",
         }
       });
@@ -81,25 +80,25 @@ export default async (
   //   Array.  During the conversion, add in the language info.
   const languageStats = Array.from(
     taskStats.reduce( (results, stats) => {
-      const taskStats = results.has(stats.language) ?
-        results.get(stats.language) : [];
+      const taskStats = results.has(stats.primaryLang) ?
+        results.get(stats.primaryLang) : [];
 
       // Only add the TaskStats if the user requested the task for the
       // language.
-      const taskSet = requestedTasks.get(stats.language);
+      const taskSet = requestedTasks.get(stats.primaryLang);
       const shouldAdd = taskSet.has(JSON.stringify({
         id: stats.taskId,
-        targetLang: stats.targetLang
+        secondaryLang: stats.secondaryLang
       }));
       if (shouldAdd) {
         taskStats.push({
           id: stats.taskId,
-          targetLang: languageMap.get(stats.targetLang),
+          secondaryLang: languageMap.get(stats.secondaryLang),
           nextMilestone: stats.milestone,
           progress: stats.progress,
           milestoneType: stats.milestoneType
         } as TaskStats);
-        results.set(stats.language, taskStats);
+        results.set(stats.primaryLang, taskStats);
       }
       return results;
     },

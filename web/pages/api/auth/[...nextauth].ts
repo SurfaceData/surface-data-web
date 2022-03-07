@@ -48,19 +48,19 @@ const fetchLanguages = async (user) => {
   const userLanguageTasks = await prisma.userLanguageTasks.findMany({
     where: {
       id: user.id,
-      language: { in: userLanguages.language },
+      primaryLang: { in: userLanguages.language },
     }
   });
   const langToTasks = userLanguageTasks.reduce( (res, item) => {
     return {
       ...res,
-      [item.language]: item.annotType.map( (annotType, i) => {
+      [item.primaryLang]: item.annotType.map( (annotType, i) => {
         const taskType = stringToTaskType(annotType);
-        const targetLang = item.targetLang[i];
+        const secondaryLang = item.secondaryLang[i];
         return {
           id: taskType,
           label: TaskLabels[taskType],
-          targetLang: targetLang,
+          secondaryLang: secondaryLang ,
         } as Task
       }),
     };

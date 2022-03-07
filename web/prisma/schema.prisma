@@ -63,14 +63,14 @@ model UserLanguages {
 model UserLanguageTasks {
   // Key Fields
   id            String
-  language      String
+  primaryLang   String
 
   // Content Fields
   annotType     Int[]
-  targetLang    String[]
+  secondaryLang String[]
   forwardDir    Boolean[]
 
-  @@id([id, language])
+  @@id([id, primaryLang])
 }
 
 model VerificationToken {
@@ -107,10 +107,9 @@ model Annotations {
   // Association Fields
   source       Content @relation(fields: [sourceFprint], references: [fprint])
   sourceFprint String
-  sourceLang   String
 
   // Content Fields
-  targetLang   String
+  primaryLang  String
   text         String
   isComplete   Boolean @default(false)
   annotType    Int @default(0)
@@ -140,15 +139,15 @@ model Ratings {
 }
 
 model TaskMilestones {
-  language       String
-  targetLang     String
+  primaryLang    String
+  secondaryLang  String
   taskId         Int
   milestoneType  String
   milestone      Int
   progress       Int
   dateUpdated    DateTime @default(now())
 
-  @@id([language, targetLang, taskId, milestoneType])
+  @@id([primaryLang, secondaryLang, taskId, milestoneType])
 }
 
 model LanguageDetails {

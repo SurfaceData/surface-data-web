@@ -1,7 +1,7 @@
 export interface Task {
   id: TaskType,
   label?: string,
-  targetLang: string,
+  secondaryLang: string,
 }
 
 export enum TaskType {

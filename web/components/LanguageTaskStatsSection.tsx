@@ -88,7 +88,7 @@ const LanguageTaskStatsSection = ({
   stats,
 }: LanguageTaskStatsSectionProps) => {
   const url =
-    `/contribute?sl=${language.isoCode}&tl=${stats.targetLang.isoCode}&annotType=${stats.id}`;
+    `/contribute?sl=${language.isoCode}&tl=${stats.secondaryLang.isoCode}&annotType=${stats.id}`;
   return (
     <Container>
       <ContentContainer>
@@ -96,7 +96,7 @@ const LanguageTaskStatsSection = ({
           <TaskLabel>
             {TaskLabels[stats.id]}
             {
-              stats.id === 2 ? ' to ' + stats.targetLang.cldrName : ''
+              stats.id === 2 ? ' from ' + stats.secondaryLang.cldrName : ''
             }
           </TaskLabel>
           <TaskDescription>

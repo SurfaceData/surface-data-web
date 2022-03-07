@@ -23,9 +23,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const annotations = await prisma.annotations.findMany({
     // Fetch annotations where the user hasn't given a rating.
     where: {
-      sourceLang: sl,
-      targetLang: tl,
+      primaryLang: tl,
       annotType: parseInt(annotType, 10),
+      source: {
+          language: sl,
+      },
       ratings: {
         none: {
           user: {
@@ -44,7 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           language: true
         }
       },
-      targetLang: true,
+      primaryLang: true,
       text: true,
       annotType: true,
     }

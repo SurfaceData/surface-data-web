@@ -55,6 +55,7 @@ const Profile: NextPage = () => {
     setUserLanguages(userLanguages.concat({
       language: "",
       tasks: [],
+      secondaryLangs: [],
     } as Language));
   };
 

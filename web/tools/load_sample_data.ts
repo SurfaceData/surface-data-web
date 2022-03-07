@@ -21,8 +21,7 @@ const insertQualityLabel = async (source, label) => {
           fprint: source.fprint
         }
       },
-      sourceLang: source.language,
-      targetLang: source.language,
+      primaryLang: source.language,
       text: label,
       annotType: 1,
     }
@@ -37,8 +36,7 @@ const insertTranslation = async (source, target) => {
           fprint: source.fprint
         }
       },
-      sourceLang: source.language,
-      targetLang: target.language,
+      primaryLang: target.language,
       text: target.text,
       annotType: 2,
     }
@@ -73,8 +71,8 @@ const insertMilestone = async (
 ) => {
   return await prisma.taskMilestones.create({
     data: {
-      language: sourceLang,
-      targetLang: targetLang,
+      primaryLang: targetLang,
+      secondaryLang: sourceLang,
       taskId: taskType,
       milestoneType: milestoneType,
       milestone: milestone,

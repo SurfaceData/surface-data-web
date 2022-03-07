@@ -15,15 +15,15 @@ const allLanguagesList: Array<LanguageDisplay> = [];
 iso6393.forEach( (code) => {
   // Intl gives us the CLDR based language name if it exists.
   const displayName = new Intl.DisplayNames(code.iso6393, {type: 'language'});
-  const bcpSchema = parse(code.iso6393);
   const isoCode = code.iso6393;
   const intlName = displayName.of(code.iso6393);
   const isoName = code.name;
+  const cldrSupported = intlName  !== isoCode;
   const langDisplay = {
     isoCode: isoCode,
     isoName: isoName,
     cldrName: intlName,
-    cldrSupported: intlName !== isoCode
+    cldrSupported: cldrSupported,
   } as LanguageDisplay;
   allLanguagesList.push(langDisplay);
   if (langDisplay.cldrSupported) {
