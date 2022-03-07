@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from "@prisma/client";
 
 import type { LanguageStats, TaskStats } from '@features/LanguageStats';
-import type { Language } from '@features/language';
+import type { LanguageTasks } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
@@ -21,7 +21,7 @@ export default async (
 ) => {
   // Get the languages and factor that into a set of langauge strings and a
   // mapping from languages to task IDs.
-  const languagesAndTasks = req.body as Language[];
+  const languagesAndTasks = req.body as LanguageTasks[];
   const languages = languagesAndTasks.map(({languageDisplay}) => languageDisplay.isoCode);
   const languageMap = languagesAndTasks.reduce( (results, entry) => {
     results.set(

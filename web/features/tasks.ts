@@ -1,7 +1,15 @@
+import type { LanguageDisplay } from '@features/language';
+
+export interface LanguageTasks {
+  language: string,
+  languageDisplay: LanguageDisplay,
+  tasks: Task[],
+}
+
 export interface Task {
   id: TaskType,
   label?: string,
-  secondaryLang: string,
+  secondaryLang: LanguageDisplay,
 }
 
 export enum TaskType {

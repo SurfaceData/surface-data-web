@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import LanguageTaskStatsSection from '@components/LanguageTaskStatsSection';
 import type { LanguageStats } from '@features/LanguageStats';
 
-const LANGUAGE_NAMES = require('@common/language-names.json') as {
-  [key: string]: string;
-};
-
 interface LanguageStatsSectionProps {
   stats: LanguageStats,
 }

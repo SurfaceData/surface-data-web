@@ -6,10 +6,6 @@ import { ProgressBar } from '@components/ui/ProgressBar';
 import { TaskDescriptions, TaskLabels } from '@features/tasks';
 import type { TaskStats } from '@features/LanguageStats';
 
-const LANGUAGE_NAMES = require('@common/language-names.json') as {
-  [key: string]: string;
-};
-
 interface LanguageTaskStatsSectionProps {
   language: string,
   stats: TaskStats,

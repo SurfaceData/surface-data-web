@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { CheckboxCard } from '@components/ui/CheckboxCard';
-import { Language } from '@features/language';
+import { LanguageTasks } from '@features/tasks';
 import { TaskType, Tasks, TaskDescriptions, TaskLabels, stringToTaskType } from '@features/tasks';
 
 const GridContainer = styled.div`
@@ -18,8 +18,8 @@ const SizedCheckboxCard = styled(CheckboxCard)`
 interface LanguageTaskOptionsProps {
   locale: Language,
   languageIndex: number,
-  allLanguages: Language[],
-  setUserLanguages: (locale: Language[]) => void;
+  allLanguages: LanguageTasks[],
+  setUserLanguages: (locale: LanguageTasks[]) => void;
 }
 
 const LanguageTaskOptions = ({
@@ -94,4 +94,3 @@ const LanguageTaskOptions = ({
 }
 
 export default LanguageTaskOptions;
-

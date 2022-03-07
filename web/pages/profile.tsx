@@ -14,7 +14,7 @@ import { Button } from '@components/ui/Button';
 import { Divider } from '@components/ui/Divider';
 import { LabeledInput } from '@components/ui/LabeledInput';
 import { SectionHeader } from '@components/ui/SectionHeader';
-import { Language } from '@features/language';
+import { LanguageTasks } from '@features/tasks';
 import { updateUser } from '@features/userSlice';
 
 const Container = styled.div`
@@ -56,7 +56,7 @@ const Profile: NextPage = () => {
       language: "",
       tasks: [],
       secondaryLangs: [],
-    } as Language));
+    } as LanguageTasks));
   };
 
   if (status == "loading") {

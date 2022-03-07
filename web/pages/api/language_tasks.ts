@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client";
 
 import { allLanguages } from '@common/DisplayLanguages';
 import type { LanguageStats, TaskStats } from '@features/LanguageStats';
-import type { Language } from '@features/language';
 
 const prisma = new PrismaClient();
 
