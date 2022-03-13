@@ -1,0 +1,39 @@
+version: '3'
+services:
+  surfacedb:
+    image: postgres
+    restart: always
+    container_name: surfacedb
+    ports:
+      - 15432:5432
+    environment:
+      POSTGRES_PASSWORD: surfaceweb
+      POSTGRES_USER: surface_admin
+      POSTGRES_DB: web
+      POSTGRES_HOST_AUTH_METHOD: md5
+    networks:
+      - surface-web
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  surface-web:
+    image: node:12-stretch
+    container_name: surface-web
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web:/code
+    command: bash -c "cd /code && npm install && npx prisma db push && npm run dev"
+    depends_on:
+      - surfacedb
+    networks:
+      - surface-web
+
+networks:
+  surface-web:
+
+volumes:
+  db-data:
+    driver: local
