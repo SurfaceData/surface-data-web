@@ -13,14 +13,10 @@ services:
       POSTGRES_HOST_AUTH_METHOD: md5
     networks:
       - surface-web
-    volumes:
-      - db-data:/var/lib/postgresql/data
 
   surface-web:
     image: node:16.14
     container_name: surface-web
-    build:
-      context: .
     ports:
       - 3000:3000
     volumes:
@@ -33,7 +29,3 @@ services:
 
 networks:
   surface-web:
-
-volumes:
-  db-data:
-    driver: local
