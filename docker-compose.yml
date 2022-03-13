@@ -17,7 +17,7 @@ services:
       - db-data:/var/lib/postgresql/data
 
   surface-web:
-    image: node:12-stretch
+    image: node:16.14
     container_name: surface-web
     build:
       context: .
