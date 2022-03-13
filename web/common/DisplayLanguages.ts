@@ -3,8 +3,8 @@ import {iso6393} from 'iso-639-3';
 
 import type { LanguageDisplay } from '@features/language';
 
-const cldrLanguagesList: Array<LanguageDisplay> = [];
-const allLanguagesList: Array<LanguageDisplay> = [];
+const cldrLanguages: Array<LanguageDisplay> = [];
+const allLanguages: Array<LanguageDisplay> = [];
 
 // To create our LanguageDisplay values we read all possible ISO 639-3
 // languages and match them with their CLDR name when one exists. CLDR does not
@@ -25,11 +25,10 @@ iso6393.forEach( (code) => {
     cldrName: intlName,
     cldrSupported: cldrSupported,
   } as LanguageDisplay;
-  allLanguagesList.push(langDisplay);
+  allLanguages.push(langDisplay);
   if (langDisplay.cldrSupported) {
-    cldrLanguagesList.push(langDisplay);
+    cldrLanguages.push(langDisplay);
   }
 });
 
-export let allLanguages = allLanguagesList;
-export let cldrLanguages = cldrLanguagesList;
+export { allLanguages, cldrLanguages };
