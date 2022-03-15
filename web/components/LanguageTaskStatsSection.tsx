@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Button } from '@components/ui/Button';
 import { ProgressBar } from '@components/ui/ProgressBar';
-import { TaskDescriptions, TaskLabels } from '@features/tasks';
+import { TaskLabels } from '@features/tasks';
 import type { TaskStats } from '@features/LanguageStats';
 
 interface LanguageTaskStatsSectionProps {
@@ -85,18 +85,22 @@ const LanguageTaskStatsSection = ({
 }: LanguageTaskStatsSectionProps) => {
   const url =
     `/contribute?sl=${language.isoCode}&tl=${stats.secondaryLang.isoCode}&annotType=${stats.id}`;
+  const getTaskTitle = (task) => {
+    if (language.isoCode ===
+        task.secondaryLang.isoCode) {
+      return `${task.taskMode.fullName} | ${task.taskCategory.fullName}`;
+    }
+    return `${task.taskMode.fullName} | ${task.taskCategory.fullName} | from ${task.secondaryLang.cldrName}`;
+  };
   return (
     <Container>
       <ContentContainer>
         <TaskContainer>
           <TaskLabel>
-            {TaskLabels[stats.id]}
-            {
-              stats.id === 2 ? ' from ' + stats.secondaryLang.cldrName : ''
-            }
+            {getTaskTitle(stats)}
           </TaskLabel>
           <TaskDescription>
-            {TaskDescriptions[stats.id]}
+            {stats.taskCategory.description}
           </TaskDescription>
         </TaskContainer>
 

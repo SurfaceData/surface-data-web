@@ -29,8 +29,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
   await languages.forEach( async (item) => {
     const langCode = item.languageDisplay.isoCode;
-    const taskIds = item.tasks.map( (task) => task.id);
+    const taskCategories = item.tasks.map( (task) => task.taskCategory.id);
+    const taskModes = item.tasks.map( (task) => task.taskMode.id);
     const secondaryLangs = item.tasks.map( (task) => task.secondaryLang);
+
     await prisma.userLanguageTasks.upsert({
       where: {
         id_primaryLang: {
@@ -39,13 +41,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
       },
       update: {
-        annotType: taskIds,
+        taskCategories: taskCategories,
+        taskModes: taskModes,
         secondaryLang: secondaryLangs,
       },
       create: {
         id: session.userId,
         primaryLang: langCode,
-        annotType: taskIds,
+        taskCategories: taskCategories,
+        taskModes: taskModes,
         secondaryLang: secondaryLangs,
       }
     });

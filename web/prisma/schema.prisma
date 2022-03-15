@@ -62,13 +62,14 @@ model UserLanguages {
 /// Maps User Ids and BCP-47 Language Codes to  Annotation Task Type IDs.
 model UserLanguageTasks {
   // Key Fields
-  id            String
-  primaryLang   String
+  id             String
+  primaryLang    String
 
-  // Content Fields
-  annotType     Int[]
-  secondaryLang String[]
-  forwardDir    Boolean[]
+  // Identifiers for each task a user is registered for.  These arrays are all
+  // index aligned.
+  taskModes      Int[]
+  taskCategories Int[]
+  secondaryLang  String[]
 
   @@id([id, primaryLang])
 }

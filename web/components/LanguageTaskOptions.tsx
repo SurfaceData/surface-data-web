@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { CheckboxCard } from '@components/ui/CheckboxCard';
 import { LanguageTasks } from '@features/tasks';
-import { TaskType, Tasks, TaskDescriptions, TaskLabels, stringToTaskType } from '@features/tasks';
 
 const GridContainer = styled.div`
   display: flex;

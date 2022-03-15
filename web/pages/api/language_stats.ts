@@ -1,10 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from "@prisma/client";
 
+import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
 import type { LanguageStats, TaskStats } from '@features/LanguageStats';
 import type { LanguageTasks } from '@features/tasks';
 
 const prisma = new PrismaClient();
+
+const taskModeMap = await getTaskModeMap(prisma);
+const taskCategoryMap = await getTaskCategoryMap(prisma);
 
 /**
  * Returns an array of LanguageStats given a requested list of languages and
@@ -33,7 +37,8 @@ export default async (
   const requestedTasks = languagesAndTasks.reduce( (results, entry) => {
     results.set(
       entry.languageDisplay.isoCode,
-      new Set(entry.tasks.map( ({id, secondaryLang}) => JSON.stringify({id, secondaryLang}))));
+      new Set(entry.tasks.map( ({taskCategory, taskMode, secondaryLang}) =>
+        JSON.stringify({category: taskCategory.id, mode: taskMode.id, lang: secondaryLang}))));
     return results;
   }, new Map);
 
@@ -87,12 +92,14 @@ export default async (
       // language.
       const taskSet = requestedTasks.get(stats.primaryLang);
       const shouldAdd = taskSet.has(JSON.stringify({
-        id: stats.taskId,
-        secondaryLang: stats.secondaryLang
+        category: stats.taskCategoryId,
+        mode: stats.taskModeId,
+        lang: stats.secondaryLang,
       }));
       if (shouldAdd) {
         taskStats.push({
-          id: stats.taskId,
+          taskCategory: taskCategoryMap.get(stats.taskCategoryId),
+          taskMode: taskModeMap.get(stats.taskModeId),
           secondaryLang: languageMap.get(stats.secondaryLang),
           nextMilestone: stats.milestone,
           progress: stats.progress,

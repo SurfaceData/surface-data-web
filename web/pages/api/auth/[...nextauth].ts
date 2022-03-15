@@ -4,11 +4,15 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
 import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
+import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
 import { Language, LanguageDisplay  } from '@features/language';
-import type { Task } from '@features/tasks';
+import type { Task, TaskCategory, TaskMode } from '@features/tasks';
 import { TaskType, TaskLabels, stringToTaskType } from '@features/tasks';
 
 const prisma = new PrismaClient();
+
+const taskModeMap = await getTaskModeMap(prisma);
+const taskCategoryMap = await getTaskCategoryMap(prisma);
 
 const languageMap = allLanguages.reduce( (result, language) => {
   result.set(language.isoCode, language);
@@ -54,13 +58,14 @@ const fetchLanguages = async (user) => {
   const langToTasks = userLanguageTasks.reduce( (res, item) => {
     return {
       ...res,
-      [item.primaryLang]: item.annotType.map( (annotType, i) => {
-        const taskType = stringToTaskType(annotType);
+      [item.primaryLang]: item.taskCategories.map( (categoryId, i) => {
+        const category = taskCategoryMap.get(categoryId);
+        const mode = taskModeMap.get(item.taskModes[i]);
         const secondaryLang = item.secondaryLang[i];
         return {
-          id: taskType,
-          label: TaskLabels[taskType],
-          secondaryLang: secondaryLang ,
+          taskCategory: category,
+          taskMode: mode,
+          secondaryLang: secondaryLang,
         } as Task
       }),
     };
