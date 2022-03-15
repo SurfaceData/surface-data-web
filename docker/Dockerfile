@@ -21,4 +21,4 @@ WORKDIR /code
 RUN mkdir /code/logs
 
 # Start the dev server
-RUN npm install
+RUN npm install --production
