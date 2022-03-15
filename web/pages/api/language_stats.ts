@@ -105,13 +105,15 @@ export default async (
     new Map
     ).entries())
     .map( ([key, value]) => {
+      const description = languageDetails.get(key) || 'Needs Updating';
+      const funFacts = languageFunFacts.get(key);
       // Map to a LanguageStat object.
       return {
         language: languageMap.get(key),
         taskStats: value,
         info: {
-          description: languageDetails.get(key),
-          funFact: languageFunFacts.get(key)[0],
+          description: description,
+          funFact: funFacts ? funFacts[0] : 'Needs Updating';
         }
       } as LanguageStats;
     });
