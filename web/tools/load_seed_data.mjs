@@ -33,6 +33,45 @@ try {
   await prisma.annotations.deleteMany({});
   await prisma.content.deleteMany({});
 
+  console.log('Creating Task Categories and Modes');
+  await prisma.taskCategory.deleteMany({});
+  await prisma.taskMode.deleteMany({});
+  await prisma.taskMode.createMany({
+    data: [
+      { id: 1, shortName: 'Create', fullName: 'Create', description: 'Create new content' },
+      { id: 2, shortName: 'Verify', fullName: 'Verify', description: 'Verify that content meets quality guidelines' },
+      { id: 3, shortName: 'Rate', fullName: 'Rate', description: 'Rate the accuracy of an annotation' },
+    ],
+  });
+  await prisma.taskCategory.create({
+    data: {
+      id: 1,
+      shortName: 'QualityTag',
+      fullName: 'Quality Tag',
+      description: 'Apply quality tags to content',
+      modes: {
+        connect: [
+          { id: 1 } ,
+          { id: 3 },
+        ],
+      }
+    }
+  })
+  await prisma.taskCategory.create({
+    data: {
+      id: 2,
+      shortName: 'Translate',
+      fullName: 'Translate',
+      description: 'Translate content between languages',
+      modes: {
+        connect: [
+          { id: 1 } ,
+          { id: 2 },
+        ],
+      },
+    }
+  });
+
   console.log('Loading data for all languages');
   const dir = await opendir(`${process.env.SEED_PATH}/sentences`);
   for await (const dirent of dir) {
@@ -100,7 +139,8 @@ try {
     milestones.push({
       primaryLang: language,
       secondaryLang: language,
-      taskId: 1,
+      taskCategoryId: 1,
+      taskModeId: 1,
       milestoneType: 'weekly',
       milestone: tagMilestone,
       progress: 0
@@ -109,7 +149,8 @@ try {
       milestones.push({
         primaryLang: language,
         secondaryLang: 'eng',
-        taskId: 2,
+        taskCategoryId: 2,
+        taskModeId: 1,
         milestoneType: 'weekly',
         milestone: translateMilestone,
         progress: 0
@@ -118,7 +159,8 @@ try {
       milestones.push({
         primaryLang: language,
         secondaryLang: 'spa',
-        taskId: 2,
+        taskCategoryId: 2,
+        taskModeId: 1,
         milestoneType: 'weekly',
         milestone: translateMilestone,
         progress: 0
@@ -126,7 +168,8 @@ try {
       milestones.push({
         primaryLang: language,
         secondaryLang: 'jpn',
-        taskId: 2,
+        taskCategoryId: 2,
+        taskModeId: 1,
         milestoneType: 'weekly',
         milestone: translateMilestone,
         progress: 0
@@ -139,6 +182,7 @@ try {
     data: data,
     skipDuplicates: true
   });
+
 } catch (err) {
   console.log(err);
 }

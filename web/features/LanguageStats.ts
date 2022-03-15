@@ -1,4 +1,4 @@
-import { TaskType } from '@features/tasks';
+import { TaskCategory, TaskMode, TaskType } from '@features/tasks';
 
 export interface LanguageStats {
   // A BCP-47 Language Code
@@ -23,8 +23,9 @@ export interface LanguageInfo {
 }
 
 export interface TaskStats {
-  // The task type being detailed.
-  id: TaskType,
+  // Task type metadata.
+  taskCategory: TaskCategory,
+  taskMode: TaskMode,
 
   // The next numeric milestone to be achieved.
   nextMilestone: number,

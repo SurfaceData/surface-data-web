@@ -46,13 +46,15 @@ const LanguageTaskOptions = ({
     const isChecked = e.target.checked;
     if (isChecked) {
       newLanguages[languageIndex].tasks = langTasks.concat({
-        id: task.id,
-        label: TaskLabels[task.id],
+        taskCategory: task.taskCategory,
+        taskMode: task.taskMode,
         secondaryLang: task.secondaryLang.isoCode,
       });
     } else {
       const taskIndex = langTasks.findIndex(t=>
-        t.id === task.id && t.secondaryLang === task.secondaryLang.isoCode
+        t.taskCategory.id === task.taskCategory.id &&
+        t.taskMode.id === task.taskMode.id &&
+        t.secondaryLang === task.secondaryLang.isoCode
       );
       langTasks.splice(taskIndex, 1);
       newLanguages[languageIndex].tasks = langTasks;
@@ -69,9 +71,18 @@ const LanguageTaskOptions = ({
   const isTaskSelected = (task) => {
     const tasks = allLanguages[languageIndex].tasks;
     return -1 !== tasks.findIndex(t =>
-      t.id === task.id && t.secondaryLang === task.secondaryLang.isoCode
+      t.taskCategory.id === task.taskCategory.id &&
+      t.taskMode.id === task.taskMode.id &&
+      t.secondaryLang === task.secondaryLang.isoCode
     );
   }
+  const getTaskTitle = (task) => {
+    if (locale.languageDisplay.isoCode ===
+        task.secondaryLang.isoCode) {
+      return `${task.taskMode.fullName} | ${task.taskCategory.fullName}`;
+    }
+    return `${task.taskMode.fullName} | ${task.taskCategory.fullName} | from ${task.secondaryLang.cldrName}`;
+  };
 
   return (
     <GridContainer>
@@ -79,12 +90,9 @@ const LanguageTaskOptions = ({
         languageTasks.map( (task, index) => (
           <SizedCheckboxCard
             key={index}
-            title={task.id === 2
-              ? TaskLabels[task.id] + ' from ' + task.secondaryLang.cldrName
-              : TaskLabels[task.id]
-            }
+            title={getTaskTitle(task)}
             checked={isTaskSelected(task)}
-            description={TaskDescriptions[task.id]}
+            description={task.taskCategory.description}
             onChange={ (e) => handleChange(e, task) }
           />
         ))

@@ -138,16 +138,29 @@ model Ratings {
   createdAt    DateTime @default(now())
 }
 
+// Records available milestones for language pairs and tasks.  This table is
+// used to determine what tasks users can contribute towards at any point in
+// time.
 model TaskMilestones {
+  // Language pair information for the milestone.
   primaryLang    String
   secondaryLang  String
-  taskId         Int
+
+  // The Task Category tracked by this milestone.
+  taskCategoryId Int 
+  // The specific Task Mode tracked by this milestone.
+  taskModeId     Int
+
+  // The type of milestone being recorded.
   milestoneType  String
+
+  // The current milestone and progress towards that milestone.
   milestone      Int
   progress       Int
+
   dateUpdated    DateTime @default(now())
 
-  @@id([primaryLang, secondaryLang, taskId, milestoneType])
+  @@id([primaryLang, secondaryLang, taskCategoryId, taskModeId, milestoneType])
 }
 
 model LanguageDetails {
@@ -159,4 +172,45 @@ model LanguageFunFacts {
   id             String    @id @default(cuid())
   language       String
   fact           String
+}
+
+/// Records details for each task category.
+model TaskCategory {
+  // The unique key.
+  id          Int @id 
+
+  // A short name that can double as a class type.
+  shortName   String
+
+  // Human readable text.  Later this should be a localization key.
+  fullName    String
+  description String
+
+  // Records the mode stages for this category.  Tasks start in the first mode
+  // and then are available as new tasks in the second mode.
+  //
+  // As an example, if the modes are [1, 3, 5] then:
+  //  - Initially, only mode 1 tasks are available.
+  //  - As mode 1 tasks complete, then mode 3 tasks are made available.
+  //  - As mode 3 tasks complete, then mode 5 tasks are made available.
+  //  - Once all mode 5 tasks complete, all tasks are done.
+  modes       TaskMode[]
+}
+
+/// Records details for each task modality.
+model TaskMode {
+  // The unique key.
+  id          Int @id 
+
+  // A short name that can double as a class type.
+  shortName   String
+
+  // Human readable text.  Later this should be a localization key.
+  fullName    String
+  description String
+
+  // Reverse links to all Task Categories using this TaskMode.
+  //
+  // Prisma requires this for implicit many to many relations.
+  categories  TaskCategory[]
 }

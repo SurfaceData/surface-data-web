@@ -2,9 +2,22 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from "@prisma/client";
 
 import { allLanguages } from '@common/DisplayLanguages';
+import type { TaskCategory, TaskMode } from '@features/tasks';
 import type { LanguageStats, TaskStats } from '@features/LanguageStats';
 
 const prisma = new PrismaClient();
+
+const taskModes: TaskMode[] = await prisma.taskMode.findMany();
+const taskModeMap = taskModes.reduce( (result, mode) => {
+  result.set(mode.id, mode);
+  return result;
+}, new Map());
+
+const taskCategories: TaskCategory[] = await prisma.taskCategory.findMany();
+const taskCategoryMap = taskCategories.reduce( (result, category) => {
+  result.set(category.id, category);
+  return result;
+}, new Map());
 
 const languageMap = allLanguages.reduce( (result, language) => {
   result.set(language.isoCode, language);
@@ -24,7 +37,8 @@ export default async (
       });
   const result = taskStats.map( (stats) => {
     return {
-      id: stats.taskId,
+      taskCategory: taskCategoryMap.get(stats.taskCategoryId),
+      taskMode: taskModeMap.get(stats.taskModeId),
       secondaryLang: languageMap.get(stats.secondaryLang),
       nextMilestone: stats.milestone,
       progress: stats.progress,
