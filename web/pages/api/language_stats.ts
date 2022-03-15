@@ -113,7 +113,7 @@ export default async (
         taskStats: value,
         info: {
           description: description,
-          funFact: funFacts ? funFacts[0] : 'Needs Updating';
+          funFact: funFacts ? funFacts[0] : 'Needs Updating',
         }
       } as LanguageStats;
     });
