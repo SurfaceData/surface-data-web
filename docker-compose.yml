@@ -15,13 +15,13 @@ services:
       - surface-web
 
   surface-web:
-    image: node:16.14
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: surface-web
+    command: bash -c "npm run init && npm run dev"
     ports:
       - 3000:3000
-    volumes:
-      - ./web:/code
-    command: bash -c "cd /code && npm install && npx prisma db push && npm run dev"
     depends_on:
       - surfacedb
     networks:
