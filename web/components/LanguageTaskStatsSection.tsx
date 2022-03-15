@@ -84,7 +84,7 @@ const LanguageTaskStatsSection = ({
   stats,
 }: LanguageTaskStatsSectionProps) => {
   const url =
-    `/contribute?sl=${language.isoCode}&tl=${stats.secondaryLang.isoCode}&annotType=${stats.id}`;
+    `/${stats.taskMode.shortName}/${stats.taskCategory.shortName}?primary=${language.isoCode}&secondary=${stats.secondaryLang.isoCode}`;
   const getTaskTitle = (task) => {
     if (language.isoCode ===
         task.secondaryLang.isoCode) {
