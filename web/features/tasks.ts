@@ -1,5 +1,11 @@
 import type { LanguageDisplay } from '@features/language';
 
+export interface Task {
+  id: string,
+  secondaryText: string,
+  primaryText?: string,
+}
+
 export interface TaskMode {
   id: number,
   shortName?: string,

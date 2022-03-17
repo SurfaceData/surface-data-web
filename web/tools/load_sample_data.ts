@@ -23,7 +23,8 @@ const insertQualityLabel = async (source, label) => {
       },
       primaryLang: source.language,
       text: label,
-      annotType: 1,
+      taskModeId: 3,
+      taskCategoryId: 1,
     }
   });
 }
@@ -38,7 +39,8 @@ const insertTranslation = async (source, target) => {
       },
       primaryLang: target.language,
       text: target.text,
-      annotType: 2,
+      taskModeId: 2,
+      taskCategoryId: 2,
     }
   });
 }
@@ -64,7 +66,8 @@ const insertRating = async (annotation, user, rating) => {
 const insertMilestone = async (
   sourceLang,
   targetLang,
-  taskType,
+  taskModeId,
+  taskCategoryId,
   milestoneType,
   milestone,
   progress
@@ -73,7 +76,8 @@ const insertMilestone = async (
     data: {
       primaryLang: targetLang,
       secondaryLang: sourceLang,
-      taskId: taskType,
+      taskCategoryId: taskCategoryId,
+      taskModeId: taskModeId,
       milestoneType: milestoneType,
       milestone: milestone,
       progress: progress
@@ -107,13 +111,60 @@ const insertLanguageFunFact = async(language, funfact) => {
     }
   });
 
-  // Clear all relevant data.
-  await prisma.ratings.deleteMany({});
-  await prisma.annotations.deleteMany({});
-  await prisma.content.deleteMany({});
-  await prisma.taskMilestones.deleteMany({});
-  await prisma.languageDetails.deleteMany({});
-  await prisma.languageFunFacts.deleteMany({});
+  // Insert task types.
+  await prisma.taskMode.createMany({
+    data: [
+      {
+        id: 1, 
+        shortName: 'Create', 
+        fullName: 'Create', 
+        description: 'Create new content' 
+        useContent: true,
+      },
+      {
+        id: 2, 
+        shortName: 'Verify',
+        fullName: 'Verify', 
+        description: 'Verify that content meets quality guidelines' 
+        useContent: false,
+      },
+      {
+        id: 3,
+        shortName: 'Rate',
+        fullName: 'Rate',
+        description: 'Rate the accuracy of an annotation'
+        useContent: false,
+      },
+    ],
+  });
+  await prisma.taskCategory.create({
+    data: {
+      id: 1,
+      shortName: 'QualityTag',
+      fullName: 'Quality Tag',
+      description: 'Apply quality tags to content',
+      modes: {
+        connect: [
+          { id: 1 } ,
+          { id: 3 },
+        ],
+      }
+    }
+  })
+  await prisma.taskCategory.create({
+    data: {
+      id: 2,
+      shortName: 'Translate',
+      fullName: 'Translate',
+      description: 'Translate content between languages',
+      modes: {
+        connect: [
+          { id: 1 } ,
+          { id: 2 },
+        ],
+      },
+    }
+  });
 
   // Insert the content.
   const enContent1 = await insertContent('I have cats', 'eng');
@@ -148,15 +199,24 @@ const insertLanguageFunFact = async(language, funfact) => {
   await insertRating(en4Good, user, 1);
 
   // Insert milestones.
-  await insertMilestone('eng', 'eng', 1, 'weekly', 1000, 825);
-  await insertMilestone('jpn', 'jpn', 1, 'weekly', 1000, 0);
-  await insertMilestone('spa', 'spa', 1, 'weekly', 1000, 0);
+  await insertMilestone('eng', 'eng', 1, 1, 'weekly', 1000, 825);
+  await insertMilestone('eng', 'eng', 1, 3, 'weekly', 1000, 825);
 
-  await insertMilestone('eng', 'jpn', 2, 'weekly', 200, 139);
-  await insertMilestone('jpn', 'eng', 2, 'weekly', 200, 28);
+  await insertMilestone('jpn', 'jpn', 1, 1, 'weekly', 1000, 0);
+  await insertMilestone('jpn', 'jpn', 1, 3, 'weekly', 1000, 0);
 
-  await insertMilestone('eng', 'spa', 2, 'weekly', 200, 10);
-  await insertMilestone('spa', 'eng', 2, 'weekly', 200, 30);
+  await insertMilestone('spa', 'spa', 1, 1, 'weekly', 1000, 0);
+  await insertMilestone('spa', 'spa', 1, 3, 'weekly', 1000, 0);
+
+  await insertMilestone('eng', 'jpn', 2, 1,'weekly', 200, 139);
+  await insertMilestone('eng', 'jpn', 2, 2, 'weekly', 200, 139);
+  await insertMilestone('jpn', 'eng', 2, 1, 'weekly', 200, 28);
+  await insertMilestone('jpn', 'eng', 2, 2, 'weekly', 200, 28);
+
+  await insertMilestone('eng', 'spa', 2, 1, 'weekly', 200, 10);
+  await insertMilestone('eng', 'spa', 2, 2, 'weekly', 200, 10);
+  await insertMilestone('spa', 'eng', 2, 1, 'weekly', 200, 30);
+  await insertMilestone('spa', 'eng', 2, 2, 'weekly', 200, 30);
 
   // Insert language info.
   await insertLanguageDetail(

@@ -103,22 +103,24 @@ model Content {
 
 model Annotations {
   // Key Fields
-  id           BigInt @id @default(autoincrement())
+  id             BigInt @id @default(autoincrement())
 
   // Association Fields
-  source       Content @relation(fields: [sourceFprint], references: [fprint])
+  source         Content @relation(fields: [sourceFprint], references: [fprint])
   sourceFprint String
 
   // Content Fields
-  primaryLang  String
-  text         String
-  isComplete   Boolean @default(false)
-  annotType    Int @default(0)
+  primaryLang    String
+  text           String
+  isComplete     Boolean @default(false)
+  
+  taskCategoryId Int
+  taskModeId     Int
 
   // Provenance Fields
-  createdAt    DateTime @default(now())
+  createdAt      DateTime @default(now())
 
-  ratings      Ratings[]
+  ratings        Ratings[]
 }
 
 model Ratings {
@@ -209,6 +211,9 @@ model TaskMode {
   // Human readable text.  Later this should be a localization key.
   fullName    String
   description String
+
+  // When true, it means tasks come directly from the Contents table.
+  useContent  Boolean @default(false)
 
   // Reverse links to all Task Categories using this TaskMode.
   //

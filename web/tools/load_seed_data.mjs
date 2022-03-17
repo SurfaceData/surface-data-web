@@ -38,9 +38,27 @@ try {
   await prisma.taskMode.deleteMany({});
   await prisma.taskMode.createMany({
     data: [
-      { id: 1, shortName: 'Create', fullName: 'Create', description: 'Create new content' },
-      { id: 2, shortName: 'Verify', fullName: 'Verify', description: 'Verify that content meets quality guidelines' },
-      { id: 3, shortName: 'Rate', fullName: 'Rate', description: 'Rate the accuracy of an annotation' },
+      {
+        id: 1, 
+        shortName: 'Create', 
+        fullName: 'Create', 
+        description: 'Create new content' 
+        useContent: true,
+      },
+      {
+        id: 2, 
+        shortName: 'Verify',
+        fullName: 'Verify', 
+        description: 'Verify that content meets quality guidelines' 
+        useContent: false,
+      },
+      {
+        id: 3,
+        shortName: 'Rate',
+        fullName: 'Rate',
+        description: 'Rate the accuracy of an annotation'
+        useContent: false,
+      },
     ],
   });
   await prisma.taskCategory.create({
