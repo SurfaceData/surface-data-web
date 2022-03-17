@@ -3,12 +3,16 @@ import { PrismaClient } from "@prisma/client";
 
 import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
 import type { LanguageStats, TaskStats } from '@features/LanguageStats';
-import type { LanguageTasks } from '@features/tasks';
+import type { LanguageTasks, TaskCategory, TaskMode } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
-const taskModeMap = await getTaskModeMap(prisma);
-const taskCategoryMap = await getTaskCategoryMap(prisma);
+let taskModeMap: Map<number, TaskMode>;
+let taskCategoryMap: Map<number, TaskCategory>
+(async() => {
+  taskModeMap = await getTaskModeMap(prisma);
+  taskCategoryMap = await getTaskCategoryMap(prisma);
+})();
 
 /**
  * Returns an array of LanguageStats given a requested list of languages and
@@ -43,23 +47,23 @@ export default async (
   }, new Map);
 
   // Fetch language details for each language and form it into a Map.
-  let languageDetails = await prisma.languageDetails.findMany({
+  let languageDetailsList = await prisma.languageDetails.findMany({
         where: {
           language: { in: languages },
         }
       });
-  languageDetails = languageDetails.reduce( (result, entry) => {
+  const languageDetails = languageDetailsList.reduce( (result, entry) => {
         result.set(entry.language, entry.description);
         return result;
    }, new Map);
 
    // Fetch language fun facts for each language and form it into a Map.
-   let languageFunFacts = await prisma.languageFunFacts.findMany({
+   let languageFunFactsList = await prisma.languageFunFacts.findMany({
         where: {
           language: { in: languages },
         }
       });
-  languageFunFacts = languageFunFacts.reduce( (result, entry) => {
+  const languageFunFacts = languageFunFactsList.reduce( (result, entry) => {
         if (result.has(entry.language)) {
           result.get(entry.language).push(entry.fact);
         } else {

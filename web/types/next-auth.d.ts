@@ -6,8 +6,9 @@ declare module 'next-auth' {
   interface Session { 
     userId?: string,
     user: {
-      languages: Language[],
+      email?: string,
       image?: string,
+      languages: Language[],
     }
   }
 }

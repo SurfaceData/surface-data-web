@@ -7,13 +7,13 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import MainLayout from '@components/MainLayout';
-import InputLanguageSelect from '@components/InputLanguageSelect';
 import { LanguageCombobox } from '@components/LanguageCombobox';
 import LanguageTaskOptions from '@components/LanguageTaskOptions';
 import { Button } from '@components/ui/Button';
 import { Divider } from '@components/ui/Divider';
 import { LabeledInput } from '@components/ui/LabeledInput';
 import { SectionHeader } from '@components/ui/SectionHeader';
+import type { LanguageDisplay } from '@features/language';
 import type { LanguageTasks } from '@features/tasks';
 import { updateUser } from '@features/userSlice';
 
@@ -31,8 +31,8 @@ const InfoContainer = styled.div`
 const Profile: NextPage = () => {
   const dispatch = useDispatch();
   const { data: session, status } = useSession({ required: true });
-  const [ userLanguages, setUserLanguages ] = useState([] as LanguageTasks);
-  const [ cldrLanguages, setCldrLanguages ] = useState([]);
+  const [ userLanguages, setUserLanguages ] = useState([] as LanguageTasks[]);
+  const [ cldrLanguages, setCldrLanguages ] = useState([] as LanguageDisplay[]);
   useEffect(() => {
     if (status == "loading") {
 
@@ -47,15 +47,19 @@ const Profile: NextPage = () => {
   }, [status]);
 
   const submit =  useCallback(() => {
+    if (!session) {
+      return;
+    }
+
     const userData = session.user;
     userData.languages = userLanguages;
     dispatch(updateUser(userData));
-  });
+  }, []);
   const addLanguage = () => {
     setUserLanguages(userLanguages.concat({
       language: "",
+      languageDisplay: cldrLanguages[0],
       tasks: [],
-      secondaryLangs: [],
     } as LanguageTasks));
   };
 
@@ -80,7 +84,7 @@ const Profile: NextPage = () => {
             label="email"
             autoComplete="off"
             spellCheck="false"
-            defaultValue={session.user.email}>
+            defaultValue={session?.user?.email}>
         </LabeledInput>
 
         <Divider />

@@ -8,8 +8,12 @@ import type { LanguageStats, TaskStats } from '@features/LanguageStats';
 
 const prisma = new PrismaClient();
 
-const taskModeMap = await getTaskModeMap(prisma);
-const taskCategoryMap = await getTaskCategoryMap(prisma);
+let taskModeMap: Map<number, TaskMode>;
+let taskCategoryMap: Map<number, TaskCategory>
+(async() => {
+  taskModeMap = await getTaskModeMap(prisma);
+  taskCategoryMap = await getTaskCategoryMap(prisma);
+})();
 
 const languageMap = allLanguages.reduce( (result, language) => {
   result.set(language.isoCode, language);
@@ -18,9 +22,9 @@ const languageMap = allLanguages.reduce( (result, language) => {
 
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<Array<LanguageStats>>
+  res: NextApiResponse<Array<TaskStats>>
 ) => {
-  const language = req.query.language;
+  const language = req.query.language as string;
   const taskStats = await prisma.taskMilestones.findMany({
         where: {
           primaryLang: language,
@@ -29,9 +33,9 @@ export default async (
       });
   const result = taskStats.map( (stats) => {
     return {
+      secondaryLang: languageMap.get(stats.secondaryLang),
       taskCategory: taskCategoryMap.get(stats.taskCategoryId),
       taskMode: taskModeMap.get(stats.taskModeId),
-      secondaryLang: languageMap.get(stats.secondaryLang),
       nextMilestone: stats.milestone,
       progress: stats.progress,
       milestoneType: stats.milestoneType

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import TrieSearch from 'trie-search';
+
+const TrieSearch = require('trie-search');
 
 import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
 import type { LanguageDisplay } from '@features/language';
@@ -49,7 +50,7 @@ allLanguages.forEach ( (language) => {
 // I don't fully understand how to work with NextJS request objects.  This is a
 // hack to ensure boolean params are returned correctly.  The more intuitive
 // conversions all do the wrong thing.
-const getBoolParam = (param, defaultValue) => {
+const getBoolParam = (param: string, defaultValue: boolean) => {
   if (param === undefined) {
     return defaultValue;
   }
@@ -64,12 +65,12 @@ export default async (
   res: NextApiResponse<Array<LanguageDisplay>>
 ) => {
   // Pre-process the query params.
-  const params = req.query as RequestParams;
+  const params = req.query;
 
   const languageQueries: Array<string> = params.languages?
-    params.languages.split(',') : [];
-  const cldr = getBoolParam(params.cldr, true);
-  const useCodes = getBoolParam(params.useCodes, false);
+    (params.languages as string).split(',') : [];
+  const cldr = getBoolParam(params.cldr as string, true);
+  const useCodes = getBoolParam(params.useCodes as string, false);
 
   // Get all matching languages.
   const languages = findAllLanguages(languageQueries, cldr, useCodes);
@@ -78,9 +79,9 @@ export default async (
 
 // Returns the matching languages as described above.
 const findAllLanguages = (
-  languageQueries,
+  languageQueries: string[],
   cldr: boolean,
-  useCodes
+  useCodes: boolean
 ) => {
   if (cldr) {
     return cldrLanguages;

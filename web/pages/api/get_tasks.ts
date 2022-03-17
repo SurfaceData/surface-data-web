@@ -7,22 +7,19 @@ import type { Task, TaskCategory, TaskMode } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
-const taskModeMap = await getTaskModeMap(prisma, 'shortName');
-const taskCategoryMap = await getTaskCategoryMap(prisma, 'shortName', true);
-
-interface RequestParams {
-  primary: string,
-  secondary: string,
-  category: string, 
-  mode: string, 
-}
+let taskModeMap: Map<string, TaskMode>;
+let taskCategoryMap: Map<string, TaskCategory>
+(async() => {
+  taskModeMap = await getTaskModeMap(prisma, 'shortName');
+  taskCategoryMap = await getTaskCategoryMap(prisma, 'shortName', true);
+})();
 
 async function fetchTasksFromAnnotations(
   userId: string,
   primary: string,
   secondary: string,
   taskCategory: TaskCategory,
-  taskMode: TaskMode) : Task[] {
+  taskMode: TaskMode) : Promise<Task[]> {
   const annotations = await prisma.annotations.findMany({
     take: 10,
     // Fetch annotations where the user hasn't given a rating.
@@ -67,7 +64,10 @@ async function fetchTasksFromContent(
   primary: string,
   secondary: string,
   taskCategory: TaskCategory,
-  taskMode: TaskMode) : Task[] {
+  taskMode: TaskMode) : Promise<Task[]> {
+  if (!taskCategory.modes) {
+    return [];
+  }
   const nextModeIndex = taskCategory.modes.findIndex( (m) => m.id === taskMode.id) + 1;
   const nextMode = taskCategory.modes[nextModeIndex];
 
@@ -100,18 +100,33 @@ async function fetchTasksFromContent(
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
+  if (!session || !session.userId) {
+    res.status(500);
+    return;
+  }
 
-  const { primary, secondary, category, mode } = req.query as RequestParams;
+  const primary = req.query['primary'] as string;
+  const secondary = req.query['secondary'] as string;
+  const category = req.query['category'] as string;
+  const mode = req.query['mode'] as string;
+
   const taskCategory = taskCategoryMap.get(category); 
   const taskMode = taskModeMap.get(mode); 
 
+  if (!taskCategory || !taskMode) {
+    res.status(500);
+    return;
+  }
+
   let tasks: Task[] = [];
+  const userId = session.userId as string;
+
   if (!taskMode.useContent) {
     tasks = await fetchTasksFromAnnotations(
-      session.userId, primary, secondary, taskCategory, taskMode);
+      userId, primary, secondary, taskCategory, taskMode);
   } else {
     tasks = await fetchTasksFromContent(
-      session.userId, primary, secondary, taskCategory, taskMode);
+      userId, primary, secondary, taskCategory, taskMode);
   }
 
   res.status(200).json(tasks);

@@ -11,6 +11,7 @@ export interface TaskMode {
   shortName?: string,
   fullName?: string,
   description?: string,
+  useContent?: boolean,
 }
 
 export interface TaskCategory {

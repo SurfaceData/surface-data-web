@@ -2,29 +2,36 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { PrismaClient } from "@prisma/client";
 
+import type { LanguageTasks } from '@features/tasks';
+
 const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
-  const languages = req.body.languages;
+  if (!session || !session.userId) {
+    res.status(500);
+    return;
+  }
+  const userId = session.userId as string;
+  const languages: LanguageTasks[] = req.body.languages;
 
   const languageCodes = languages.map( (item) => item.languageDisplay.isoCode);
 
   await prisma.userLanguages.upsert({
     where: {
-      id: session.userId,
+      id: userId,
     },
     update: {
       language: languageCodes,
     },
     create: {
-      id: session.userId,
+      id: userId,
       language: languageCodes,
     }
   });
   await prisma.userLanguageTasks.deleteMany({
     where: {
-      id: session.userId,
+      id: userId,
     }
   });
   await languages.forEach( async (item) => {
@@ -36,7 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await prisma.userLanguageTasks.upsert({
       where: {
         id_primaryLang: {
-          id: session.userId,
+          id: userId,
           primaryLang: langCode,
         }
       },
@@ -46,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         secondaryLang: secondaryLangs,
       },
       create: {
-        id: session.userId,
+        id: userId,
         primaryLang: langCode,
         taskCategories: taskCategories,
         taskModes: taskModes,

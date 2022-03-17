@@ -4,10 +4,11 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 import MainLayout from '@components/MainLayout';
+import type { Task } from '@features/tasks';
 
 const VerifyTranslate: NextPage = () => {
   const [isLoading, setLoading] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([] as Task[]);
   const { data: session, status } = useSession({ required: true });
 
   const router = useRouter();
@@ -38,7 +39,7 @@ const VerifyTranslate: NextPage = () => {
         tasks.map( (task) => (
           <div key={task.id}>
             <div>
-              {task.secondaryText} ->
+              {task.secondaryText} to
               {task.primaryText}
             </div>
           </div>
