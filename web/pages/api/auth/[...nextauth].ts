@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
 import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
-import { Language, LanguageDisplay  } from '@features/language';
+import { LanguageTasks } from '@features/tasks';
 import type { Task, TaskCategory, TaskMode } from '@features/tasks';
 import { TaskType, TaskLabels, stringToTaskType } from '@features/tasks';
 
@@ -75,7 +75,7 @@ const fetchLanguages = async (user) => {
       language: lang,
       languageDisplay: languageMap.get(lang),
       tasks: langToTasks[lang],
-    } as Language;
+    } as LanguageTasks;
   });
   return r;
 }

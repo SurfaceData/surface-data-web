@@ -1,8 +1,9 @@
 import { TaskCategory, TaskMode, TaskType } from '@features/tasks';
+import type { LanguageDisplay } from '@features/language';
 
 export interface LanguageStats {
-  // A BCP-47 Language Code
-  language: string,
+  // The full language details,
+  language: LanguageDisplay,
 
   // An Array of statistics for each task requested.
   taskStats: TaskStats[],

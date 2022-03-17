@@ -2,15 +2,16 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 
 import { FilteredCombobox } from '@components/ui/FilteredCombobox';
-import type { LanguageDisplay } from '@features/languages';
+import type { LanguageDisplay } from '@features/language';
+import type { LanguageTasks } from '@features/tasks';
 import { useIsMounted } from '@hooks/useIsMounted';
 
 interface LanguageComboboxProps {
-  locale: Language,
+  locale: LanguageTasks,
   languageIndex: number,
-  allLanguages: Language[],
+  allLanguages: LanguageTasks[],
   cldrlanguages: LanguageDisplay[],
-  setUserLanguages: (locale: Language[]) => void;
+  setUserLanguages: (locale: LanguageTasks[]) => void;
 }
 export const LanguageCombobox = ({
   locale,
@@ -21,13 +22,13 @@ export const LanguageCombobox = ({
 }:LanguageComboboxProps) => {
   const isMounted = useIsMounted();
 
-  const handleLanguageSelection= (language) => {
+  const handleLanguageSelection= (language: LanguageDisplay) => {
     const newLanguages = allLanguages.slice();
     newLanguages[languageIndex] = {
       language: language.isoCode,
       languageDisplay: language,
       tasks: [],
-    } as Language;
+    } as LanguageTasks;
     setUserLanguages(newLanguages);
   };
 

@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import type { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -11,8 +12,12 @@ const Container = styled.div`
   margin: 48px 24px;
 `;
 
-const AuthenticatedHome = ({session}) => {
-  const [languageStats, setLanguageStats] = useState([]);
+interface AuthenticatedHomeProps {
+  session?: Session,
+}
+
+const AuthenticatedHome = ({session}: AuthenticatedHomeProps) => {
+  const [languageStats, setLanguageStats] = useState([] as LanguageStats[]);
   const [isLoading, setLoading] = useState(false);
 
   useEffect( () => {
@@ -22,7 +27,7 @@ const AuthenticatedHome = ({session}) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(session.user.languages)
+        body: JSON.stringify(session?.user?.languages || [])
     })
       .then((res) => res.json())
       .then((data) => {

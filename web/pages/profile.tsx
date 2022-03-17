@@ -14,7 +14,7 @@ import { Button } from '@components/ui/Button';
 import { Divider } from '@components/ui/Divider';
 import { LabeledInput } from '@components/ui/LabeledInput';
 import { SectionHeader } from '@components/ui/SectionHeader';
-import { LanguageTasks } from '@features/tasks';
+import type { LanguageTasks } from '@features/tasks';
 import { updateUser } from '@features/userSlice';
 
 const Container = styled.div`
@@ -31,7 +31,7 @@ const InfoContainer = styled.div`
 const Profile: NextPage = () => {
   const dispatch = useDispatch();
   const { data: session, status } = useSession({ required: true });
-  const [ userLanguages, setUserLanguages ] = useState<string[]>([]);
+  const [ userLanguages, setUserLanguages ] = useState([] as LanguageTasks);
   const [ cldrLanguages, setCldrLanguages ] = useState([]);
   useEffect(() => {
     if (status == "loading") {
