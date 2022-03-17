@@ -24,6 +24,7 @@ async function fetchTasksFromAnnotations(
   taskCategory: TaskCategory,
   taskMode: TaskMode) : Task[] {
   const annotations = await prisma.annotations.findMany({
+    take: 10,
     // Fetch annotations where the user hasn't given a rating.
     where: {
       primaryLang: primary,
@@ -71,6 +72,7 @@ async function fetchTasksFromContent(
   const nextMode = taskCategory.modes[nextModeIndex];
 
   const content = await prisma.content.findMany({
+    take: 10,
     // Fetch annotations where the user hasn't given a rating.
     where: {
       language: secondary,
