@@ -28,35 +28,28 @@ const infoMap = LanguageData.reduce( (result, entry) => {
 
 
 try {
-  console.log('Clearing out all old data');
-  await prisma.ratings.deleteMany({});
-  await prisma.annotations.deleteMany({});
-  await prisma.content.deleteMany({});
-
   console.log('Creating Task Categories and Modes');
-  await prisma.taskCategory.deleteMany({});
-  await prisma.taskMode.deleteMany({});
   await prisma.taskMode.createMany({
     data: [
       {
         id: 1, 
         shortName: 'Create', 
         fullName: 'Create', 
-        description: 'Create new content' 
+        description: 'Create new content',
         useContent: true,
       },
       {
         id: 2, 
         shortName: 'Verify',
         fullName: 'Verify', 
-        description: 'Verify that content meets quality guidelines' 
+        description: 'Verify that content meets quality guidelines',
         useContent: false,
       },
       {
         id: 3,
         shortName: 'Rate',
         fullName: 'Rate',
-        description: 'Rate the accuracy of an annotation'
+        description: 'Rate the accuracy of an annotation',
         useContent: false,
       },
     ],
@@ -137,7 +130,6 @@ try {
   }
 
   console.log('Creating milestones for all languages');
-  await prisma.taskMilestones.deleteMany({});
   const counts = await prisma.content.groupBy({
     by: ['language'],
   });
