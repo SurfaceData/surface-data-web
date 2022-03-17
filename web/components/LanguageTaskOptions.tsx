@@ -1,8 +1,10 @@
+import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { CheckboxCard } from '@components/ui/CheckboxCard';
-import { LanguageTasks } from '@features/tasks';
+import type { TaskStats } from '@features/LanguageStats';
+import type { LanguageTasks, TaskMeta } from '@features/tasks';
 
 const GridContainer = styled.div`
   display: flex;
@@ -15,7 +17,7 @@ const SizedCheckboxCard = styled(CheckboxCard)`
 `;
 
 interface LanguageTaskOptionsProps {
-  locale: Language,
+  locale: LanguageTasks,
   languageIndex: number,
   allLanguages: LanguageTasks[],
   setUserLanguages: (locale: LanguageTasks[]) => void;
@@ -27,7 +29,7 @@ const LanguageTaskOptions = ({
   allLanguages,
   setUserLanguages,
 }: LanguageTaskOptionsProps) => {
-  const [languageTasks, setLanguageTasks] = useState([]);
+  const [languageTasks, setLanguageTasks] = useState([] as TaskStats[]);
   useEffect( () => {
     if (!locale.languageDisplay) {
       return;
@@ -38,17 +40,19 @@ const LanguageTaskOptions = ({
       .then((data) => setLanguageTasks(data));
   }, []);
 
-  const handleChange = (e, task) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    task: TaskStats) => {
     const newLanguages = allLanguages.slice();
     const langTasks = newLanguages[languageIndex].tasks;
 
-    const isChecked = e.target.checked;
+    const isChecked = e.target.checked || false;
     if (isChecked) {
       newLanguages[languageIndex].tasks = langTasks.concat({
         taskCategory: task.taskCategory,
         taskMode: task.taskMode,
         secondaryLang: task.secondaryLang.isoCode,
-      });
+      } as TaskMeta);
     } else {
       const taskIndex = langTasks.findIndex(t=>
         t.taskCategory.id === task.taskCategory.id &&
@@ -61,13 +65,7 @@ const LanguageTaskOptions = ({
     setUserLanguages(newLanguages);
   };
 
-  const removeTask = (index) => {
-    const newLanguages = allLanguages.slice();
-    const langTasks = newLanguages[languageIndex].tasks;
-    langTasks.splice(index, 1);
-    setUserLanguages(newLanguages);
-  };
-  const isTaskSelected = (task) => {
+  const isTaskSelected = (task: TaskStats) => {
     const tasks = allLanguages[languageIndex].tasks;
     return -1 !== tasks.findIndex(t =>
       t.taskCategory.id === task.taskCategory.id &&
@@ -75,7 +73,7 @@ const LanguageTaskOptions = ({
       t.secondaryLang === task.secondaryLang.isoCode
     );
   }
-  const getTaskTitle = (task) => {
+  const getTaskTitle = (task: TaskStats) => {
     if (locale.languageDisplay.isoCode ===
         task.secondaryLang.isoCode) {
       return `${task.taskMode.fullName} | ${task.taskCategory.fullName}`;
@@ -91,8 +89,8 @@ const LanguageTaskOptions = ({
             key={index}
             title={getTaskTitle(task)}
             checked={isTaskSelected(task)}
-            description={task.taskCategory.description}
-            onChange={ (e) => handleChange(e, task) }
+            description={task.taskCategory?.description || ''}
+            onChange={(e) => handleChange(e, task)}
           />
         ))
       }

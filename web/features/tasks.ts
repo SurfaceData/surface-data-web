@@ -24,11 +24,11 @@ export interface TaskCategory {
 export interface LanguageTasks {
   language: string,
   languageDisplay: LanguageDisplay,
-  tasks: Task[],
+  tasks: TaskMeta[],
 }
 
-export interface Task {
+export interface TaskMeta {
   taskCategory: TaskCategory,
-  taskMode: taskMode,
-  secondaryLang: LanguageDisplay,
+  taskMode: TaskMode,
+  secondaryLang: string,
 }

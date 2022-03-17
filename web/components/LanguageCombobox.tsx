@@ -22,7 +22,7 @@ export const LanguageCombobox = ({
 }:LanguageComboboxProps) => {
   const isMounted = useIsMounted();
 
-  const handleLanguageSelection= (language: LanguageDisplay) => {
+  const handleLanguageSelection = (language: LanguageDisplay) => {
     const newLanguages = allLanguages.slice();
     newLanguages[languageIndex] = {
       language: language.isoCode,

@@ -1,5 +1,5 @@
-import { TaskCategory, TaskMode, TaskType } from '@features/tasks';
 import type { LanguageDisplay } from '@features/language';
+import type { TaskCategory, TaskMode } from '@features/tasks';
 
 export interface LanguageStats {
   // The full language details,
@@ -25,6 +25,7 @@ export interface LanguageInfo {
 
 export interface TaskStats {
   // Task type metadata.
+  secondaryLang: LanguageDisplay,
   taskCategory: TaskCategory,
   taskMode: TaskMode,
 

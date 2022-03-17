@@ -66,10 +66,10 @@ interface FilteredComboboxProps {
   placeholder: string,
   selectedItem: any,
   items: any[],
-  itemToKey: (any) => string,
-  itemToName: (any) => string,
-  filterItems: (string) => Promise<any[]>,
-  onSelectedItemChange: (string) => void,
+  itemToKey: (arg0: any) => string,
+  itemToName: (arg0: any) => string,
+  filterItems: (arg0: string | undefined) => Promise<any[]>,
+  onSelectedItemChange: (arg0: any) => void,
 }
 
 export const FilteredCombobox = ({

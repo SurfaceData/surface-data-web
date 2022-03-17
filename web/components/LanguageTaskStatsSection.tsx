@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 import { Button } from '@components/ui/Button';
 import { ProgressBar } from '@components/ui/ProgressBar';
-import { TaskLabels } from '@features/tasks';
+import type { LanguageDisplay } from '@features/language';
 import type { TaskStats } from '@features/LanguageStats';
 
 interface LanguageTaskStatsSectionProps {
-  language: string,
+  language: LanguageDisplay,
   stats: TaskStats,
 }
 
@@ -85,7 +85,7 @@ const LanguageTaskStatsSection = ({
 }: LanguageTaskStatsSectionProps) => {
   const url =
     `/${stats.taskMode.shortName}/${stats.taskCategory.shortName}?primary=${language.isoCode}&secondary=${stats.secondaryLang.isoCode}`;
-  const getTaskTitle = (task) => {
+  const getTaskTitle = (task: TaskStats) => {
     if (language.isoCode ===
         task.secondaryLang.isoCode) {
       return `${task.taskMode.fullName} | ${task.taskCategory.fullName}`;
@@ -109,8 +109,8 @@ const LanguageTaskStatsSection = ({
             <MilestoneLabel>{stats.milestoneType}</MilestoneLabel>
             <MilestoneStats>{stats.progress} / {stats.nextMilestone}</MilestoneStats>
           </MilestoneSummary>
-          <ProgressBar progress={100.0 * stats.progress / stats.nextMilestone}>
-          </ProgressBar>
+          <ProgressBar
+            progress={100.0 * stats.progress / stats.nextMilestone} />
         </MilestoneContainer>
       </ContentContainer>
 

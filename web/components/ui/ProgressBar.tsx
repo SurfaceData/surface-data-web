@@ -7,7 +7,9 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Bar = styled.div`
+const Bar = styled.div<{
+  progress: number,
+}>`
   height: 100%;
   box-sizing: border-box;
   display: flex;
@@ -18,7 +20,11 @@ const Bar = styled.div`
   width: ${props => props.progress + "%"};
 `;
 
-export const ProgressBar = ({ progress }) => {
+interface ProgressBarProps {
+  progress: number,
+}
+
+export const ProgressBar = ({ progress }: ProgressBarProps) => {
   return (
     <Container>
       <Bar progress={progress} />

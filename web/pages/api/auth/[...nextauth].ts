@@ -1,18 +1,21 @@
 import NextAuth from 'next-auth';
+import type { User } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
 import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
 import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
-import { LanguageTasks } from '@features/tasks';
-import type { Task, TaskCategory, TaskMode } from '@features/tasks';
-import { TaskType, TaskLabels, stringToTaskType } from '@features/tasks';
+import type { LanguageTasks, TaskMeta, TaskCategory, TaskMode } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
-const taskModeMap = await getTaskModeMap(prisma);
-const taskCategoryMap = await getTaskCategoryMap(prisma);
+let taskModeMap: Map<number, TaskMode>;
+let taskCategoryMap: Map<number, TaskCategory>
+(async() => {
+  taskModeMap = await getTaskModeMap(prisma);
+  taskCategoryMap = await getTaskCategoryMap(prisma);
+})();
 
 const languageMap = allLanguages.reduce( (result, language) => {
   result.set(language.isoCode, language);
@@ -40,7 +43,7 @@ export default NextAuth({
   },
 });
 
-const fetchLanguages = async (user) => {
+const fetchLanguages = async (user: User) => {
   const userLanguages = await prisma.userLanguages.findUnique({
     where: {
       id: user.id,
@@ -55,26 +58,25 @@ const fetchLanguages = async (user) => {
       primaryLang: { in: userLanguages.language },
     }
   });
-  const langToTasks = userLanguageTasks.reduce( (res, item) => {
-    return {
-      ...res,
-      [item.primaryLang]: item.taskCategories.map( (categoryId, i) => {
-        const category = taskCategoryMap.get(categoryId);
-        const mode = taskModeMap.get(item.taskModes[i]);
-        const secondaryLang = item.secondaryLang[i];
-        return {
-          taskCategory: category,
-          taskMode: mode,
-          secondaryLang: secondaryLang,
-        } as Task
-      }),
-    };
-  }, {});
+  const langToTasks = userLanguageTasks.reduce( (result, item) => {
+    const taskMetaList = item.taskCategories.map( (categoryId, i) => {
+      const category = taskCategoryMap.get(categoryId);
+      const mode = taskModeMap.get(item.taskModes[i]);
+      const secondaryLang = item.secondaryLang[i];
+      return {
+        taskCategory: category,
+        taskMode: mode,
+        secondaryLang: secondaryLang,
+      } as TaskMeta
+    });
+    result.set(item.primaryLang, taskMetaList);
+    return result;
+  }, new Map<string, TaskMeta[]>());
   const r = userLanguages.language.map( (lang) => {
     return {
       language: lang,
       languageDisplay: languageMap.get(lang),
-      tasks: langToTasks[lang],
+      tasks: langToTasks.get(lang),
     } as LanguageTasks;
   });
   return r;

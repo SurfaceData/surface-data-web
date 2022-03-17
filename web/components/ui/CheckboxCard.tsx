@@ -5,8 +5,8 @@ interface Props {
   title: string,
   description: string,
   checked: boolean,
-  className: string,
-  onChange: () => void,
+  className?: string,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
 const Container = styled.div`

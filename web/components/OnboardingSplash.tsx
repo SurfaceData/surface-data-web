@@ -56,8 +56,8 @@ const OnboardingSplash = () => {
         <Input
             name="username"
             type="text"
-            autocomplete="off"
-            spellcheck="false"
+            autoComplete="off"
+            spellCheck="false"
             placeholder="GitHub Username">
         </Input>
         <Button>

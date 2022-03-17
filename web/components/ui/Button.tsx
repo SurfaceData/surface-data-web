@@ -1,6 +1,9 @@
 import styled, { css } from 'styled-components';
 
-export const Button = styled.button`;
+export const Button = styled.button<{
+  outline?: boolean,
+  rounded?: boolean
+}>`;
   position: relative;
   box-sizing: border-box;
   padding: .5rem 1rem;
