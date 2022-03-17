@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 
 import MainLayout from '@components/MainLayout';
 
-const Contribute: NextPage = () => {
+const CreateTranslate: NextPage = () => {
   const [isLoading, setLoading] = useState(false);
   const [tasks, setTasks] = useState([]);
   const { data: session, status } = useSession({ required: true });
@@ -20,8 +20,8 @@ const Contribute: NextPage = () => {
       return;
     }
 
-    const { sl, tl, annotType } = router.query;
-    const url = `/api/available_tasks?sl=${sl}&tl=${tl}&annotType=${annotType}`;
+    const { primary, secondary } = router.query;
+    const url = `/api/get_tasks?primary=${primary}&secondary=${secondary}&category=Translate&mode=Create`;
 
     setLoading(true);
     fetch(url)
@@ -32,17 +32,13 @@ const Contribute: NextPage = () => {
       });
   }, [status, router]);
 
-
   return (
     <MainLayout>
       {
         tasks.map( (task) => (
           <div key={task.id}>
             <div>
-              {task.source.text}
-            </div>
-            <div>
-              {task.text}
+              {task.secondaryText}
             </div>
           </div>
         ))
@@ -51,4 +47,4 @@ const Contribute: NextPage = () => {
   );
 }
 
-export default Contribute;
+export default CreateTranslate;

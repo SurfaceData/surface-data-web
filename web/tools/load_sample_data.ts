@@ -66,8 +66,8 @@ const insertRating = async (annotation, user, rating) => {
 const insertMilestone = async (
   sourceLang,
   targetLang,
-  taskModeId,
   taskCategoryId,
+  taskModeId,
   milestoneType,
   milestone,
   progress
@@ -118,21 +118,21 @@ const insertLanguageFunFact = async(language, funfact) => {
         id: 1, 
         shortName: 'Create', 
         fullName: 'Create', 
-        description: 'Create new content' 
+        description: 'Create new content' ,
         useContent: true,
       },
       {
         id: 2, 
         shortName: 'Verify',
         fullName: 'Verify', 
-        description: 'Verify that content meets quality guidelines' 
+        description: 'Verify that content meets quality guidelines',
         useContent: false,
       },
       {
         id: 3,
         shortName: 'Rate',
         fullName: 'Rate',
-        description: 'Rate the accuracy of an annotation'
+        description: 'Rate the accuracy of an annotation',
         useContent: false,
       },
     ],
