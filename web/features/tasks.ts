@@ -6,6 +6,12 @@ export interface Task {
   primaryText?: string,
 }
 
+export interface TaskComponentProps {
+  task: Task,
+  primary: string,
+  secondary: string,
+}
+
 export interface TaskMode {
   id: number,
   shortName?: string,
