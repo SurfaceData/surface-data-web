@@ -40,7 +40,7 @@ const RateQualityTag: NextPage = () => {
           <div key={task.id}>
             <div>
               Does <b>{task.primaryText}</b> apply to 
-              "{task.secondaryText}"
+              <i>{task.secondaryText}</i>
             </div>
           </div>
         ))

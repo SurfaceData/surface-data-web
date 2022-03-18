@@ -60,7 +60,7 @@ const getBoolParam = (param: string, defaultValue: boolean) => {
   return false;
 }
 
-export default async (
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Array<LanguageDisplay>>
 ) => {
@@ -91,3 +91,5 @@ const findAllLanguages = (
   }
   return languageQueries.flatMap( (query) => nameTrie.search(query));
 }
+
+export default handler;

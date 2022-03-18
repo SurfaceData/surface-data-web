@@ -6,7 +6,7 @@ import type { LanguageTasks } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
   if (!session || !session.userId) {
     res.status(500);
@@ -63,3 +63,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
   res.status(200).end();
 }
+
+export default handler;

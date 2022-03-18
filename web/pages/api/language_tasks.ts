@@ -20,7 +20,7 @@ const languageMap = allLanguages.reduce( (result, language) => {
   return result;
 }, new Map());
 
-export default async (
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Array<TaskStats>>
 ) => {
@@ -43,3 +43,5 @@ export default async (
   });
   res.status(200).json(result);
 }
+
+export default handler;

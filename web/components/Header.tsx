@@ -41,7 +41,7 @@ const Header = () => {
           </a>
         </Link>
 
-        <Link href="/profile">
+        <Link href="/profile" passHref>
           <StyledProfile
               alt="Your Profile"
               src={session.user.image}

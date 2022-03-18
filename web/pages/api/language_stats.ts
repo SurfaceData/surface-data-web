@@ -23,7 +23,7 @@ let taskCategoryMap: Map<number, TaskCategory>
  *   - LanguageFunFacts
  *   - TaskMilestones
  */
-export default async (
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Array<LanguageStats>>
 ) => {
@@ -132,3 +132,5 @@ export default async (
   // Done~
   res.status(200).json(languageStats);
 }
+
+export default handler;

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { CheckboxCard } from '@components/ui/CheckboxCard';
 import type { TaskStats } from '@features/LanguageStats';
+import type { } from '@features/LanguageStats';
 import type { LanguageTasks, TaskMeta } from '@features/tasks';
 
 const GridContainer = styled.div`
@@ -38,7 +39,7 @@ const LanguageTaskOptions = ({
     fetch(`/api/language_tasks?language=${locale.languageDisplay.isoCode}`)
       .then((res) => res.json())
       .then((data) => setLanguageTasks(data));
-  }, []);
+  }, [locale]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,

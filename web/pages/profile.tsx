@@ -44,7 +44,7 @@ const Profile: NextPage = () => {
       return;
     }
     setUserLanguages(session.user.languages);
-  }, [status]);
+  }, [status, session]);
 
   const submit =  useCallback(() => {
     if (!session) {
@@ -54,7 +54,8 @@ const Profile: NextPage = () => {
     const userData = session.user;
     userData.languages = userLanguages;
     dispatch(updateUser(userData));
-  }, []);
+  }, [dispatch, session, userLanguages]);
+
   const addLanguage = () => {
     setUserLanguages(userLanguages.concat({
       language: "",

@@ -34,7 +34,7 @@ const AuthenticatedHome = ({session}: AuthenticatedHomeProps) => {
         setLanguageStats(data);
         setLoading(false);
       });
-  }, []);
+  }, [session]);
 
   return (
     <Container>
