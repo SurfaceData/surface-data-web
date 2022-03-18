@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     container_name: surface-web
-    command: bash -c "npm run init && npm run dev"
+    command: bash -c "npm run init && npm run start"
     ports:
       - 3000:3000
     depends_on:
