@@ -7,12 +7,8 @@ import type { Task, TaskCategory, TaskMode } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
-let taskModeMap: Map<string, TaskMode>;
-let taskCategoryMap: Map<string, TaskCategory>
-(async() => {
-  taskModeMap = await getTaskModeMap(prisma, 'shortName');
-  taskCategoryMap = await getTaskCategoryMap(prisma, 'shortName', true);
-})();
+const taskModeMap = await getTaskModeMap(prisma, 'shortName');
+const taskCategoryMap = await getTaskCategoryMap(prisma, 'shortName', true);
 
 async function fetchTasksFromAnnotations(
   userId: string,

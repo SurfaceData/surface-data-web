@@ -7,12 +7,8 @@ import type { LanguageTasks, TaskCategory, TaskMode } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
-let taskModeMap: Map<number, TaskMode>;
-let taskCategoryMap: Map<number, TaskCategory>
-(async() => {
-  taskModeMap = await getTaskModeMap(prisma);
-  taskCategoryMap = await getTaskCategoryMap(prisma);
-})();
+const taskModeMap = await getTaskModeMap(prisma);
+const taskCategoryMap = await getTaskCategoryMap(prisma);
 
 /**
  * Returns an array of LanguageStats given a requested list of languages and

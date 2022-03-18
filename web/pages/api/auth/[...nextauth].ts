@@ -10,12 +10,8 @@ import type { LanguageTasks, TaskMeta, TaskCategory, TaskMode } from '@features/
 
 const prisma = new PrismaClient();
 
-let taskModeMap: Map<number, TaskMode>;
-let taskCategoryMap: Map<number, TaskCategory>
-(async() => {
-  taskModeMap = await getTaskModeMap(prisma);
-  taskCategoryMap = await getTaskCategoryMap(prisma);
-})();
+const taskModeMap = await getTaskModeMap(prisma);
+const taskCategoryMap = await getTaskCategoryMap(prisma);
 
 const languageMap = allLanguages.reduce( (result, language) => {
   result.set(language.isoCode, language);
