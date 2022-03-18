@@ -4,7 +4,7 @@ import styled from 'styled-components';
 interface Props {
   title: string,
   description: string,
-  checked: boolean,
+  checked?: boolean,
   className?: string,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 };

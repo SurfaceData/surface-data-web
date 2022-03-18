@@ -64,12 +64,12 @@ const ListItem = styled.li`
 interface FilteredComboboxProps {
   label: string,
   placeholder: string,
-  selectedItem: any,
+  selectedItem?: any,
   items: any[],
   itemToKey: (arg0: any) => string,
   itemToName: (arg0: any) => string,
   filterItems: (arg0: string | undefined) => Promise<any[]>,
-  onSelectedItemChange: (arg0: any) => void,
+  onSelectedItemChange?: (arg0: any) => void,
 }
 
 export const FilteredCombobox = ({

@@ -24,7 +24,7 @@ export const Default = () => (
     filterItems={ (inputValue) => {
       return new Promise( (done) => {
         setTimeout(() => {
-          const query = inputValue.toLowerCase();
+          const query = inputValue?.toLowerCase() || '';
           const newItems = items.filter(
             (item) => item.name.toLowerCase().startsWith(query));
           done(newItems);

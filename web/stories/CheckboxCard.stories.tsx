@@ -8,21 +8,21 @@ export default {
   component: CheckboxCard,
 } as ComponentMeta<typeof CheckboxCard>;
 
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  console.log(e.target.checked);
+};
+
 export const Default = () => (
   <CheckboxCard
       title="Tagging"
       description="Tag things for quality"
-      onChange={ (e) => { console.log(e.target.checked); }}>
-    Label
-  </CheckboxCard>
+      onChange={handleChange} />
 );
 
 export const CheckedInitial = () => (
   <CheckboxCard
       title="Translation"
       description="Translate Content"
-      checked="true"
-      onChange={ (e) => { console.log(e.target.checked); }}>
-    Label
-  </CheckboxCard>
+      checked={true}
+      onChange={handleChange} />
 );
