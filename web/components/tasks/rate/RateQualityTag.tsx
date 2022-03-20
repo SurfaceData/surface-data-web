@@ -1,10 +1,13 @@
 import type { FunctionComponent } from 'react';
+
+import { SkipButton } from '@components/tasks/SkipButton';
 import type { TaskComponentProps } from '@features/tasks';
 
 export const RateQualityTag: FunctionComponent<TaskComponentProps> = ({
   task,
   primary,
-  secondary
+  secondary,
+  onDone,
 }) => {
   return (
     <div>
@@ -19,6 +22,9 @@ export const RateQualityTag: FunctionComponent<TaskComponentProps> = ({
       </div>
       <div>
         <div>slider goes here</div>
+      </div>
+      <div>
+        <SkipButton onClick={onDone}/>
       </div>
     </div>
   );

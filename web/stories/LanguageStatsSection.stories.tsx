@@ -5,7 +5,7 @@ import LanguageStatsSection from '@components/LanguageStatsSection';
 import { Chip } from '@components/ui/Chip';
 import type { LanguageStats } from '@features/LanguageStats';
 
-const SAMPLE_STATS_EN = require('@common/sample-langstats-en.json') as LanguageStats;
+const SAMPLE_STATS_EN = require('./sample-langstats-en.json') as LanguageStats;
 
 export default {
   title: 'Surface/LanguageStatsSection',

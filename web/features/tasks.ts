@@ -10,6 +10,7 @@ export interface TaskComponentProps {
   task: Task,
   primary: string,
   secondary: string,
+  onDone: () => void,
 }
 
 export interface TaskMode {
@@ -19,6 +20,8 @@ export interface TaskMode {
   description?: string,
   useContent?: boolean,
 }
+
+export type TaskState = 'done' | 'skipped' | 'active' | 'inactive';
 
 export interface TaskCategory {
   id: number,

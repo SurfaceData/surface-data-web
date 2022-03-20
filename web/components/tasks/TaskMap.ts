@@ -1,4 +1,7 @@
 import type { FunctionComponent } from 'react';
+import type { IconType } from 'react-icons';
+import { RiQuestionnaireFill, RiTranslate } from 'react-icons/ri';
+
 import type { TaskComponentProps } from '@features/tasks';
 import { InvalidTask } from '@components/tasks/InvalidTask';
 import { CreateQualityTag } from '@components/tasks/create/CreateQualityTag';
@@ -14,6 +17,10 @@ interface ModeMap {
   [key: string]: CategoryMap,
 }
 
+interface CategoryIconMap {
+  [key: string]: IconType,
+}
+
 const TaskMap = {
   'Create': {
     'QualityTag': CreateQualityTag,
@@ -27,6 +34,11 @@ const TaskMap = {
   } as CategoryMap,
 } as ModeMap;
 
+const TaskIconMap = {
+  'QualityTag': RiQuestionnaireFill,
+  'Translate': RiTranslate,
+} as CategoryIconMap;
+
 function getTaskComponent(taskMode: string, taskCategory: string) {
   const categoryMap = TaskMap[taskMode];
   if (!categoryMap) {
@@ -39,5 +51,9 @@ function getTaskComponent(taskMode: string, taskCategory: string) {
   return component;
 }
 
-export { getTaskComponent } 
+function getTaskIcon(taskCategory: string) {
+  return TaskIconMap[taskCategory];
+}
+
+export { getTaskComponent, getTaskIcon } 
 export default TaskMap;
