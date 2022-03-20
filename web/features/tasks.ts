@@ -8,8 +8,10 @@ export interface Task {
 
 export interface TaskComponentProps {
   task: Task,
-  primary: string,
-  secondary: string,
+  category: TaskCategory,
+  mode: TaskMode,
+  primary: LanguageDisplay,
+  secondary: LanguageDisplay,
   onDone: () => void,
 }
 
@@ -41,4 +43,10 @@ export interface TaskMeta {
   taskCategory: TaskCategory,
   taskMode: TaskMode,
   secondaryLang: string,
+  primaryLang?: string,
+}
+
+export interface GetTaskResponse {
+  taskMeta: TaskMeta,
+  tasks: Task[],
 }

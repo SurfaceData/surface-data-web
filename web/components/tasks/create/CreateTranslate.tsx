@@ -13,7 +13,7 @@ export const CreateTranslate: FunctionComponent<TaskComponentProps> = ({
   return (
     <div>
       <div>
-        Translate the following from {primary} to {secondary}
+        Translate the following to {primary.cldrName} from {secondary.cldrName}
       </div>
       <div>
         {task.secondaryText}

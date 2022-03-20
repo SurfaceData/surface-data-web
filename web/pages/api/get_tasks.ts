@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react';
 import { PrismaClient } from "@prisma/client";
 
 import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
-import type { Task, TaskCategory, TaskMode } from '@features/tasks';
+import type { GetTaskResponse, Task, TaskCategory, TaskMeta, TaskMode } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
@@ -24,7 +24,7 @@ async function fetchTasksFromAnnotations(
       taskCategoryId: taskCategory.id,
       taskModeId: taskMode.id,
       source: {
-          language: secondary,
+        language: secondary,
       },
       ratings: {
         none: {
@@ -77,6 +77,9 @@ async function fetchTasksFromContent(
           primaryLang: primary,
           taskCategoryId: taskCategory.id,
           taskModeId: nextMode.id,
+          author: {
+            id: userId,
+          }
         }
       }
     },
@@ -94,7 +97,9 @@ async function fetchTasksFromContent(
   });
 }
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<GetTaskResponse>) => {
   const session = await getSession({ req });
   if (!session || !session.userId) {
     res.status(500);
@@ -125,7 +130,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       userId, primary, secondary, taskCategory, taskMode);
   }
 
-  res.status(200).json(tasks);
+  res.status(200).json({
+    tasks: tasks,
+    taskMeta: {
+      taskCategory: taskCategory,
+      taskMode: taskMode,
+      primaryLang: primary,
+      secondaryLang: secondary,
+    } as TaskMeta
+  } as GetTaskResponse);
   return;
 }
 

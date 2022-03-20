@@ -48,6 +48,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   ratings       Ratings[]
+  annotations   Annotations[]
 }
 
 /// Maps User Ids to BCP-47 Language Codes.
@@ -121,6 +122,9 @@ model Annotations {
   createdAt      DateTime @default(now())
 
   ratings        Ratings[]
+
+  author         User? @relation(fields: [authorId], references: [id])
+  authorId       String? 
 }
 
 model Ratings {

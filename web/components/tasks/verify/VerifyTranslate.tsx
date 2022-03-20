@@ -13,7 +13,7 @@ export const VerifyTranslate: FunctionComponent<TaskComponentProps> = ({
   return (
     <div>
       <div>
-        Is the {primary} translation correct for the {secondary} prompt
+        Is the {primary.cldrName} translation correct for the {secondary.cldrName} prompt
       </div>
       <div>
         {task.primaryText}

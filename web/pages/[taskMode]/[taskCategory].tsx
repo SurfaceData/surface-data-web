@@ -8,7 +8,8 @@ import styled from 'styled-components';
 import MainLayout from '@components/MainLayout';
 import { ActiveTaskPill } from '@components/tasks/ActiveTaskPill';
 import { getTaskComponent, getTaskIcon } from '@components/tasks/TaskMap';
-import type { Task, TaskState } from '@features/tasks';
+import type { LanguageDisplay } from '@features/language';
+import type { Task, TaskCategory, TaskMode, TaskState } from '@features/tasks';
 
 const IndexContainer = styled.div`
   display: flex;
@@ -27,10 +28,10 @@ const TaskContainer = styled.div`
 
 const CreatePage: NextPage = () => {
   const [isLoading, setLoading] = useState(true);
-  const [taskCategory, setTaskCategory] = useState('');
-  const [taskMode, setTaskMode] = useState('');
-  const [primary, setPrimary] = useState('');
-  const [secondary, setSecondary] = useState('');
+  const [taskCategory, setTaskCategory] = useState<TaskCategory | null>(null);
+  const [taskMode, setTaskMode] = useState<TaskMode | null>(null);
+  const [primary, setPrimary] = useState<LanguageDisplay | null>(null);
+  const [secondary, setSecondary] = useState<LanguageDisplay | null>(null);
   const [tasks, setTasks] = useState([] as Task[]);
   const [taskState, setTaskState] = useState([] as TaskState[]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -51,10 +52,12 @@ const CreatePage: NextPage = () => {
     const primaryLang = (router.query?.primary|| 'unk') as string;
     const secondaryLang = (router.query?.secondary|| 'unk') as string;
 
-    setTaskCategory(category);
-    setTaskMode(mode);
-    setPrimary(primaryLang);
-    setSecondary(secondaryLang);
+    const languages = session.user.languages.map( ({languageDisplay}) =>
+      languageDisplay);
+    setPrimary(languages.find(
+      lang => lang.isoCode === primaryLang));
+    setSecondary(languages.find(
+      lang => lang.isoCode === secondaryLang));
 
     const url = `/api/get_tasks?primary=${primaryLang}&secondary=${secondaryLang}&category=${category}&mode=${mode}`;
 
@@ -62,9 +65,12 @@ const CreatePage: NextPage = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        const taskState = data.map( () => 'inactive') as TaskState[];
+        setTaskCategory(data.taskMeta.taskCategory as TaskCategory);
+        setTaskMode(data.taskMeta.taskMode as TaskMode);
+        const tasks = data.tasks;
+        const taskState = tasks.map( () => 'inactive') as TaskState[];
         taskState[0] = 'active';
-        setTasks(data);
+        setTasks(tasks);
         setTaskState(taskState);
         setCurrentIndex(0);
         setLoading(false);
@@ -91,7 +97,11 @@ const CreatePage: NextPage = () => {
       </MainLayout>
     );
   }
-  if (tasks.length === 0) {
+  if (tasks.length === 0 ||
+      !taskCategory ||
+      !taskMode ||
+      !primary ||
+      !secondary) {
     return (
       <MainLayout>
         <div>
@@ -105,17 +115,20 @@ const CreatePage: NextPage = () => {
   if (currentIndex === -1) {
     Component = (<div>Done!</div>);
   } else {
-    const TaskComponent = getTaskComponent(taskMode, taskCategory);
+    const TaskComponent = getTaskComponent(
+      taskMode?.shortName || '', taskCategory?.shortName || '');
     Component = (
       <TaskComponent
         task={tasks[currentIndex]}
+        category={taskCategory}
+        mode={taskMode}
         primary={primary}
         secondary={secondary}
         onDone={advanceTask}
       />
     );
   }
-  const TaskIcon = getTaskIcon(taskCategory);
+  const TaskIcon = getTaskIcon(taskCategory?.shortName || '');
 
   return (
     <MainLayout>

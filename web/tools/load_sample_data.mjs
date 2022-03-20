@@ -47,6 +47,28 @@ const insertTranslation = async (source, target) => {
   });
 }
 
+const insertTranslationWithUser = async (source, target, user) => {
+  return await prisma.annotations.create({
+    data: {
+      source: {
+        connect: {
+          fprint: source.fprint
+        }
+      },
+      primaryLang: target.language,
+      text: target.text,
+      taskModeId: 2,
+      taskCategoryId: 2,
+      author: {
+        connect: {
+          id: user.id
+        }
+      }
+    }
+  });
+}
+
+
 const insertRating = async (annotation, user, rating) => {
   return await prisma.ratings.create({
     data: {
@@ -112,6 +134,17 @@ let user = await prisma.user.findUnique({
   }
 });
 
+await prisma.taskCategory.deleteMany();
+await prisma.taskMode.deleteMany();
+
+await prisma.taskMilestones.deleteMany();
+await prisma.ratings.deleteMany();
+await prisma.annotations.deleteMany();
+await prisma.content.deleteMany();
+
+await prisma.languageDetails.deleteMany();
+await prisma.languageFunFacts.deleteMany();
+
 // Insert task types.
 await prisma.taskMode.createMany({
   data: [
@@ -173,6 +206,10 @@ const enContent2 = await insertContent('You have dogs', 'eng');
 const enContent3 = await insertContent('Mame has plastic', 'eng');
 const enContent4 = await insertContent('Trees have apples', 'eng');
 
+for (var i = 0; i < 7; i++) {
+  await insertContent(`'English Content ${i}`, 'eng');
+}
+
 const jaContent1 = await insertContent('私は猫を飼っています', 'jpn');
 const jaContent2 = await insertContent('猫がいます', 'jpn');
 const jaContent3 = await insertContent('あなたは犬を飼っています', 'jpn');
@@ -189,7 +226,7 @@ const en4Good = await insertQualityLabel(enContent4, 'good');
 const en1ja1 = await insertTranslation(enContent1, jaContent1);
 const en1ja2 = await insertTranslation(enContent1, jaContent2);
 const en2ja3 = await insertTranslation(enContent2, jaContent3);
-const en3ja4 = await insertTranslation(enContent3, jaContent4);
+const en3ja4 = await insertTranslationWithUser(enContent3, jaContent4, user);
 
 const en1es1 = await insertTranslation(enContent1, esContent1);
 

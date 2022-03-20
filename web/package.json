@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "db-clean": "npx prisma db push --force-reset --accept-data-loss",
-    "init-sample": "node tools/load_sample_data.ts",
+    "init-sample": "node tools/load_sample_data.mjs",
     "init": "npx prisma db push --force-reset --accept-data-loss && node tools/load_seed_data.mjs",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
