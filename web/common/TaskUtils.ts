@@ -30,3 +30,23 @@ export async function getTaskModeMap(
     return result;
   }, new Map());
 }
+
+export function getNextTaskMode(
+  category: TaskCategory, mode: TaskMode): TaskMode {
+  // If no modes are defined, we can't return anything sensible.  So we assume
+  // the next mode will be the null end state mode.
+  if (!category.modes) {
+    return {
+      id: 0
+    } as TaskMode;
+  }
+  const nextModeIndex = category.modes.findIndex( (m) => m.id === mode.id) + 1;
+  // When no next mode exists, we've gone through all possible modes.  Return
+  // the null end state mode.
+  if (nextModeIndex >= category.modes.length) {
+    return {
+      id: 0
+    } as TaskMode;
+  }
+  return category.modes[nextModeIndex];
+}

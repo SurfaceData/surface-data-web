@@ -2,14 +2,22 @@ import type { FunctionComponent } from 'react';
 
 import { SkipButton } from '@components/tasks/SkipButton';
 import { Button } from '@components/ui/Button';
-import type { TaskComponentProps } from '@features/tasks';
+import type { TaskComponentProps, TaskMeta } from '@features/tasks';
 
 export const VerifyTranslate: FunctionComponent<TaskComponentProps> = ({
   task,
+  category,
+  mode,
   primary,
   secondary,
   onDone,
 }) => {
+  const taskMeta = {
+    taskCategory: category,
+    taskMode: mode,
+    primaryLang: primary.isoCode,
+    secondaryLang: secondary.isoCode,
+  } as TaskMeta;
   return (
     <div>
       <div>
@@ -24,7 +32,11 @@ export const VerifyTranslate: FunctionComponent<TaskComponentProps> = ({
       <div>
         <Button rounded>Correct</Button>
         <Button rounded outline>Incorrect</Button>
-        <SkipButton onClick={onDone}/>
+        <SkipButton
+          itemId={task.id}
+          taskMeta={taskMeta}
+          onClick={onDone}
+          />
       </div>
     </div>
   );

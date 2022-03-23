@@ -1,14 +1,22 @@
 import type { FunctionComponent } from 'react';
 
 import { SkipButton } from '@components/tasks/SkipButton';
-import type { TaskComponentProps } from '@features/tasks';
+import type { TaskComponentProps, TaskMeta } from '@features/tasks';
 
 export const RateQualityTag: FunctionComponent<TaskComponentProps> = ({
   task,
+  category,
+  mode,
   primary,
   secondary,
   onDone,
 }) => {
+  const taskMeta = {
+    taskCategory: category,
+    taskMode: mode,
+    primaryLang: primary.isoCode,
+    secondaryLang: secondary.isoCode,
+  } as TaskMeta;
   return (
     <div>
       <div>
@@ -24,7 +32,11 @@ export const RateQualityTag: FunctionComponent<TaskComponentProps> = ({
         <div>slider goes here</div>
       </div>
       <div>
-        <SkipButton onClick={onDone}/>
+        <SkipButton
+          itemId={task.id}
+          taskMeta={taskMeta}
+          onClick={onDone}
+          />
       </div>
     </div>
   );

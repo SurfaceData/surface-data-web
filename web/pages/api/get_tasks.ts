@@ -32,6 +32,9 @@ async function fetchTasksFromAnnotations(
             id: userId
           }
         }
+      },
+      isComplete: {
+        not: true
       }
     },
     // Select the key fields needed for contribution.
