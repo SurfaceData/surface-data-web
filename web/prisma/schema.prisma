@@ -108,7 +108,7 @@ model Annotations {
 
   // Association Fields
   source         Content @relation(fields: [sourceFprint], references: [fprint])
-  sourceFprint String
+  sourceFprint   String
 
   // Content Fields
   primaryLang    String

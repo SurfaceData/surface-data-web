@@ -75,7 +75,7 @@ const CreatePage: NextPage = () => {
         setCurrentIndex(0);
         setLoading(false);
       });
-  }, [status, router]);
+  }, [status, session, router]);
 
   const advanceTask = () => {
     taskState[currentIndex] = 'done';

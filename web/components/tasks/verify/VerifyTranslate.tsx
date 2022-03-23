@@ -1,7 +1,9 @@
 import type { FunctionComponent } from 'react';
 
+import { sendContribution } from '@common/FetchUtils';
 import { SkipButton } from '@components/tasks/SkipButton';
 import { Button } from '@components/ui/Button';
+import type { Contribution } from '@features/contributions';
 import type { TaskComponentProps, TaskMeta } from '@features/tasks';
 
 export const VerifyTranslate: FunctionComponent<TaskComponentProps> = ({
@@ -18,6 +20,15 @@ export const VerifyTranslate: FunctionComponent<TaskComponentProps> = ({
     primaryLang: primary.isoCode,
     secondaryLang: secondary.isoCode,
   } as TaskMeta;
+  const handleSubmit = (rating: number) => {
+    const contribution = {
+      id: task.id,
+      taskMeta: taskMeta,
+      rating: rating,
+    } as Contribution;
+    sendContribution(contribution, console.error, onDone);
+  }
+
   return (
     <div>
       <div>
@@ -30,8 +41,21 @@ export const VerifyTranslate: FunctionComponent<TaskComponentProps> = ({
         {task.secondaryText}
       </div>
       <div>
-        <Button rounded>Correct</Button>
-        <Button rounded outline>Incorrect</Button>
+        <Button
+          rounded
+          onClick={() => handleSubmit(1)}
+          >
+          Correct
+        </Button>
+
+        <Button
+          rounded
+          outline
+          onClick={() => handleSubmit(-1)}
+          >
+          Incorrect
+        </Button>
+
         <SkipButton
           itemId={task.id}
           taskMeta={taskMeta}

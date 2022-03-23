@@ -1,3 +1,4 @@
+import 'rsuite/dist/rsuite.min.css';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import { Provider } from 'react-redux';

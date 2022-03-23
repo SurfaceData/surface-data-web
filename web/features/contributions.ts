@@ -14,6 +14,9 @@ export interface Contribution {
   // content.
   text?: string,
 
+  // If set, represents a list of labels.
+  labels?: string[],
+
   // If set, the numeric rating for an annotation.
   rating?: number,
 }

@@ -53,25 +53,41 @@ async function handleRealContribution(contribution: Contribution, userId: string
   const { taskCategory, taskMode, primaryLang } = contribution.taskMeta;
   const nextMode = getNextTaskMode(taskCategory, taskMode);
   if (taskMode.useContent) {
-    await prisma.annotations.create({
-      data: {
-        source: {
-          connect: {
-            fprint: contribution.id
-          }
-        },
-        author: {
-          connect: {
-            id: userId,
-          }
-        },
-        primaryLang: primaryLang || '',
-        text: contribution?.text || '',
-        taskModeId: nextMode.id,
-        taskCategoryId: taskCategory.id,
-        isComplete: false,
-      }
-    });
+    if (contribution.text) {
+      await prisma.annotations.create({
+        data: {
+          source: {
+            connect: {
+              fprint: contribution.id
+            }
+          },
+          author: {
+            connect: {
+              id: userId,
+            }
+          },
+          primaryLang: primaryLang || '',
+          text: contribution?.text || '',
+          taskModeId: nextMode.id,
+          taskCategoryId: taskCategory.id,
+          isComplete: false,
+        }
+      });
+    } else if (contribution.labels) {
+      await prisma.annotations.createMany({
+        data: contribution.labels.map( (label) => {
+          return {
+            sourceFprint: contribution.id,
+            authorId: userId,
+            primaryLang: primaryLang || '',
+            text: label,
+            taskModeId: nextMode.id,
+            taskCategoryId: taskCategory.id,
+            isComplete: false,
+          };
+        }),
+      });
+    }
     return;
   }
   await prisma.ratings.create({
