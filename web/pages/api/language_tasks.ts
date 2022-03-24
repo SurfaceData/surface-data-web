@@ -21,9 +21,14 @@ const handler = async (
   res: NextApiResponse<Array<TaskStats>>
 ) => {
   const language = req.query.language as string;
+  const otherLanguages = req.query.otherLangs as string[] || [];
+
   const taskStats = await prisma.taskMilestones.findMany({
         where: {
           primaryLang: language,
+          secondaryLang: {
+            in: otherLanguages,
+          },
           milestoneType: "weekly",
         }
       });

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import querystring from 'querystring';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -36,10 +37,16 @@ const LanguageTaskOptions = ({
       return;
     }
 
-    fetch(`/api/language_tasks?language=${locale.languageDisplay.isoCode}`)
+    const allLanguageCodes = allLanguages.map(
+      ({languageDisplay}) => languageDisplay.isoCode);
+    const params = querystring.stringify({
+      language: locale.languageDisplay.isoCode,
+      otherLangs: allLanguageCodes,
+    });
+    fetch(`/api/language_tasks?${params}`)
       .then((res) => res.json())
       .then((data) => setLanguageTasks(data));
-  }, [locale]);
+  }, [locale, allLanguages]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
