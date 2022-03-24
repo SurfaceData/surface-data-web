@@ -94,9 +94,9 @@ const LanguageTaskOptions = ({
     return (
       <GridContainer>
         <div>
-          We aren't yet ready to support your language.  Join
+          We are not yet ready to support your language.  Join
           <a href="https://discord.com/invite/DFKVEYRFge"> our discord </a>
-          to help make sure we're handling your language correctly.
+          to help make sure we are handling your language correctly.
         </div>
       </GridContainer>
     );
