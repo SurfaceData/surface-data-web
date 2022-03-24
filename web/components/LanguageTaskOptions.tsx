@@ -82,6 +82,18 @@ const LanguageTaskOptions = ({
     return `${task.taskMode.fullName} | ${task.taskCategory.fullName} | from ${task.secondaryLang.cldrName}`;
   };
 
+  if (locale.languageDisplay &&
+      languageTasks.length === 0) {
+    return (
+      <GridContainer>
+        <div>
+          We aren't yet ready to support your language.  Join
+          <a href="https://discord.com/invite/DFKVEYRFge"> our discord </a>
+          to help make sure we're handling your language correctly.
+        </div>
+      </GridContainer>
+    );
+  }
   return (
     <GridContainer>
       {
