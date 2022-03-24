@@ -23,6 +23,9 @@ const Container = styled.div`
 
 const InfoContainer = styled.div`
   padding: 24px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin: 12px 0px;
   border: 2px solid rgba(230, 229, 227, .6);
   border-radius: 6px;
@@ -63,6 +66,12 @@ const Profile: NextPage = () => {
       tasks: [],
     } as LanguageTasks));
   };
+
+  const removeLanguage = (index: number) => {
+    const newLanguages = userLanguages.slice();
+    newLanguages.splice(index, 1);
+    setUserLanguages(newLanguages);
+  }
 
   if (status == "loading") {
     return (
@@ -112,6 +121,15 @@ const Profile: NextPage = () => {
                 allLanguages={userLanguages}
                 setUserLanguages={setUserLanguages}
               />
+
+              <Button
+                style={{width: 300}} 
+                outline
+                onClick={() => removeLanguage(index)}
+              >
+                Remove Language
+              </Button>
+
             </InfoContainer>
           ))
         }
