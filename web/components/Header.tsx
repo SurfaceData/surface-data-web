@@ -31,6 +31,17 @@ const Header = () => {
   if (session) {
     return (
       <StyledNav>
+        <Link href="/profile" passHref>
+          <a>
+            <StyledProfile
+                alt="Your Profile"
+                src={session.user.image}
+                height="32"
+                width="32"
+            />
+          </a>
+        </Link>
+
         <Link href="/">
           <a>
             <Image
@@ -41,15 +52,12 @@ const Header = () => {
           </a>
         </Link>
 
-        <Link href="/profile" passHref>
-          <StyledProfile
-              alt="Your Profile"
-              src={session.user.image}
-              height="32"
-              width="32"
-          />
-        </Link>
-
+        <SignInButton
+          onClick={() => signOut({
+            callbackUrl: `${window.location.origin}`,
+          })}>
+          Sign Out
+      </SignInButton>
       </StyledNav>
     )
   }
@@ -63,7 +71,7 @@ const Header = () => {
       />
 
       <SignInButton
-        onClick={() => signIn()}>
+        onClick={() => signIn('auth0')}>
         Sign In
       </SignInButton>
     </StyledNav>

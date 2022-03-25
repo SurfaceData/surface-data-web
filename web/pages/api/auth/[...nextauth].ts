@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import type { User } from 'next-auth';
+import Auth0Provider from 'next-auth/providers/auth0';
 import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
@@ -22,13 +23,21 @@ export default NextAuth({
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
   providers: [
+    Auth0Provider({
+      clientId: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      issuer: process.env.AUTH0_ISSUER,
+    }),
     GithubProvider({
       clientId: process.env.GITHUB_AUTH_ID,
       clientSecret: process.env.GITHUB_AUTH_SECRET,
     }),
   ],
+  theme: {
+    logo: '/surface.svg',
+  },
   pages: {
-    newUser: "/profile",
+    newUser: '/profile',
   },
   callbacks: {
     async session({ session, user, token }) {
