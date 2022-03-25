@@ -34,6 +34,7 @@ export default NextAuth({
     }),
   ],
   theme: {
+    colorScheme: 'auto',
     logo: '/surface.svg',
   },
   pages: {
