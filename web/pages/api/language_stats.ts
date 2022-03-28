@@ -125,14 +125,14 @@ async function extractLanguagesAndTasks(req: NextApiRequest) {
       select: {
         primaryLang: true
       },
+      orderBy: {
+        milestone: 'desc',
+      },
       distinct: ['primaryLang'],
       take: 5,
     });
     const languages = randomLanguages.map(({primaryLang}) => primaryLang);
-    const languageMap = languages.reduce( (results, isoCode) => {
-      results.set(isoCode, allLangMap.get(isoCode));
-      return results;
-    }, new Map());
+    const languageMap = allLangMap;
     const requestedTasks = languages.reduce( (results, isoCode) => {
       results.set(isoCode, new Set());
       return results;
@@ -154,7 +154,6 @@ async function extractLanguagesAndTasks(req: NextApiRequest) {
       entry.languageDisplay);
     return results;
   }, new Map);
-
   const requestedTasks = languagesAndTasks.reduce( (results, entry) => {
     results.set(
       entry.languageDisplay.isoCode,
