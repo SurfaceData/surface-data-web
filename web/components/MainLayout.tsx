@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import styled from 'styled-components';
+import { FaDiscord } from 'react-icons/fa';
+import { ImBlog, ImGithub, ImTwitter } from 'react-icons/im';
 
 import Header from '@components/Header';
 
@@ -14,9 +16,32 @@ const Container = styled.div`
 const Footer = styled.div`
   align-items: center;
   border-top: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
+  display: flex;
   font-size: 12px;
+  justify-content: space-between;
+  padding: 8px;
+`;
+
+const License = styled.div`
+  width: 400px;
+`;
+
+const SocialIconContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const SocialIcon = styled.a`
+  align-items: center;
+  border: 1px solid rgb(220, 222, 224);
+  border-radius: 50%;
+  color: rgb(118, 119, 122);
+  display: flex;
+  height: 36px;
+  justify-content: center;
+  opacity: 1;
+  text-decoration: none;
+  width: 36px;
 `;
 
 const MainLayout: NextPage = ({ children }) => {
@@ -37,12 +62,39 @@ const MainLayout: NextPage = ({ children }) => {
       </main>
 
       <Footer>
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
-        </a>
+        <License>
+          <a
+            rel="license"
+            href="http://creativecommons.org/licenses/by-nc/4.0/">
+            <img 
+              alt="Creative Commons License"
+              style={{borderWidth:0}}
+              src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+          </a>
+          <br />
+          This work is licensed under a {' '}
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+            Creative Commons Attribution-NonCommercial 4.0 International License
+          </a>.
+        </License>
 
-        <br />
+        <SocialIconContainer>
+          <SocialIcon target="_blank" href="https://blog.surface-data-collective.com/">
+            <ImBlog size={16} />
+          </SocialIcon>
 
-        This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+          <SocialIcon target="_blank" href="https://github.com/Surface-Data-Collective/">
+            <ImGithub size={16} />
+          </SocialIcon>
+
+          <SocialIcon target="_blank" href="https://twitter.com/SurfaceData">
+            <ImTwitter size={16} />
+          </SocialIcon>
+
+          <SocialIcon target="_blank" href={process.env.DISCORD_URL}>
+            <FaDiscord size={16} />
+          </SocialIcon>
+        </SocialIconContainer>
       </Footer>
 
       <style jsx global>
@@ -61,13 +113,5 @@ const MainLayout: NextPage = ({ children }) => {
     </>
   );
 }
-
-/*
- * TODO: Fix this
-          <Image
-            alt="Creative Commons License"
-            src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"
-          />
- */
 
 export default MainLayout;

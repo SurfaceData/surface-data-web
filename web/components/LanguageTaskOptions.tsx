@@ -95,7 +95,7 @@ const LanguageTaskOptions = ({
       <GridContainer>
         <div>
           We are not yet ready to support your language.  Join
-          <a href="https://discord.com/invite/DFKVEYRFge"> our discord </a>
+          <a href={process.env.DISCORD_URL}> our discord </a>
           to help make sure we are handling your language correctly.
         </div>
       </GridContainer>

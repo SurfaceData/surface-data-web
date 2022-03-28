@@ -1,4 +1,8 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
+import LanguageTaskStatsSection from '@components/LanguageTaskStatsSection';
+import type { LanguageStats } from '@features/LanguageStats';
 
 const Container = styled.div`
   padding: 24px 12ps;
@@ -12,6 +16,7 @@ const Title = styled.div`
 
 const StatsRow = styled.div`
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   flex-wrap: wrap;
 `;
@@ -29,54 +34,20 @@ const TotalStatSubtext = styled.div`
   font-size: 14px;
 `;
 
-const Text = styled.div`
-  font-size: 18px;
-  margin: 8px 24px;
-`;
-
-const LanguageStatContainer = styled.div`;
-  display: flex;
-  flex-direction: row;
-  padding: 24px 12px;
-  margin: 6px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.09), 0 1px 4px rgba(0, 0, 0, 0.09);
-`;
-
-const LanguageStat = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const LanguageStatList = styled.div`
-  padding 6px 0px;
-  width: 200px;
-`;
-
-const LanguageStatTitle  = styled.div`
-  font-size: 12px;
-  color: #959595;
-`;
-
-const LanguageStatValue = styled.div`
-  font-size: 12px;
-  font-weight: bold;
-  color: #4a4a4a;
-`;
-
-const LanguageName = styled.div`;
-  display: flex;
-  align-items: center;
-  margin: 0px 12px;
-  font-size: 18px;
-  font-weight: 600;
-  width: 100px;
-  text-align: left;
-`;
-
-
 const StatsSplash = () => {
+  const [languageStats, setLanguageStats] = useState([] as LanguageStats[]);
+  const [isLoading, setLoading] = useState(false);
+
+  useEffect( () => {
+    setLoading(true);
+    fetch('/api/language_stats')
+      .then((res) => res.json())
+      .then((data) => {
+        setLanguageStats(data);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <Container>
       <StatsRow>
@@ -102,115 +73,28 @@ const StatsSplash = () => {
 
       </StatsRow>
 
-      <Title>
-        Launched
-      </Title>
+      {
+        languageStats.map( ({language, taskStats}, i) => (
+          <div key={i}>
+            <Title>
+              {language.cldrName}
+            </Title>
 
-      <StatsRow>
-        <LanguageStatContainer>
-          <LanguageName>
-            English
-          </LanguageName>
-          <LanguageStatList>
-            <LanguageStat>
-              <LanguageStatTitle>Contributors</LanguageStatTitle>
-              <LanguageStatValue>xx,yyy</LanguageStatValue>
-            </LanguageStat>
-            <LanguageStat>
-              <LanguageStatTitle>Verified Contributions</LanguageStatTitle>
-              <LanguageStatValue>yyy,yyy</LanguageStatValue>
-            </LanguageStat>
-          </LanguageStatList>
-        </LanguageStatContainer>
-
-        <LanguageStatContainer>
-          <LanguageName>
-            Japanese
-          </LanguageName>
-          <LanguageStatList>
-            <LanguageStat>
-              <LanguageStatTitle>Contributors</LanguageStatTitle>
-              <LanguageStatValue>xx,yyy</LanguageStatValue>
-            </LanguageStat>
-            <LanguageStat>
-              <LanguageStatTitle>Verified Contributions</LanguageStatTitle>
-              <LanguageStatValue>yyy,yyy</LanguageStatValue>
-            </LanguageStat>
-          </LanguageStatList>
-        </LanguageStatContainer>
-
-        <LanguageStatContainer>
-          <LanguageName>
-            French
-          </LanguageName>
-          <LanguageStatList>
-            <LanguageStat>
-              <LanguageStatTitle>Contributors</LanguageStatTitle>
-              <LanguageStatValue>xx,yyy</LanguageStatValue>
-            </LanguageStat>
-            <LanguageStat>
-              <LanguageStatTitle>Verified Contributions</LanguageStatTitle>
-              <LanguageStatValue>yyy,yyy</LanguageStatValue>
-            </LanguageStat>
-          </LanguageStatList>
-        </LanguageStatContainer>
-
-      </StatsRow>
-
-      <Title>
-        In Progress 
-      </Title>
-
-      <StatsRow>
-        <LanguageStatContainer>
-          <LanguageName>
-            Kurdish Sorani
-          </LanguageName>
-          <LanguageStatList>
-            <LanguageStat>
-              <LanguageStatTitle>Contributors</LanguageStatTitle>
-              <LanguageStatValue>xx,yyy</LanguageStatValue>
-            </LanguageStat>
-            <LanguageStat>
-              <LanguageStatTitle>Verified Contributions</LanguageStatTitle>
-              <LanguageStatValue>yyy,yyy</LanguageStatValue>
-            </LanguageStat>
-          </LanguageStatList>
-        </LanguageStatContainer>
-
-        <LanguageStatContainer>
-          <LanguageName>
-            Tigrinya
-          </LanguageName>
-          <LanguageStatList>
-            <LanguageStat>
-              <LanguageStatTitle>Contributors</LanguageStatTitle>
-              <LanguageStatValue>xx,yyy</LanguageStatValue>
-            </LanguageStat>
-            <LanguageStat>
-              <LanguageStatTitle>Verified Contributions</LanguageStatTitle>
-              <LanguageStatValue>yyy,yyy</LanguageStatValue>
-            </LanguageStat>
-          </LanguageStatList>
-        </LanguageStatContainer>
-
-        <LanguageStatContainer>
-          <LanguageName>
-            Kabyle
-          </LanguageName>
-          <LanguageStatList>
-            <LanguageStat>
-              <LanguageStatTitle>Contributors</LanguageStatTitle>
-              <LanguageStatValue>xx,yyy</LanguageStatValue>
-            </LanguageStat>
-            <LanguageStat>
-              <LanguageStatTitle>Verified Contributions</LanguageStatTitle>
-              <LanguageStatValue>yyy,yyy</LanguageStatValue>
-            </LanguageStat>
-          </LanguageStatList>
-        </LanguageStatContainer>
-
-      </StatsRow>
+            <StatsRow>
+              {
+                taskStats.map( (taskStat, j) => (
+                  <LanguageTaskStatsSection
+                    key={`${i}-${j}`}
+                    language={language}
+                    cta={<></>}
+                    stats={taskStat}
+                  />
+                ))
+              }
+            </StatsRow>
+          </div>
+        ))
+      }
     </Container>
   );
 };

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import styled from 'styled-components';
 
+import { Button } from '@components/ui/Button';
+
 const StyledNav = styled.nav`
   align-items: center;
   border-bottom: 1px solid #ccc;
@@ -10,16 +12,6 @@ const StyledNav = styled.nav`
   justify-content: space-between;
   padding: 8px;
   text-align: center;
-`;
-
-const SignInButton = styled.a`
-  background-color: #000;
-  border-radius: 6px;
-  border-color: #fff;
-  color: #fff;
-  cursor: pointer; 
-  font-size: 12px;
-  padding: 6px;
 `;
 
 const StyledProfile = styled.img`
@@ -52,12 +44,14 @@ const Header = () => {
           </a>
         </Link>
 
-        <SignInButton
+        <Button
+          rounded
+          outline
           onClick={() => signOut({
             callbackUrl: `${window.location.origin}`,
           })}>
-          Sign Out
-      </SignInButton>
+          Signout 
+        </Button>
       </StyledNav>
     )
   }
@@ -70,10 +64,12 @@ const Header = () => {
         width="32"
       />
 
-      <SignInButton
+      <Button
+        outline
+        rounded
         onClick={() => signIn('auth0')}>
-        Sign In
-      </SignInButton>
+        Login / Register
+      </Button>
     </StyledNav>
   )
 };

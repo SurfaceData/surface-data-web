@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import ContributeCTA from '@components/ContributeCTA';
 import LanguageTaskStatsSection from '@components/LanguageTaskStatsSection';
 import type { LanguageStats } from '@features/LanguageStats';
 
@@ -48,9 +49,10 @@ const LanguageStatsSection = ({
         {
           stats.taskStats.map( (taskStat, i) => (
             <LanguageTaskStatsSection
-                key={i}
-                language={stats.language}
-                stats={taskStat}
+              key={i}
+              language={stats.language}
+              stats={taskStat}
+              cta={<ContributeCTA language={stats.language} stats={taskStat} />}
             />
           ))
         }

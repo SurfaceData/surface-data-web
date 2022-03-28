@@ -1,7 +1,7 @@
-import Link from 'next/link';
+import type { ReactElement } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '@components/ui/Button';
+import ContributeCTA from '@components/ContributeCTA';
 import { ProgressBar } from '@components/ui/ProgressBar';
 import type { LanguageDisplay } from '@features/language';
 import type { TaskStats } from '@features/LanguageStats';
@@ -9,6 +9,7 @@ import type { TaskStats } from '@features/LanguageStats';
 interface LanguageTaskStatsSectionProps {
   language: LanguageDisplay,
   stats: TaskStats,
+  cta: ReactElement,
 }
 
 const Container = styled.div`
@@ -82,9 +83,8 @@ const ActionContainer = styled.div`
 const LanguageTaskStatsSection = ({
   language,
   stats,
+  cta,
 }: LanguageTaskStatsSectionProps) => {
-  const url =
-    `/${stats.taskMode.shortName}/${stats.taskCategory.shortName}?primary=${language.isoCode}&secondary=${stats.secondaryLang.isoCode}`;
   const getTaskTitle = (task: TaskStats) => {
     if (language.isoCode ===
         task.secondaryLang.isoCode) {
@@ -115,13 +115,7 @@ const LanguageTaskStatsSection = ({
       </ContentContainer>
 
       <ActionContainer>
-        <Button rounded outline>
-          <Link href={url}>
-            <a>
-              Contribute
-            </a>
-          </Link>
-        </Button>
+        {cta}
       </ActionContainer>
     </Container>
   );
