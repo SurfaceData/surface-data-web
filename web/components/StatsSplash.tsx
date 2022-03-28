@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import LanguageTaskStatsSection from '@components/LanguageTaskStatsSection';
 import type { LanguageStats } from '@features/LanguageStats';
+import type { LandingStats } from '@features/stats';
 
 const Container = styled.div`
   padding: 24px 12ps;
@@ -36,15 +37,22 @@ const TotalStatSubtext = styled.div`
 
 const StatsSplash = () => {
   const [languageStats, setLanguageStats] = useState([] as LanguageStats[]);
-  const [isLoading, setLoading] = useState(false);
+  const [landingStats, setLandingStats] = useState({
+    languageCount: 0,
+    languagePairCount: 0,
+    taskCount: 0,
+  } as LandingStats);
 
   useEffect( () => {
-    setLoading(true);
     fetch('/api/language_stats')
       .then((res) => res.json())
       .then((data) => {
         setLanguageStats(data);
-        setLoading(false);
+      });
+    fetch('/api/landing_stats')
+      .then((res) => res.json())
+      .then((data) => {
+        setLandingStats(data);
       });
   }, []);
 
@@ -52,23 +60,18 @@ const StatsSplash = () => {
     <Container>
       <StatsRow>
         <TotalStat>
-          <TotalStatTitle>X+ Thousand</TotalStatTitle>
-          <TotalStatSubtext>Contributors</TotalStatSubtext>
-        </TotalStat>
-
-        <TotalStat>
-          <TotalStatTitle>X+ Thousand</TotalStatTitle>
+          <TotalStatTitle>{landingStats.languageCount}</TotalStatTitle>
           <TotalStatSubtext>Languages</TotalStatSubtext>
         </TotalStat>
 
         <TotalStat>
-          <TotalStatTitle>X+ Million</TotalStatTitle>
-          <TotalStatSubtext>Sentences</TotalStatSubtext>
+          <TotalStatTitle>{landingStats.languagePairCount}</TotalStatTitle>
+          <TotalStatSubtext>Language Pairs</TotalStatSubtext>
         </TotalStat>
 
         <TotalStat>
-          <TotalStatTitle>X+ Million</TotalStatTitle>
-          <TotalStatSubtext>Translations</TotalStatSubtext>
+          <TotalStatTitle>{landingStats.taskCount}</TotalStatTitle>
+          <TotalStatSubtext>Tasks</TotalStatSubtext>
         </TotalStat>
 
       </StatsRow>
