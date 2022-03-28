@@ -11,6 +11,8 @@ services:
       POSTGRES_USER: surface_admin
       POSTGRES_DB: web
       POSTGRES_HOST_AUTH_METHOD: md5
+    volumes:
+      - ${POSTGRES_DATA_DIR:-./postgres-data}:/var/lib/postgresql/data
     networks:
       - surface-web
 
@@ -19,7 +21,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     container_name: surface-web
-    command: bash -c "npm run init && npm run start"
+    command: bash -c "npm run start"
     ports:
       - 3000:3000
     depends_on:
