@@ -14,6 +14,13 @@ const StyledNav = styled.nav`
   text-align: center;
 `;
 
+const Logo = styled.div`
+  align-items: center;
+  text-align: center;
+  display: flex;
+  gap: 5px;
+`;
+
 const StyledProfile = styled.img`
   border-radius: 50%;
 `;
@@ -57,12 +64,15 @@ const Header = () => {
   }
   return (
     <StyledNav>
-      <Image
-        alt="Surface Data"
-        src="/surface.svg"
-        height="32"
-        width="32"
-      />
+      <Logo>
+        <Image
+          alt="Surface Data"
+          src="/surface.svg"
+          height="32"
+          width="32"
+        />
+        <span>| Surface Data Collective</span>
+      </Logo>
 
       <Button
         outline

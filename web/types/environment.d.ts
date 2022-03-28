@@ -10,6 +10,7 @@ declare global {
       NEXTAUTH_URL: string;
       DATABASE_URL: string;
       SEED_PATH: string;
+      DISCORD_URL: string;
     }
   }
 }
