@@ -10,17 +10,6 @@ export interface LanguageStats {
 
   // An ordered array of aggregate statistics for tasks.
   timelineStats: TimelineStats[],
-
-  // General information about the language.
-  info: LanguageInfo,
-}
-
-export interface LanguageInfo {
-  // A broad description about the language and its position on the internet.
-  description: string,
-
-  // A fun motivating fact about the language.
-  funFact: string,
 }
 
 export interface TaskStats {

@@ -170,17 +170,6 @@ model TaskMilestones {
   @@id([primaryLang, secondaryLang, taskCategoryId, taskModeId, milestoneType])
 }
 
-model LanguageDetails {
-  language       String @id
-  description    String
-}
-
-model LanguageFunFacts {
-  id             String    @id @default(cuid())
-  language       String
-  fact           String
-}
-
 /// Records details for each task category.
 model TaskCategory {
   // The unique key.

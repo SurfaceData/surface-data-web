@@ -21,8 +21,6 @@ const taskCategoryMap = await getTaskCategoryMap(prisma);
  * tasks for those languages.
  *
  * This requires calls to multiple database tables:
- *   - LanguageDetails
- *   - LanguageFunFacts
  *   - TaskMilestones
  */
 const handler = async (
@@ -31,32 +29,6 @@ const handler = async (
 ) => {
   const { languages, languageMap, requestedTasks } = await extractLanguagesAndTasks(
     req);
-
-  // Fetch language details for each language and form it into a Map.
-  let languageDetailsList = await prisma.languageDetails.findMany({
-        where: {
-          language: { in: languages },
-        }
-      });
-  const languageDetails = languageDetailsList.reduce( (result, entry) => {
-        result.set(entry.language, entry.description);
-        return result;
-   }, new Map);
-
-   // Fetch language fun facts for each language and form it into a Map.
-   let languageFunFactsList = await prisma.languageFunFacts.findMany({
-        where: {
-          language: { in: languages },
-        }
-      });
-  const languageFunFacts = languageFunFactsList.reduce( (result, entry) => {
-        if (result.has(entry.language)) {
-          result.get(entry.language).push(entry.fact);
-        } else {
-          result.set(entry.language, [entry.fact]);
-        }
-        return result;
-      }, new Map);
 
   // Get all task stats for the requested languages.
   const taskStats = await prisma.taskMilestones.findMany({
@@ -102,16 +74,10 @@ const handler = async (
     new Map
     ).entries())
     .map( ([key, value]) => {
-      const description = languageDetails.get(key) || 'Needs Updating';
-      const funFacts = languageFunFacts.get(key);
       // Map to a LanguageStat object.
       return {
         language: languageMap.get(key),
         taskStats: value,
-        info: {
-          description: description,
-          funFact: funFacts ? funFacts[0] : 'Needs Updating',
-        }
       } as LanguageStats;
     });
 

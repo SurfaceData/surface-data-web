@@ -57,10 +57,6 @@ const LanguageStatsSection = ({
           ))
         }
       </TaskStatsContainer>
-      <div>
-        <div>{stats.info.description}</div>
-        <div>{stats.info.funFact}</div>
-      </div>
     </Container>
   );
 }

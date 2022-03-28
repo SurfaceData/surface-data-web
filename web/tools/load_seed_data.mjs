@@ -5,7 +5,6 @@ import { opendir } from 'fs/promises';
 import {parse, stringify} from 'bcp-47';
 import {iso6393} from 'iso-639-3';
 import nReadlines from 'n-readlines';
-import LanguageData from 'language-data';
 import 'dotenv/config';
 
 const prisma = new PrismaClient();
@@ -18,14 +17,6 @@ const bcpMap = iso6393.reduce( (result, code) => {
   }
   return result;
 }, new Map());
-
-const infoMap = LanguageData.reduce( (result, entry) => {
-  if (entry.htmlTag && entry.htmlTag !== '') {
-    result.set(entry.htmlTag, entry);
-  }
-  return result;
-}, new Map());
-
 
 try {
   console.log('Creating Task Categories and Modes');
@@ -110,23 +101,6 @@ try {
         skipDuplicates: true
       });
     }
-
-    const langInfo = infoMap.get(bcpSchema.language);
-    if (langInfo) {
-      await prisma.languageDetails.create({
-        data: {
-          language: isoCode.iso6393,
-          description: `A ${langInfo.region} language`,
-        }
-      });
-      await prisma.languageFunFacts.create({
-        data: {
-          language: isoCode.iso6393,
-          fact: `Has ${langInfo.speakers} speakers`,
-        }
-      });
-    }
-
   }
 
   console.log('Creating milestones for all languages');

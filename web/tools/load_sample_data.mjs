@@ -109,24 +109,6 @@ const insertMilestone = async (
   });
 }
 
-const insertLanguageDetail = async(language, description) => {
-  return await prisma.languageDetails.create({
-    data: {
-      language: language,
-      description: description
-    }
-  });
-}
-
-const insertLanguageFunFact = async(language, funfact) => {
-  return await prisma.languageFunFacts.create({
-    data: {
-      language: language,
-      fact: funfact
-    }
-  });
-}
-
 // Always use the test user.
 let user = await prisma.user.findUnique({
   where: {
@@ -141,9 +123,6 @@ await prisma.taskMilestones.deleteMany();
 await prisma.ratings.deleteMany();
 await prisma.annotations.deleteMany();
 await prisma.content.deleteMany();
-
-await prisma.languageDetails.deleteMany();
-await prisma.languageFunFacts.deleteMany();
 
 // Insert task types.
 await prisma.taskMode.createMany({
@@ -255,13 +234,3 @@ await insertMilestone('eng', 'spa', 2, 1, 'weekly', 200, 10);
 await insertMilestone('eng', 'spa', 2, 2, 'weekly', 200, 10);
 await insertMilestone('spa', 'eng', 2, 1, 'weekly', 200, 30);
 await insertMilestone('spa', 'eng', 2, 2, 'weekly', 200, 30);
-
-// Insert language info.
-await insertLanguageDetail(
-  'eng', 'A West Germanic language of the Indo-European language family');
-await insertLanguageDetail('jpn', 'The primary language of Japan');
-await insertLanguageDetail('spa', 'A romance language');
-
-await insertLanguageFunFact('eng', '1.5 billion speakers');
-await insertLanguageFunFact('jpn', '128 million speakers');
-await insertLanguageFunFact('spa', '500 million speakers');
