@@ -15,9 +15,8 @@ module.exports = {
     styledComponents: true
   },
   i18n: {
-    locales: ['default', 'eng', 'jpn', 'spa'],
-    defaultLocale: 'default',
-    //localeDetection: false,
+    locales: ['en', 'ja', 'es', 'pseudo'],
+    defaultLocale: 'en',
   },
   trailingSlash: true,
 }

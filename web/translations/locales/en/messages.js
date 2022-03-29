@@ -1,0 +1,1 @@
+/*eslint-disable*/module.exports={messages:{"header-sdc":"Surface Data Collective"}};

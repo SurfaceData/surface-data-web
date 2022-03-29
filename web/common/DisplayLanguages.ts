@@ -7,9 +7,9 @@ const cldrLanguages: Array<LanguageDisplay> = [];
 const allLanguages: Array<LanguageDisplay> = [];
 
 // To create our LanguageDisplay values we read all possible ISO 639-3
-// languages and match them with their CLDR name when one exists. CLDR does not
-// always have an in-language name so we also preserve the English based ISO
-// name.
+// languages and match them with their CLDR name when one exists. CLDR
+// does not always have an in-language name so we also preserve the
+// English based ISO name.
 //
 // In all cases we use the ISO 639-3 three letter language code.
 iso6393.forEach( (code) => {

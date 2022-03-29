@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -41,15 +42,18 @@ const Header = () => {
           </a>
         </Link>
 
-        <Link href="/">
-          <a>
-            <Image
-              alt="Surface Data"
-              src="/surface.svg"
-              height="32"
-              width="32" />
-          </a>
-        </Link>
+        <Logo>
+          <Link href="/">
+            <a>
+              <Image
+                alt="Surface Data"
+                src="/surface.svg"
+                height="32"
+                width="32" />
+            </a>
+          </Link>
+          <span>| <Trans id='header-sdc'>Surface Data Collective</Trans></span>
+        </Logo>
 
         <Button
           rounded
@@ -71,7 +75,7 @@ const Header = () => {
           height="32"
           width="32"
         />
-        <span>| Surface Data Collective</span>
+        <span>| <Trans id='header-sdc'>Surface Data Collective</Trans></span>
       </Logo>
 
       <Button

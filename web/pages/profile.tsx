@@ -56,7 +56,8 @@ const Profile: NextPage = () => {
 
     const userData = session.user;
     userData.languages = userLanguages;
-    document.cookie = `NEXT_LOCALE=${userLanguages[0].language}; SameSite=Lax; path=/`;
+    const bcpCode = (new Intl.Locale(userLanguages[0].language)).baseName;
+    document.cookie = `NEXT_LOCALE=${bcpCode}; SameSite=Lax; path=/`;
     dispatch(updateUser(userData));
   }, [dispatch, session, userLanguages]);
 

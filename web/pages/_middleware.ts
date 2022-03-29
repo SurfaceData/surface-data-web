@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     request.nextUrl.locale === 'default'
 
   const url = request.nextUrl.clone();
-  url.pathname = `/eng${stripDefaultLocale(url.pathname)}${url.search}`;
+  url.pathname = `/en${stripDefaultLocale(url.pathname)}${url.search}`;
 
   return shouldHandleLocale
     ? NextResponse.redirect(url)

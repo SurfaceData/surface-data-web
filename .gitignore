@@ -105,3 +105,6 @@ dist
 
 # A temporary data created when building docker images.
 .seed-data
+
+# Lingui compiled files
+/web/translations/**/*.js
