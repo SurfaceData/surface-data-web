@@ -14,4 +14,10 @@ module.exports = {
   compiler: {
     styledComponents: true
   },
+  i18n: {
+    locales: ['default', 'eng', 'jpn', 'spa'],
+    defaultLocale: 'default',
+    //localeDetection: false,
+  },
+  trailingSlash: true,
 }

@@ -56,6 +56,7 @@ const Profile: NextPage = () => {
 
     const userData = session.user;
     userData.languages = userLanguages;
+    document.cookie = `NEXT_LOCALE=${userLanguages[0].language}; SameSite=Lax; path=/`;
     dispatch(updateUser(userData));
   }, [dispatch, session, userLanguages]);
 
