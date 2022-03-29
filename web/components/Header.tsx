@@ -77,7 +77,7 @@ const Header = () => {
       <Button
         outline
         rounded
-        onClick={() => signIn('auth0')}>
+        onClick={() => signIn()}>
         Login / Register
       </Button>
     </StyledNav>
