@@ -12,14 +12,13 @@ EXPOSE 3000
 # Add project source
 COPY ./web /code
 
-COPY ./.seed-data /seed-data
-
 # Setup work directory
 WORKDIR /code
 
 # Create directory for storing logs
 RUN mkdir /code/logs
 
-# Start the dev server
+# Build the server
 RUN npm install # --production
+RUN npm run lang:compile 
 RUN npm run build
