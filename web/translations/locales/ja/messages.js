@@ -1,1 +1,0 @@
-/*eslint-disable*/module.exports={messages:{"header-sdc":"サーフェスデータコレクティブ"}};
