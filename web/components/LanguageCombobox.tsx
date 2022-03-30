@@ -38,6 +38,9 @@ export const LanguageCombobox = ({
       placeholder="Search for your language"
       items={cldrlanguages}
       itemToName={ (item) => {
+        if (!item) {
+          return '';
+        }
         return item.cldrSupported ? item.cldrName : item.isoName;
       }}
       itemToKey={ (item) => item.isoCode }

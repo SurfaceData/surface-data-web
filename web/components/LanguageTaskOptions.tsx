@@ -37,8 +37,9 @@ const LanguageTaskOptions = ({
       return;
     }
 
-    const allLanguageCodes = allLanguages.map(
-      ({languageDisplay}) => languageDisplay.isoCode);
+    const allLanguageCodes = allLanguages
+      .filter( (lang) => lang.languageDisplay)
+      .map(({languageDisplay}) => languageDisplay.isoCode);
     const params = querystring.stringify({
       language: locale.languageDisplay.isoCode,
       otherLangs: allLanguageCodes,
