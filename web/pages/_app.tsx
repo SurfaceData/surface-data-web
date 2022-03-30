@@ -28,7 +28,6 @@ export default function App({
   }
 
   useEffect(() => {
-    console.log(pageProps);
     if (pageProps.translation) {
       i18n.load(locale, pageProps.translation);
     }
