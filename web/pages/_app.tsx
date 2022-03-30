@@ -4,7 +4,7 @@ import { I18nProvider } from '@lingui/react'
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Provider } from 'react-redux';
 import 'reflect-metadata';
 
@@ -26,6 +26,14 @@ export default function App({
     i18n.activate(locale);
     firstRender.current = false;
   }
+
+  useEffect(() => {
+    console.log(pageProps);
+    if (pageProps.translation) {
+      i18n.load(locale, pageProps.translation);
+    }
+    i18n.activate(locale);
+  }, [locale, pageProps.translation]);
 
   return (
     <I18nProvider i18n={i18n}>
