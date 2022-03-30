@@ -1,10 +1,11 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { RiTranslate } from 'react-icons/ri';
 import styled from 'styled-components';
 
+import { loadTranslation } from '@common/i18n';
 import MainLayout from '@components/MainLayout';
 import { ActiveTaskPill } from '@components/tasks/ActiveTaskPill';
 import { getTaskComponent, getTaskIcon } from '@components/tasks/TaskMap';
@@ -149,6 +150,25 @@ const CreatePage: NextPage = () => {
       </TaskContainer>
     </MainLayout>
   );
+}
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const translation = await loadTranslation(
+    ctx.locale!,
+    process.env.NODE_ENV === 'production'
+  );
+  return {
+    props: {
+      translation
+    }
+  }
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true,
+  };
 }
 
 export default CreatePage;

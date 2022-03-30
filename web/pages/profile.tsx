@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { loadTranslation } from '@common/i18n';
 import MainLayout from '@components/MainLayout';
 import { LanguageCombobox } from '@components/LanguageCombobox';
 import LanguageTaskOptions from '@components/LanguageTaskOptions';
@@ -151,5 +152,16 @@ const Profile: NextPage = () => {
   );
 }
 
-export default Profile;
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const translation = await loadTranslation(
+    ctx.locale!,
+    process.env.NODE_ENV === 'production'
+  );
+  return {
+    props: {
+      translation
+    }
+  }
+}
 
+export default Profile;
