@@ -39,7 +39,7 @@ const LanguageTaskOptions = ({
 
     const allLanguageCodes = allLanguages
       .filter( (lang) => lang.languageDisplay)
-      .map(({languageDisplay}) => languageDisplay.isoCode);
+      .map(({languageDisplay}) => languageDisplay?.isoCode || '');
     const params = querystring.stringify({
       language: locale.languageDisplay.isoCode,
       otherLangs: allLanguageCodes,
@@ -83,8 +83,8 @@ const LanguageTaskOptions = ({
     );
   }
   const getTaskTitle = (task: TaskStats) => {
-    if (locale.languageDisplay.isoCode ===
-        task.secondaryLang.isoCode) {
+    if (locale?.languageDisplay?.isoCode ===
+        task?.secondaryLang?.isoCode) {
       return `${task.taskMode.fullName} | ${task.taskCategory.fullName}`;
     }
     return `${task.taskMode.fullName} | ${task.taskCategory.fullName} | from ${task.secondaryLang.cldrName}`;

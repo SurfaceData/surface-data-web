@@ -113,16 +113,16 @@ async function extractLanguagesAndTasks(req: NextApiRequest) {
   // Get the languages and factor that into a set of language strings and a
   // mapping from languages to task IDs.
   const languagesAndTasks = req.body as LanguageTasks[] || [];
-  const languages = languagesAndTasks.map(({languageDisplay}) => languageDisplay.isoCode);
+  const languages = languagesAndTasks.map(({languageDisplay}) => languageDisplay?.isoCode || '');
   const languageMap = languagesAndTasks.reduce( (results, entry) => {
     results.set(
-      entry.languageDisplay.isoCode,
-      entry.languageDisplay);
+      entry?.languageDisplay?.isoCode,
+      entry?.languageDisplay);
     return results;
   }, new Map);
   const requestedTasks = languagesAndTasks.reduce( (results, entry) => {
     results.set(
-      entry.languageDisplay.isoCode,
+      entry.languageDisplay?.isoCode,
       new Set(entry.tasks.map( ({taskCategory, taskMode, secondaryLang}) =>
         JSON.stringify({category: taskCategory.id, mode: taskMode.id, lang: secondaryLang}))));
     return results;

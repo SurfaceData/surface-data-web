@@ -35,7 +35,7 @@ export interface TaskCategory {
 
 export interface LanguageTasks {
   language: string,
-  languageDisplay: LanguageDisplay,
+  languageDisplay?: LanguageDisplay,
   tasks: TaskMeta[],
 }
 

@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const userId = session.userId as string;
   const languages: LanguageTasks[] = req.body.languages;
 
-  const languageCodes = languages.map( (item) => item.languageDisplay.isoCode);
+  const languageCodes = languages.map( (item) => item.languageDisplay?.isoCode || '');
 
   await prisma.userLanguages.upsert({
     where: {
@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   });
   await languages.forEach( async (item) => {
-    const langCode = item.languageDisplay.isoCode;
+    const langCode = item.languageDisplay?.isoCode || '';
     const taskCategories = item.tasks.map( (task) => task.taskCategory.id);
     const taskModes = item.tasks.map( (task) => task.taskMode.id);
     const secondaryLangs = item.tasks.map( (task) => task.secondaryLang);
