@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 import type { LanguageTasks } from '@features/tasks';
 
@@ -22,11 +22,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       id: userId,
     },
     update: {
-      language: languageCodes,
+      language: languageCodes as Prisma.JsonArray,
     },
     create: {
       id: userId,
-      language: languageCodes,
+      language: languageCodes as Prisma.JsonArray,
     }
   });
   await prisma.userLanguageTasks.deleteMany({
@@ -36,9 +36,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
   await languages.forEach( async (item) => {
     const langCode = item.languageDisplay?.isoCode || '';
-    const taskCategories = item.tasks.map( (task) => task.taskCategory.id);
-    const taskModes = item.tasks.map( (task) => task.taskMode.id);
-    const secondaryLangs = item.tasks.map( (task) => task.secondaryLang);
+    const taskMeta = item?.tasks?.map(({taskCategory, taskMode, secondaryLang}) => {
+      return {
+        category: taskCategory.id,
+        mode: taskMode.id,
+        secondary: secondaryLang,
+      };
+    }) || [];
+    const taskMetaJson = taskMeta as Prisma.JsonArray;
 
     await prisma.userLanguageTasks.upsert({
       where: {
@@ -48,16 +53,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       },
       update: {
-        taskCategories: taskCategories,
-        taskModes: taskModes,
-        secondaryLang: secondaryLangs,
+        taskMeta: taskMetaJson,
       },
       create: {
         id: userId,
         primaryLang: langCode,
-        taskCategories: taskCategories,
-        taskModes: taskModes,
-        secondaryLang: secondaryLangs,
+        taskMeta: taskMetaJson,
       }
     });
   });

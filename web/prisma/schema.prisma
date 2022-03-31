@@ -3,11 +3,13 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Account {
@@ -57,7 +59,8 @@ model UserLanguages {
   id            String    @id
 
   // Content Fields
-  language      String[]
+  // A JSON array of language codes.
+  language      Json
 }
 
 /// Maps User Ids and BCP-47 Language Codes to  Annotation Task Type IDs.
@@ -66,11 +69,12 @@ model UserLanguageTasks {
   id             String
   primaryLang    String
 
-  // Identifiers for each task a user is registered for.  These arrays are all
-  // index aligned.
-  taskModes      Int[]
-  taskCategories Int[]
-  secondaryLang  String[]
+  // An array of JSON objects holding each task type identifier.  Each value
+  // should have three fields:
+  //  - category: The task category id.
+  //  - mode : The task mode id.
+  //  - secondary: The secondary language code.
+  taskMeta       Json
 
   @@id([id, primaryLang])
 }

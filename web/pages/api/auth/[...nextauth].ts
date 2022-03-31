@@ -4,7 +4,7 @@ import DiscordProvider from 'next-auth/providers/discord';
 import EmailProvider from 'next-auth/providers/email';
 import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
 import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
@@ -54,35 +54,35 @@ export default NextAuth({
 });
 
 const fetchLanguages = async (user: User) => {
-  const userLanguages = await prisma.userLanguages.findUnique({
+  const userLanguagesResult = await prisma.userLanguages.findUnique({
     where: {
       id: user.id,
     }
   });
-  if (!userLanguages) {
+  if (!userLanguagesResult) {
     return [];
   }
+  const userLanguages = userLanguagesResult.language as Prisma.JsonArray;
   const userLanguageTasks = await prisma.userLanguageTasks.findMany({
     where: {
       id: user.id,
-      primaryLang: { in: userLanguages.language },
+      primaryLang: { in: userLanguages },
     }
   });
   const langToTasks = userLanguageTasks.reduce( (result, item) => {
-    const taskMetaList = item.taskCategories.map( (categoryId, i) => {
-      const category = taskCategoryMap.get(categoryId);
-      const mode = taskModeMap.get(item.taskModes[i]);
-      const secondaryLang = item.secondaryLang[i];
+    const taskMetaResult = item?.taskMeta as Prisma.JsonArray || [];
+
+    const taskMetaList = taskMetaResult.map( ({category,  mode, secondary}) => {
       return {
-        taskCategory: category,
-        taskMode: mode,
-        secondaryLang: secondaryLang,
+        taskCategory: taskCategoryMap.get(category),
+        taskMode: taskModeMap.get(mode),
+        secondaryLang: secondary,
       } as TaskMeta
     });
     result.set(item.primaryLang, taskMetaList);
     return result;
   }, new Map<string, TaskMeta[]>());
-  const r = userLanguages.language.map( (lang) => {
+  const r = userLanguages.map( (lang) => {
     return {
       language: lang,
       languageDisplay: languageMap.get(lang),
