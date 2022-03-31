@@ -96,10 +96,12 @@ try {
           fprint: sha256(content),
         });
       }
-      await prisma.content.createMany({
-        data: data,
-        skipDuplicates: true
-      });
+      for (let start = 0; start < data.length; start+=5000) {
+        await prisma.content.createMany({
+          data: data.slice(start, 5000),
+          skipDuplicates: true
+        });
+      }
     }
   }
 
