@@ -24,7 +24,7 @@ const OnboardingSplash = () => {
       <Text>
         Surface is on a mission to build datasets for the worlds languages.
         These datasets are built, owned, and governed by all contributors.
-        That means you help decide what we build and how profits are shared.
+        That means you help decide what we build and what we do with that data.
       </Text>
     </Container>
   );

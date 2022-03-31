@@ -106,7 +106,7 @@ const LanguageTaskStatsSection = ({
 
         <MilestoneContainer>
           <MilestoneSummary>
-            <MilestoneLabel>{stats.milestoneType}</MilestoneLabel>
+            <MilestoneLabel>Total</MilestoneLabel>
             <MilestoneStats>{stats.progress} / {stats.nextMilestone}</MilestoneStats>
           </MilestoneSummary>
           <ProgressBar
