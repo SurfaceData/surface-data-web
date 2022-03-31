@@ -46,6 +46,12 @@ export interface TaskMeta {
   primaryLang?: string,
 }
 
+export interface TaskMetaJson {
+  category: number,
+  mode: number,
+  secondary: string,
+}
+
 export interface GetTaskResponse {
   taskMeta: TaskMeta,
   tasks: Task[],

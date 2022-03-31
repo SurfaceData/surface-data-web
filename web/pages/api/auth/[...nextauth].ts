@@ -8,7 +8,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
 import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
-import type { LanguageTasks, TaskMeta, TaskCategory, TaskMode } from '@features/tasks';
+import type { LanguageTasks, TaskMeta, TaskMetaJson, TaskCategory, TaskMode } from '@features/tasks';
 
 const prisma = new PrismaClient();
 
@@ -62,7 +62,7 @@ const fetchLanguages = async (user: User) => {
   if (!userLanguagesResult) {
     return [];
   }
-  const userLanguages = userLanguagesResult.language as Prisma.JsonArray;
+  const userLanguages = userLanguagesResult.language as string[];
   const userLanguageTasks = await prisma.userLanguageTasks.findMany({
     where: {
       id: user.id,
@@ -72,7 +72,8 @@ const fetchLanguages = async (user: User) => {
   const langToTasks = userLanguageTasks.reduce( (result, item) => {
     const taskMetaResult = item?.taskMeta as Prisma.JsonArray || [];
 
-    const taskMetaList = taskMetaResult.map( ({category,  mode, secondary}) => {
+    const taskMetaList = taskMetaResult.map( (res: unknown) => {
+      const {category,  mode, secondary} = res as TaskMetaJson;
       return {
         taskCategory: taskCategoryMap.get(category),
         taskMode: taskModeMap.get(mode),
