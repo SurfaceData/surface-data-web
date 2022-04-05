@@ -93,7 +93,7 @@ model Content {
   language     String
 
   // Content Fields
-  text         String
+  text         String @db.LongText
 
   // Provenance Fields
   source       Int @default(0)
@@ -116,7 +116,7 @@ model Annotations {
 
   // Content Fields
   primaryLang    String
-  text           String
+  text           String @db.LongText
   isComplete     Boolean @default(false)
   
   taskCategoryId Int
