@@ -18,7 +18,7 @@ const Delete: NextPage = () => {
   const handleDelete = () => {
     fetch('/api/delete-account')
       .then(() => {
-        window.location = window.location.origin;
+        window.location.href = window.location.origin;
       });
   };
 
@@ -26,9 +26,9 @@ const Delete: NextPage = () => {
     <MainLayout>
       <Container>
         <div>
-          When you delete your account, we'll remove all profile
+          When you delete your account, we will remove all profile
           information from our databases but we will retain all
-          contributions you've submitted up until now.  After deletion,
+          contributions you have submitted up until now.  After deletion,
           we will treat those submissions as anonymous contributions and
           will not be associated with any account.
         </div>
