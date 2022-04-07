@@ -139,8 +139,8 @@ model Ratings {
   annotation   Annotations @relation(fields: [annotationId], references: [id])
   annotationId BigInt
 
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String
+  user         User?    @relation(fields: [userId], references: [id])
+  userId       String?
 
   // Content Fields
   rating       Int

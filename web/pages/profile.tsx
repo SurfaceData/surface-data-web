@@ -1,6 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -32,7 +33,22 @@ const InfoContainer = styled.div`
   border-radius: 6px;
 `;
 
+const AccountActionContainer = styled.div`
+  display: flex;
+  direction: column;
+  justify-content: space-between;
+`;
+
+const DeleteButton = styled(Button)`
+  border-color: var(--rs-red-200);
+  :hover {
+    border-color: #fff;
+    background-color: var(--rs-red-200);
+  }
+`;
+
 const Profile: NextPage = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { data: session, status } = useSession({ required: true });
   const [ userLanguages, setUserLanguages ] = useState([] as LanguageTasks[]);
@@ -145,7 +161,14 @@ const Profile: NextPage = () => {
 
         <Divider />
 
-        <Button rounded onClick={submit}>Save</Button>
+        <AccountActionContainer >
+          <Button rounded onClick={submit}>Save</Button>
+          <DeleteButton
+            onClick={() => router.push('/delete')}
+            outline>
+            Delete Account
+          </DeleteButton>
+        </AccountActionContainer >
 
       </Container>
     </MainLayout>
