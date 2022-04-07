@@ -1,10 +1,14 @@
 import type { FunctionComponent } from 'react';
 import { useState } from 'react';
 import { TagPicker } from 'rsuite';
+import styled from 'styled-components';
 
 import { sendContribution } from '@common/FetchUtils';
 import { SkipButton } from '@components/tasks/SkipButton';
+import { ActionContainer } from '@components/ui/ActionContainer';
 import { Button } from '@components/ui/Button';
+import { TaskContainer } from '@components/ui/TaskContainer';
+import { TaskContentContainer } from '@components/ui/TaskContentContainer';
 import type { Contribution } from '@features/contributions';
 import type { TaskComponentProps, TaskMeta } from '@features/tasks';
 
@@ -50,13 +54,13 @@ export const CreateQualityTag: FunctionComponent<TaskComponentProps> = ({
     sendContribution(contribution, console.error, afterSubmit);
   };
   return (
-    <div>
+    <TaskContainer>
       <div>
         Select the appropriate quality tags for the following content
       </div>
-      <div>
+      <TaskContentContainer>
         {task.secondaryText}
-      </div>
+      </TaskContentContainer>
       <div>
         <TagPicker
           value={labels}
@@ -65,7 +69,7 @@ export const CreateQualityTag: FunctionComponent<TaskComponentProps> = ({
           onChange={setLabels}
         />
       </div>
-      <div>
+      <ActionContainer>
         <Button
           rounded
           onClick={handleSubmit}>
@@ -78,7 +82,7 @@ export const CreateQualityTag: FunctionComponent<TaskComponentProps> = ({
           taskMeta={taskMeta}
           onClick={onDone}
           />
-      </div>
-    </div>
+      </ActionContainer>
+    </TaskContainer>
   );
 };
