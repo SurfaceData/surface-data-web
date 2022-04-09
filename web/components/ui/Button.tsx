@@ -1,8 +1,12 @@
 import styled, { css } from 'styled-components';
 
+import type { Style } from '@features/styles';
+import { Black } from '@styles/palettes';
+
 export const Button = styled.button<{
   outline?: boolean,
   rounded?: boolean
+  palette?: Style,
 }>`;
   position: relative;
   box-sizing: border-box;
@@ -15,14 +19,15 @@ export const Button = styled.button<{
   font-weight: 600;
   text-align: center;
   cursor: pointer;
-  border: 1px solid #4a4a4a;
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${props => props.palette ? props.palette.secondary: Black.secondary};
   outline: none;
-  background: #4a4a4a;
+  background: ${props => props.palette ? props.palette.primary : Black.primary};
   color: #fff;
 
   ${props => props.outline && css`
     border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, .1);
     background-color: #fff;
     color: #000;
   `}
@@ -33,7 +38,7 @@ export const Button = styled.button<{
 
   :hover {
     background-color: #fff;
-    border-color: #000;
+    border-color: ${props => props.palette ? props.palette.primary : Black.primary};
     color: #000;
   }
   
