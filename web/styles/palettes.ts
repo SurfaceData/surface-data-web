@@ -16,8 +16,8 @@ export const Black = {
 } as Style;
 
 export const Red = {
-  primary: '#fff',
-  secondary: '#000',
+  primary: 'var(--rs-red-300)',
+  secondary: 'var(--rs-red-200)',
 } as Style;
 
 export const White = {

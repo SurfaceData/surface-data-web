@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import styled from 'styled-components';
 
 import { Button } from '@components/ui/Button';
+import { LightBlue } from '@styles/palettes';
 
 const StyledNav = styled.nav`
   align-items: center;
@@ -79,8 +80,8 @@ const Header = () => {
       </Logo>
 
       <Button
-        outline
         rounded
+        palette={LightBlue}
         onClick={() => signIn()}>
         Login / Register
       </Button>
