@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Carousel } from 'rsuite';
 import styled from 'styled-components';
 
 import LanguageTaskStatsSection from '@components/LanguageTaskStatsSection';
@@ -13,6 +14,25 @@ const Title = styled.div`
   font-size: 24px;
   margin: 16px 0px;
   text-align: left;
+`;
+
+const Subtitle = styled.div`
+  font-size: 20px;
+  margin: 16px 0px;
+  text-align: left;
+  color: var(--rs-gray-50);
+`;
+
+const ExplainerContainer = styled.div`
+  font-size: 16px;
+  text-align: left;
+`;
+
+const StatsColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
 `;
 
 const StatsRow = styled.div`
@@ -33,6 +53,10 @@ const TotalStatTitle = styled.div`
 
 const TotalStatSubtext = styled.div`
   font-size: 14px;
+`;
+
+const StatsCarousel = styled(Carousel)`
+  height: 300px;
 `;
 
 const StatsSplash = () => {
@@ -76,12 +100,33 @@ const StatsSplash = () => {
 
       </StatsRow>
 
+      <Title>
+        How we work.
+      </Title>
+
+      <ExplainerContainer>
+        We're generating new high quality data by following a simple two
+        step process.
+        <ol>
+          <li>Proposing new translations or quality tags for sentences</li>
+          <li>Rating or Verifying those proposals</li>
+        </ol>
+        With these two steps and a small amount of data analysis, we can
+        catch small and large annotation mistakes and publish high
+        quality data.
+      </ExplainerContainer>
+
+      <Title>
+        The languages we're working on.
+      </Title>
+
+      <StatsCarousel autoplay>
       {
         languageStats.map( ({language, taskStats}, i) => (
-          <div key={i}>
-            <Title>
+          <StatsColumn key={i}>
+            <Subtitle>
               {language.cldrName}
-            </Title>
+            </Subtitle>
 
             <StatsRow>
               {
@@ -95,9 +140,10 @@ const StatsSplash = () => {
                 ))
               }
             </StatsRow>
-          </div>
+          </StatsColumn>
         ))
       }
+      </StatsCarousel>
     </Container>
   );
 };
