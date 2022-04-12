@@ -148,19 +148,20 @@ const StatsSplash = () => {
       </Title>
 
       <ExplainerContainer>
-        We're generating new high quality data by following a simple
+        We generate new high quality data by following a simple
         multi-step process.
 
         <ExplainerRow>
           <Image
             height={200}
             width={200}
+            alt='Creating quality labels or translations'
             src='/svg/undraw_create_re_57a3.svg' />
           <ExplainerDetail>
             First, we create new translations or quality labels for the
-            sentences we already have.  When translating, we're helping
+            sentences we already have.  When translating, we are helping
             to create new data for languages we each care about.  When
-            creating quality labels, we're helping figure out which
+            creating quality labels, we are helping figure out which
             sentences in our language are good and which may not actually
             be in our language.
           </ExplainerDetail>
@@ -177,6 +178,7 @@ const StatsSplash = () => {
           <Image
             height={200}
             width={200}
+            alt='Rating quality labels or translations'
             src='/svg/undraw_reviews_lp8w.svg' />
         </ExplainerRow>
 
@@ -184,6 +186,7 @@ const StatsSplash = () => {
           <Image
             height={200}
             width={200}
+            alt='Cross referencing ratings to find the best results'
             src='/svg/undraw_detailed_examination_re_ieui.svg' />
           <ExplainerDetail>
             Finally, after we have several submissions and reviews, we
@@ -198,16 +201,17 @@ const StatsSplash = () => {
 
         <ExplainerRow>
           <ExplainerDetail>
-            The end result is a corpus of new language data that we've
-            created together.  Overtime we'll be adding even better
+            The end result is a corpus of new language data that we 
+            created together.  Overtime we will be adding even better
             support for collecrive data governance.  Soon, collective
             members will be able to help decide what data we should
             create in the first place and then ultimately help decide
-            what we do with the data we've created.
+            what we do with the data we have created.
           </ExplainerDetail>
           <Image
             height={200}
             width={200}
+            alt='Creating together to make the best data'
             src='/svg/undraw_flowers_vx06.svg' />
         </ExplainerRow>
 
