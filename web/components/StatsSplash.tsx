@@ -203,7 +203,7 @@ const StatsSplash = () => {
           <ExplainerDetail>
             The end result is a corpus of new language data that we 
             created together.  Overtime we will be adding even better
-            support for collecrive data governance.  Soon, collective
+            support for collective data governance.  Soon, collective
             members will be able to help decide what data we should
             create in the first place and then ultimately help decide
             what we do with the data we have created.
