@@ -9,7 +9,10 @@ module.exports = {
   },
   reactStrictMode: true,
   images: {
-    domains: ['avatars.githubusercontent.com'],
+    domains: [
+    'i.creativecommons.org',
+    'avatars.githubusercontent.com',
+  ],
   },
   compiler: {
     styledComponents: true

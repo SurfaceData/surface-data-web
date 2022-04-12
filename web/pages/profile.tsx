@@ -40,6 +40,24 @@ const AccountActionContainer = styled.div`
   justify-content: space-between;
 `;
 
+const Details = styled.details`
+  border-inline-start: 2px solid #629ff4;
+  margin-bottom: 2em;
+  padding-inline-start: .75em;
+
+  div {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+`;
+
+const Summary = styled.summary`
+  color: #629ff4;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+`;
+
 const Profile: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -101,9 +119,21 @@ const Profile: NextPage = () => {
           About You
         </SectionHeader>
 
+        <Details>
+          <Summary>
+            How this helps
+          </Summary>
+          <div>
+            We can&apos;' govern data together without a way of
+            contacting each of our members.  When we are ready to make
+            larger governance decisions, we will use the email you have
+            provided to reach out and start making decisions together.
+          </div>
+        </Details>
+
         <LabeledInput 
             cldrlanguages={cldrLanguages}
-            label="email"
+            label="Email"
             autoComplete="off"
             spellCheck="false"
             defaultValue={session?.user?.email}>
@@ -114,6 +144,20 @@ const Profile: NextPage = () => {
         <SectionHeader>
           Languages
         </SectionHeader>
+
+        <Details>
+          <Summary>
+            How to select languages?
+          </Summary>
+          <div> 
+            We include as many languages as possible.  First, add a
+            language and then search for your language by name.  For many
+            languages, we use the the language&apos;s native name, such as
+            日本語 instead of Japanese. In some cases we only have the
+            language&apos;s name in English.
+          </div>
+        </Details>
+
 
         {
           userLanguages.map( (locale, index) => (

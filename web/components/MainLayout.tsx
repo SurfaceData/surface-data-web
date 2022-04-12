@@ -66,9 +66,10 @@ const MainLayout: NextPage = ({ children }) => {
           <a
             rel="license"
             href="http://creativecommons.org/licenses/by-nc/4.0/">
-            <img 
+            <Image
               alt="Creative Commons License"
-              style={{borderWidth:0}}
+              height={31}
+              width={88}
               src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
           </a>
           <br />
