@@ -87,7 +87,7 @@ const fetchLanguages = async (user: User) => {
     return {
       language: lang,
       languageDisplay: languageMap.get(lang),
-      tasks: langToTasks.get(lang),
+      tasks: langToTasks.get(lang) || [],
     } as LanguageTasks;
   });
   return r;

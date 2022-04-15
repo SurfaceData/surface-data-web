@@ -75,7 +75,7 @@ const LanguageTaskOptions = ({
   };
 
   const isTaskSelected = (task: TaskStats) => {
-    const tasks = allLanguages[languageIndex].tasks;
+    const tasks = allLanguages[languageIndex]?.tasks || [];
     return -1 !== tasks.findIndex(t =>
       t.taskCategory.id === task.taskCategory.id &&
       t.taskMode.id === task.taskMode.id &&
