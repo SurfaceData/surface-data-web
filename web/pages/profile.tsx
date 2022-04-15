@@ -149,7 +149,7 @@ const Profile: NextPage = () => {
             How this helps
           </Summary>
           <div>
-            We can&apos;' govern data together without a way of
+            We can&apos;t govern data together without a way of
             contacting each of our members.  When we are ready to make
             larger governance decisions, we will use the email you have
             provided to reach out and start making decisions together.

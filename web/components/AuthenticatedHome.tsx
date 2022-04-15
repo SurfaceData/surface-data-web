@@ -51,7 +51,7 @@ const AuthenticatedHome = ({session}: AuthenticatedHomeProps) => {
     return (
       <Container>
         <Message showIcon type="info">
-          You haven't registered for any languages or task types.  Go to your {' '}
+          You haven&apos;t registered for any languages or task types.  Go to your {' '}
           <Link href="/profile" passHref>
             <a>profile</a>
           </Link>
