@@ -51,13 +51,15 @@ const handler = async (
         results.get(stats.primaryLang) : [];
 
       // Only add the TaskStats if the user requested the task for the
-      // language.
+      // language.  taskSet will be undefined if the user made a request with a
+      // body but has no tasks registered.  Otherwise there will be a Set.  An
+      // empty set means we intentionally are okay returning all tasks.
       const taskSet = requestedTasks.get(stats.primaryLang);
-      const shouldAdd = taskSet.size === 0 || taskSet.has(JSON.stringify({
+      const shouldAdd = taskSet && (taskSet.size === 0 || taskSet.has(JSON.stringify({
         category: stats.taskCategoryId,
         mode: stats.taskModeId,
         lang: stats.secondaryLang,
-      }));
+      })));
       if (shouldAdd) {
         taskStats.push({
           taskCategory: taskCategoryMap.get(stats.taskCategoryId),
@@ -120,13 +122,19 @@ async function extractLanguagesAndTasks(req: NextApiRequest) {
       entry?.languageDisplay);
     return results;
   }, new Map);
-  const requestedTasks = languagesAndTasks.reduce( (results, entry) => {
-    results.set(
-      entry.languageDisplay?.isoCode,
-      new Set(entry.tasks.map( ({taskCategory, taskMode, secondaryLang}) =>
-        JSON.stringify({category: taskCategory.id, mode: taskMode.id, lang: secondaryLang}))));
-    return results;
-  }, new Map);
+  const requestedTasks = languagesAndTasks
+    .filter( (entry) => entry.tasks.length > 0)
+    .reduce( (results, entry) => {
+      results.set(
+        entry.languageDisplay?.isoCode,
+        new Set(entry.tasks.map( ({taskCategory, taskMode, secondaryLang}) =>
+          JSON.stringify({
+            category: taskCategory.id, 
+            mode: taskMode.id,
+            lang: secondaryLang
+          }))));
+      return results;
+    }, new Map);
 
   return {
     languages,

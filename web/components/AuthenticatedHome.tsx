@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import type { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
+import Loader from 'rsuite/Loader';
 import Message from 'rsuite/Message';
 import styled from 'styled-components';
 
@@ -39,6 +40,13 @@ const AuthenticatedHome = ({session}: AuthenticatedHomeProps) => {
       });
   }, [session]);
 
+  if (isLoading) {
+    return (
+      <Container>
+        <Loader size="lg" content="Loading" />
+      </Container>
+    )
+  }
   if (languageStats.length == 0) {
     return (
       <Container>
