@@ -40,6 +40,8 @@ const TaskStatsContainer = styled.div`
 const LanguageStatsSection = ({
   stats,
 }: LanguageStatsSectionProps) => {
+  const filteredStats = stats.taskStats.filter( (taskStat) => taskStat.secondaryLang);
+
   return (
     <Container>
       <Label>
@@ -47,7 +49,7 @@ const LanguageStatsSection = ({
       </Label>
       <TaskStatsContainer>
         {
-          stats.taskStats.map( (taskStat, i) => (
+          filteredStats.map( (taskStat, i) => (
             <LanguageTaskStatsSection
               key={i}
               language={stats.language}

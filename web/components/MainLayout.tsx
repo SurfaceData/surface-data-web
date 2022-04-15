@@ -107,6 +107,7 @@ const MainLayout: NextPage = ({ children }) => {
           justify-content: space-between;
         }
         main {
+          display: flex;
           flex: 1;
         }
         `}

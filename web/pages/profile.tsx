@@ -4,7 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
+import { MdOutlineSpaceDashboard } from 'react-icons/md';
+import { FaUserCircle } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
+import { Sidenav, Nav, Dropdown } from 'rsuite';
 import styled from 'styled-components';
 
 import { loadTranslation } from '@common/i18n';
@@ -21,7 +24,16 @@ import { updateUser } from '@features/userSlice';
 import { Red } from '@styles/palettes';
 
 const Container = styled.div`
+  flex: 2;
   margin: 48px 24px;
+`;
+
+const NavContainer = styled.div`
+  width: 240px;
+`;
+
+const StyledSidenav = styled(Sidenav)`
+  height: 100vh;
 `;
 
 const InfoContainer = styled.div`
@@ -84,8 +96,10 @@ const Profile: NextPage = () => {
 
     const userData = session.user;
     userData.languages = userLanguages;
-    const bcpCode = (new Intl.Locale(userLanguages[0].language)).baseName;
-    document.cookie = `NEXT_LOCALE=${bcpCode}; SameSite=Lax; path=/`;
+    if (userLanguages.length > 0) {
+      const bcpCode = (new Intl.Locale(userLanguages[0].language)).baseName;
+      document.cookie = `NEXT_LOCALE=${bcpCode}; SameSite=Lax; path=/`;
+    }
     dispatch(updateUser(userData));
   }, [dispatch, session, userLanguages]);
 
@@ -113,8 +127,19 @@ const Profile: NextPage = () => {
 
   return (
     <MainLayout>
-      <Container>
+      <NavContainer>
+      <StyledSidenav>
+        <Sidenav.Body>
+          <Nav>
+            <Nav.Item icon={<FaUserCircle />}>
+              Profile
+            </Nav.Item>
+          </Nav>
+        </Sidenav.Body>
+      </StyledSidenav>
+      </NavContainer>
 
+      <Container>
         <SectionHeader>
           About You
         </SectionHeader>

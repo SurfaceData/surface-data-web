@@ -12,6 +12,12 @@ import { getTaskComponent, getTaskIcon } from '@components/tasks/TaskMap';
 import type { LanguageDisplay } from '@features/language';
 import type { Task, TaskCategory, TaskMode, TaskState } from '@features/tasks';
 
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
 const IndexContainer = styled.div`
   display: flex;
   align-content: center;
@@ -133,6 +139,7 @@ const CreatePage: NextPage = () => {
 
   return (
     <MainLayout>
+      <Container>
       <IndexContainer>
         {
           tasks.map( (task, i) => (
@@ -148,6 +155,7 @@ const CreatePage: NextPage = () => {
       <TaskContainer>
         {Component}
       </TaskContainer>
+      </Container>
     </MainLayout>
   );
 }
