@@ -26,19 +26,13 @@ const AuthenticatedHome = ({session}: AuthenticatedHomeProps) => {
 
   useEffect( () => {
     setLoading(true);
-    fetch('/api/language_stats', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(session?.user?.languages || [])
-    })
+    fetch('/api/get_user_language_stats')
       .then((res) => res.json())
       .then((data) => {
         setLanguageStats(data);
         setLoading(false);
       });
-  }, [session]);
+  }, []);
 
   if (isLoading) {
     return (

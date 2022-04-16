@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 import { PrismaClient } from "@prisma/client";
 
-import { getLanguageStats } from '@common/LanguageStatsUtils';
 import { allLanguages, cldrLanguages } from '@common/DisplayLanguages';
+import { getLanguageStats } from '@common/LanguageStatsUtils';
 import { getTaskCategoryMap, getTaskModeMap } from '@common/TaskUtils';
+import { fetchUserLanguages } from '@common/UserUtils';
 import type { LanguageStats, TaskStats } from '@features/LanguageStats';
 import type { LanguageTasks, TaskCategory, TaskMode } from '@features/tasks';
 
@@ -17,54 +19,28 @@ const allLangMap = allLanguages.reduce( (result, language) => {
 const taskModeMap = await getTaskModeMap(prisma);
 const taskCategoryMap = await getTaskCategoryMap(prisma);
 
-/**
- * Returns an array of LanguageStats given a requested list of languages and
- * tasks for those languages.
- *
- * This requires calls to multiple database tables:
- *   - TaskMilestones
- */
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Array<LanguageStats>>
 ) => {
-  const { languages, languageMap, requestedTasks } = await extractLanguagesAndTasks(
-    req);
+  const session = await getSession({ req });
+  if (!session || !session.userId) {
+    res.status(500);
+    return;
+  }
+  const { languages, languageMap, requestedTasks } = await extractLanguagesAndTasks(session.userId);
   const languageStats = await getLanguageStats(
     prisma, languages, languageMap, requestedTasks, taskModeMap, taskCategoryMap);
 
-    // Done~
+  // Done~
   res.status(200).json(languageStats);
 }
 
-async function extractLanguagesAndTasks(req: NextApiRequest) {
-  if (!req.body) {
-    const randomLanguages = await prisma.taskMilestones.findMany({
-      select: {
-        primaryLang: true
-      },
-      orderBy: {
-        milestone: 'desc',
-      },
-      distinct: ['primaryLang'],
-      take: 5,
-    });
-    const languages = randomLanguages.map(({primaryLang}) => primaryLang);
-    const languageMap = allLangMap;
-    const requestedTasks = languages.reduce( (results, isoCode) => {
-      results.set(isoCode, new Set());
-      return results;
-    }, new Map());
-    return {
-      languages,
-      languageMap,
-      requestedTasks,
-    };
-  }
-
+async function extractLanguagesAndTasks(userId: string) {
   // Get the languages and factor that into a set of language strings and a
   // mapping from languages to task IDs.
-  const languagesAndTasks = req.body as LanguageTasks[] || [];
+  const languagesAndTasks = await fetchUserLanguages(
+    prisma, userId, allLangMap, taskModeMap, taskCategoryMap);
   const languages = languagesAndTasks.map(({languageDisplay}) => languageDisplay?.isoCode || '');
   const languageMap = languagesAndTasks.reduce( (results, entry) => {
     results.set(
