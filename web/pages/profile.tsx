@@ -78,16 +78,18 @@ const Profile: NextPage = () => {
   const [ cldrLanguages, setCldrLanguages ] = useState([] as LanguageDisplay[]);
   useEffect(() => {
     if (status == "loading") {
+      return;
+    }
+    setUserLanguages(session.user.languages);
+  }, [status, session]);
 
+  useEffect(() => {
     fetch('/api/languages?cldr=true')
       .then((res) => res.json())
       .then((data) => {
         setCldrLanguages(data);
       });
-      return;
-    }
-    setUserLanguages(session.user.languages);
-  }, [status, session]);
+  }, []);
 
   const submit =  useCallback(() => {
     if (!session) {
