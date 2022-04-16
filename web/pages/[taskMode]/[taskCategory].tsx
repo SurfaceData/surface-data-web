@@ -54,8 +54,6 @@ const CreatePage: NextPage = () => {
       return;
     }
 
-    const mode = (router.query?.taskMode || 'unknown') as string;
-    const category = (router.query?.taskCategory || 'unknown') as string;
     const primaryLang = (router.query?.primary|| 'unk') as string;
     const secondaryLang = (router.query?.secondary|| 'unk') as string;
 
@@ -65,6 +63,17 @@ const CreatePage: NextPage = () => {
       lang => lang.isoCode === primaryLang));
     setSecondary(languages.find(
       lang => lang.isoCode === secondaryLang));
+  }, [status, session, router]);
+
+  useEffect( () => {
+    if (!router.isReady) {
+      return;
+    }
+
+    const mode = (router.query?.taskMode || 'unknown') as string;
+    const category = (router.query?.taskCategory || 'unknown') as string;
+    const primaryLang = (router.query?.primary|| 'unk') as string;
+    const secondaryLang = (router.query?.secondary|| 'unk') as string;
 
     const url = `/api/get_tasks?primary=${primaryLang}&secondary=${secondaryLang}&category=${category}&mode=${mode}`;
 
@@ -82,7 +91,7 @@ const CreatePage: NextPage = () => {
         setCurrentIndex(0);
         setLoading(false);
       });
-  }, [status, session, router]);
+  }, [router]);
 
   const advanceTask = () => {
     taskState[currentIndex] = 'done';
