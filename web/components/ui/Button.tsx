@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
+import { Button as BaseButton } from 'rsuite';
 
 import type { Style } from '@features/styles';
 import { Black } from '@styles/palettes';
 
-export const Button = styled.button<{
+export const Button = styled(BaseButton)<{
   outline?: boolean,
   rounded?: boolean
   palette?: Style,
@@ -40,6 +41,7 @@ export const Button = styled.button<{
     background-color: #fff;
     border-color: ${props => props.palette ? props.palette.primary : Black.primary};
     color: #000;
+    text-decoration: none;
   }
   
   a {

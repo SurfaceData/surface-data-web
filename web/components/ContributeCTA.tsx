@@ -16,13 +16,11 @@ const ContributeCTA = ({
   const url = `/${stats.taskMode.shortName}/${stats.taskCategory.shortName}?primary=${language.isoCode}&secondary=${stats.secondaryLang.isoCode}`;
 
   return (
-    <Button rounded outline>
-      <Link href={url}>
-        <a>
-          Contribute
-        </a>
-      </Link>
-    </Button>
+    <Link href={url} passHref>
+      <Button rounded outline>
+        Contribute
+      </Button>
+    </Link>
   );
 };
 
