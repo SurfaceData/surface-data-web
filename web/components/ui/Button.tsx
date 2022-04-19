@@ -6,7 +6,7 @@ import { Black } from '@styles/palettes';
 
 export const Button = styled(BaseButton)<{
   outline?: boolean,
-  rounded?: boolean
+  rounded?: boolean,
   palette?: Style,
 }>`;
   position: relative;

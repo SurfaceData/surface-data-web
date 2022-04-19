@@ -79,6 +79,16 @@ const MainLayout: NextPage = ({ children }) => {
           </a>.
         </License>
 
+        <div>
+          <a target="_blank" rel="noreferrer" href="https://zebrasunite.coop/">
+            <Image
+              alt="Zebra's Unite Member"
+              height={45}
+              width={90}
+              src="/img/zebras-unite-coop.svg" />
+          </a>
+        </div>
+
         <SocialIconContainer>
           <SocialIcon target="_blank" href="https://blog.surfacedata.org/">
             <ImBlog size={16} />
