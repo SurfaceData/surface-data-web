@@ -80,11 +80,11 @@ const MainLayout: NextPage = ({ children }) => {
         </License>
 
         <SocialIconContainer>
-          <SocialIcon target="_blank" href="https://blog.surface-data-collective.com/">
+          <SocialIcon target="_blank" href="https://blog.surfacedata.org/">
             <ImBlog size={16} />
           </SocialIcon>
 
-          <SocialIcon target="_blank" href="https://github.com/Surface-Data-Collective/">
+          <SocialIcon target="_blank" href="https://github.com/SurfaceData/">
             <ImGithub size={16} />
           </SocialIcon>
 
