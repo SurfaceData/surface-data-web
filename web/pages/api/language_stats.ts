@@ -28,6 +28,7 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Array<LanguageStats>>
 ) => {
+  console.log('language stats');
   const { languages, languageMap, requestedTasks } = await extractLanguagesAndTasks(
     req);
   const languageStats = await getLanguageStats(

@@ -5,23 +5,24 @@ import type { LandingStats } from '@features/stats';
 
 const prisma = new PrismaClient();
 
+const languagePairs = await prisma.taskMilestones.findMany({
+  distinct: ['primaryLang', 'secondaryLang'],
+  select: {
+    primaryLang: true,
+    secondaryLang: true,
+  },
+});
+
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<LandingStats>
 ) => {
-  const languages = await prisma.taskMilestones.findMany({
-    distinct: ['primaryLang'],
-    select: {
-      primaryLang: true,
-    },
-  });
-  const languagePairs = await prisma.taskMilestones.findMany({
-    distinct: ['primaryLang', 'secondaryLang'],
-    select: {
-      primaryLang: true,
-      secondaryLang: true,
-    },
-  });
+  const languageSet = languagePairs.reduce( (result, pair) => {
+    result.add(pair.primaryLang);
+    result.add(pair.secondaryLang);
+    return result;
+  }, new Set());
+
   const { _sum: milestoneSum } = await prisma.taskMilestones.aggregate({
     _sum: {
       milestone: true,
@@ -29,7 +30,7 @@ const handler = async (
   });
   res.status(200).json({
     taskCount: milestoneSum.milestone,
-    languageCount: languages.length,
+    languageCount: languageSet.size,
     languagePairCount: languagePairs.length,
   } as LandingStats);
 };
