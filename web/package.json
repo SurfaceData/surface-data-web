@@ -33,6 +33,7 @@
     "iso-639-3": "^3.0.1",
     "language-data": "^0.1.2",
     "make-plural": "^7.1.0",
+    "md5": "^2.3.0",
     "n-readlines": "^1.0.1",
     "next": "^12.0.9",
     "next-auth": "^4.1.2",
