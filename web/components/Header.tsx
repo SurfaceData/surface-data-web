@@ -35,13 +35,13 @@ const ProfileButton = styled.button`
   border-radius: 50%;
 `;
 
-function getGravatarURL(email) {
+function getGravatarURL(email: string) {
   const address = String(email).trim().toLowerCase();
   const hash = md5(address);
   return `https://www.gravatar.com/avatar/${hash}`;
 }
 
-const renderProfileIcon = (props, ref) => {
+const renderProfileIcon = (props: any, ref: any) => {
   const { user, ...rest } = props;
   const image = user.image ? user.image : getGravatarURL(user.email);
   return (
